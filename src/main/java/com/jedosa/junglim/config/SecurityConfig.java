@@ -13,7 +13,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http.authorizeRequests()
-                .mvcMatchers("/", "sign-up").permitAll()
+                .mvcMatchers("/", "sign-up", "/lib/**", "/css/**", "/js/**", "/fonts/**").permitAll()
                 //.mvcMatchers(HttpMethod.GET, "/profile/*").permitAll() // GET 요청일 때만 허용
                 .anyRequest().authenticated();
     }
