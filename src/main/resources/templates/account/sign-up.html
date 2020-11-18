@@ -5,6 +5,7 @@
     <title>회원가입</title>
     <link rel="stylesheet" href="/lib/bootstrap-4.5.3/css/bootstrap.css">
     <link rel="stylesheet" href="/css/common.css">
+    <script src="/js/signUp.js"></script>
 </head>
 <body>
 <div class="container">
@@ -16,7 +17,7 @@
         </div>
         <div>
             <div id="content">
-                <form action="/">
+                <form action="/sign-up" method="post" id="sign-up-form">
                     <div class="text-center">
                         <h1>회원가입</h1>
                     </div>
@@ -35,8 +36,8 @@
                             The standard chunk of Lorem Ipsum used since the 1500s is reproduced below for those interested. Sections 1.10.32 and 1.10.33 from "de Finibus Bonorum et Malorum" by Cicero are also reproduced in their exact original form, accompanied by English versions from the 1914 translation by H. Rackham.
                         </div>
                         <div class="text-right">
-                            <label for="site-agreement-checkbox">
-                                <input type="checkbox" id="site-agreement-checkbox"> 이용약관에 동의합니다.
+                            <label for="site-usage-agreement">
+                                <input type="checkbox" id="site-usage-agreement" name="siteUsageAgreement" value="true"> 이용약관에 동의합니다.
                             </label>
                         </div>
                     </div>
@@ -55,62 +56,69 @@
                             The standard chunk of Lorem Ipsum used since the 1500s is reproduced below for those interested. Sections 1.10.32 and 1.10.33 from "de Finibus Bonorum et Malorum" by Cicero are also reproduced in their exact original form, accompanied by English versions from the 1914 translation by H. Rackham.
                         </div>
                         <div class="text-right">
-                            <label for="personal-info-agreement-checkbox">
-                                <input type="checkbox" id="personal-info-agreement-checkbox"> 개인정보수집방침에 동의합니다.
+                            <label for="personal-info-agreement">
+                                <input type="checkbox" id="personal-info-agreement" name="personalInfoAgreement" value="true"> 개인정보수집방침에 동의합니다.
                             </label>
                         </div>
                     </div>
                     <div class="container">
                         <div class="form-group row">
-                            <label for="sign-up-id" class="col-xl-2 col-form-label">아이디</label>
+                            <label for="sign-up-email" class="col-xl-2 col-form-label">이메일</label>
                             <div class="col-xl-5">
                                 <div class="row row-cols-2">
                                     <div class="col-xl-8">
-                                        <input type="text" class="form-control" id="sign-up-id">
+                                        <input type="text" class="form-control" id="sign-up-email" name="email" value="xodnjs2549@naver.com">
                                     </div>
                                     <div class="col-xl">
-                                        <button type="button" class="btn btn-primary">중복확인</button>
+                                        <input type="hidden" id="sign-up-email-duplication" value="true">
+                                        <button type="button" onclick="checkEmailDuplication()" class="btn btn-primary">중복확인</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label for="sign-up-email-confirmation" class="col-xl-2 col-form-label">이메일 확인</label>
+                            <div class="col-xl-5">
+                                <div class="row row-cols-2">
+                                    <div class="col-xl-8">
+                                        <input type="text" class="form-control" id="sign-up-email-confirmation" name="emailConfirmation" value="xodnjs2549@naver.com">
                                     </div>
                                 </div>
                             </div>
                         </div>
                         <div class="form-group row">
                             <label for="sign-up-password" class="col-xl-2 col-form-label">비밀번호</label>
-                            <div class="col-xl-5"><input type="password" class="form-control" id="sign-up-password"></div>
+                            <div class="col-xl-5"><input type="password" class="form-control" id="sign-up-password" name="password" value="lemon123"></div>
                         </div>
                         <div class="form-group row">
                             <label for="sign-up-password-confirmation" class="col-xl-2 col-form-label">비밀번호 확인</label>
-                            <div class="col-xl-5"><input type="password" class="form-control" id="sign-up-password-confirmation"></div>
+                            <div class="col-xl-5"><input type="password" class="form-control" id="sign-up-password-confirmation" name="passwordConfirmation" value="lemon123"></div>
                         </div>
                         <div class="form-group row">
                             <label for="sign-up-name" class="col-xl-2 col-form-label">이름</label>
-                            <div class="col-xl-5"><input type="text" class="form-control" id="sign-up-name"></div>
+                            <div class="col-xl-5"><input type="text" class="form-control" id="sign-up-name" name="name" value="황태원"></div>
                         </div>
                         <div class="form-group row">
                             <label for="sign-up-phone" class="col-xl-2 col-form-label">연락처</label>
-                            <div class="col-xl-5"><input type="text" class="form-control" id="sign-up-phone"></div>
-                        </div>
-                        <div class="form-group row">
-                            <label for="sign-up-email" class="col-xl-2 col-form-label">이메일</label>
-                            <div class="col-xl-5"><input type="text" class="form-control" id="sign-up-email"></div>
+                            <div class="col-xl-5"><input type="text" class="form-control" id="sign-up-phone" value="01025499229"></div>
                         </div>
                         <div class="form-group row">
                             <label for="sign-up-address-zipcode" class="col-xl-2 col-form-label">주소</label>
                             <div class="col-xl-5">
                                 <div class="row row-cols-2 mb-1">
                                     <div class="col-xl-8">
-                                        <input type="text" class="form-control" id="sign-up-address-zipcode">
+                                        <input type="text" class="form-control" id="sign-up-address-zipcode" name="zipcode" readonly value="06997">
                                     </div>
                                     <div class="col-xl">
-                                        <button class="btn btn-primary">주소검색</button>
+                                        <button type="button" class="btn btn-primary" onclick="getAddress()">주소검색</button>
                                     </div>
                                 </div>
-                                <input type="text" class="form-control mb-1" id="sign-up-address-first">
-                                <input type="text" class="form-control" id="sign-up-address-second">
+                                <input type="text" class="form-control mb-1" id="sign-up-address" name="address" readonly value="서울 동작구 동작대로33길 13-13">
+                                <input type="text" class="form-control" id="sign-up-detailed-address" name="detailedAddress">
                             </div>
                         </div>
                         <div class="d-flex justify-content-center">
-                            <button type="submit" class="btn btn-primary mr-1">확인</button>
+                            <button type="button" onclick="signUpSubmit()" class="btn btn-primary mr-1">확인</button>
                             <button type="button" class="btn btn-warning">취소</button>
                         </div>
                     </div>
@@ -124,9 +132,21 @@
         </div>
     </div>
 </div>
-<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"
-        integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj"
-        crossorigin="anonymous"></script>
+<script src="https://t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
+<script>
+    function getAddress() {
+        new daum.Postcode({
+            oncomplete: function(data) {
+                console.log(data);
+                document.getElementById("sign-up-address-zipcode").value = data.zonecode;
+                document.getElementById("sign-up-address").value = data.roadAddress
+                // 팝업에서 검색결과 항목을 클릭했을때 실행할 코드를 작성하는 부분입니다.
+                // 예제를 참고하여 다양한 활용법을 확인해 보세요.
+            }
+        }).open();
+    }
+</script>
+<script src="/lib/jquery/jquery-3.5.1.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"
         integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN"
         crossorigin="anonymous"></script>
