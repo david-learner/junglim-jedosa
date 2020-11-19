@@ -1,6 +1,7 @@
 package com.jedosa.junglim.account;
 
 import com.jedosa.junglim.account.domain.Account;
+import com.jedosa.junglim.account.domain.LoginDto;
 import com.jedosa.junglim.account.domain.SignUpDto;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -28,5 +29,13 @@ public class AccountService {
 
     public boolean isDuplicated(String email) {
         return accountRepository.findByEmail(email).isPresent();
+    }
+
+    public boolean login(LoginDto loginDto) {
+        Account account = accountRepository.findByEmail(loginDto.getEmail()).orElseThrow(() -> {
+            throw new IllegalArgumentException("가입되지 않은 이메일입니다");
+        });
+
+        return account.getPassword().equals(loginDto.getPassword());
     }
 }

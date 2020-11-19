@@ -1,5 +1,6 @@
 package com.jedosa.junglim.account;
 
+import com.jedosa.junglim.account.domain.LoginDto;
 import com.jedosa.junglim.account.domain.SignUpDto;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -12,6 +13,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import javax.servlet.http.HttpSession;
 import java.net.URI;
 
 @Controller
@@ -32,7 +34,7 @@ public class AccountController {
     @PostMapping("sign-up")
     public ResponseEntity<Void> signUp(@ModelAttribute SignUpDto signupDto) {
         accountService.signUp(signupDto.toAccount());
-        return ResponseEntity.status(HttpStatus.SEE_OTHER).location(URI.create("/index")).build();
+        return ResponseEntity.status(HttpStatus.OK).location(URI.create("/index")).build();
     }
 
     @GetMapping("account/email/duplicate")
@@ -42,5 +44,24 @@ public class AccountController {
             throw new IllegalArgumentException("이미 가입된 이메일입니다");
         }
         return ResponseEntity.status(HttpStatus.OK).build();
+    }
+
+    @GetMapping("account/edit")
+    public String accountEditForm() {
+        return "account/account-edit";
+    }
+
+    @GetMapping("login")
+    public String loginForm() {
+        return "account/login";
+    }
+
+    @PostMapping("login")
+    public ResponseEntity<Void> login(@ModelAttribute LoginDto loginDto, HttpSession session) {
+        if(!accountService.login(loginDto)) {
+            throw new IllegalArgumentException("비밀번호가 일치하지 않습니다");
+        };
+        session.setAttribute("loginUserEmail", loginDto.getEmail());
+        return ResponseEntity.status(HttpStatus.SEE_OTHER).location(URI.create("/index")).build();
     }
 }
