@@ -1,13 +1,46 @@
 function signUpSubmit() {
     console.log("called signUpSubmit()");
-    let signUpForm = document.getElementById("sign-up-form");
 
     if(!checkSignUpFormValidation()) {
         console.log("회원가입 폼 정보가 유효하지 않습니다.");
         return false;
     }
 
-    signUpForm.submit();
+    let email = document.getElementById("sign-up-email");
+    let password = document.getElementById("sign-up-password");
+    let name = document.getElementById("sign-up-name");
+    let phone = document.getElementById("sign-up-phone");
+    let zipcode = document.getElementById("sign-up-address-zipcode");
+    let address = document.getElementById("sign-up-address");
+    let detailedAddress = document.getElementById("sign-up-detailed-address");
+    let siteUsageAgreement = document.getElementById("site-usage-agreement");
+    let personalInfoAgreement = document.getElementById("personal-info-agreement");
+
+    let signUpFormData = {
+        email: email.value,
+        password: password.value,
+        name: name.value,
+        phone: phone.value,
+        zipcode: zipcode.value,
+        address: address.value,
+        detailedAddress: detailedAddress.value,
+        siteUsageAgreement: siteUsageAgreement.value,
+        personalInfoAgreement: personalInfoAgreement.value
+    }
+
+    $.ajax({
+        url: "/sign-up",
+        type: 'POST',
+        data: signUpFormData,
+        contentType: "application/x-www-form-urlencoded"
+    }).done(function (data, textStatus, jqXHR) {
+        console.log(data)
+        console.log(textStatus)
+        console.log(jqXHR)
+        alert("회원가입이 성공적으로 완료되었습니다")
+    }).fail(function (jqXHR, textStatus, errorThrown) {
+        alert(jqXHR.responseText);
+    });
 }
 
 function checkSignUpFormValidation() {
