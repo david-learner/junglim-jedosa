@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="kr" xmlns:th="http://www.thymeleaf.org">
+<head th:include="fragments/common-layout :: head">
+    <meta charset="UTF-8">
+    <title id="page-title">회원정보 수정</title>
+</head>
+<body>
+<div class="container">
+    <header th:replace="fragments/common-layout :: header"></header>
+    <div>
+        <div id="content">
+            <form action="/sign-up" method="post" id="sign-up-form">
+                <div class="text-center">
+                    <h1>회원정보 수정</h1>
+                </div>
+                <div class="container col-8">
+                    <div class="mb-1">
+                        <label for="account-edit-email">이메일</label>
+                        <input type="text" class="form-control" id="account-edit-email" name="email"
+                               value="" readonly>
+                    </div>
+                    <div class="mb-1">
+                        <label for="account-edit-password">비밀번호</label>
+                        <input type="password" class="form-control" id="account-edit-password"
+                               name="password">
+                    </div>
+                    <div class="mb-1">
+                        <label for="account-edit-password-confirmation">비밀번호 확인</label>
+                        <input type="password" class="form-control"
+                               id="account-edit-password-confirmation" name="passwordConfirmation">
+                    </div>
+                    <div class="mb-1">
+                        <label for="account-edit-name">이름</label>
+                        <input type="text" class="form-control" id="account-edit-name" name="name" value=""
+                               readonly>
+                    </div>
+                    <div class="mb-1">
+                        <label for="account-edit-phone">연락처</label>
+                        <input type="text" class="form-control" id="account-edit-phone" value="">
+                    </div>
+                    <div class="mb-1">
+                        <label for="account-edit-address-zipcode">주소</label>
+                        <div class="row row-cols-2 mb-1">
+                            <div class="col-xl-7">
+                                <input type="text" class="form-control" id="account-edit-address-zipcode"
+                                       name="zipcode" readonly value="">
+                            </div>
+                            <div class="col-xl">
+                                <button type="button" class="btn btn-primary" onclick="getAddress()">주소검색
+                                </button>
+                            </div>
+                        </div>
+                        <input type="text" class="form-control mb-1" id="account-edit-address" name="address"
+                               readonly value="">
+                        <input type="text" class="form-control" id="account-edit-detailed-address"
+                               name="detailedAddress">
+                    </div>
+                </div>
+                <div class="d-flex justify-content-center">
+                    <button type="button" onclick="accountSubmit()" class="btn btn-primary mr-1">수정</button>
+                </div>
+        </div>
+        </form>
+    </div>
+</div>
+<script src="https://t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
+<script>
+    function getAddress() {
+        new daum.Postcode({
+            oncomplete: function (data) {
+                console.log(data);
+                document.getElementById("account-edit-address-zipcode").value = data.zonecode;
+                document.getElementById("account-edit-address").value = data.roadAddress
+                // 팝업에서 검색결과 항목을 클릭했을때 실행할 코드를 작성하는 부분입니다.
+                // 예제를 참고하여 다양한 활용법을 확인해 보세요.
+            }
+        }).open();
+    }
+</script>
+<div th:replace="fragments/common-layout :: body-footer"></div>
+</body>
+</html>

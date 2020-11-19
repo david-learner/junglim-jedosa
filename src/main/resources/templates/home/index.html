@@ -1,10 +1,13 @@
 <!DOCTYPE html>
-<html lang="en">
-<head>
+<html lang="kr" xmlns:th="http://www.thymeleaf.org">
+<head th:include="fragments/common-layout :: head">
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title id="page-title">Junglim Jedosa</title>
 </head>
 <body>
-
+<div class="container">
+    <header th:replace="fragments/common-layout :: header"></header>
+    <div th:replace="fragments/common-layout :: body-footer"></div>
+</div>
 </body>
 </html>
