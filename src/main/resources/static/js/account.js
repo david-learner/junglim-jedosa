@@ -24,8 +24,8 @@ function loginSubmit() {
         data: loginData,
         contentType: "application/x-www-form-urlencoded"
     }).done(function (data, textStatus, jqXHR) {
-        console.log(data);
-        window.location = data.location;
+        console.log(jqXHR.getResponseHeader("location"));
+        window.location = jqXHR.getResponseHeader("location");
     }).fail(function (jqXHR, textStatus, errorThrown) {
         alert(jqXHR.responseText);
     });

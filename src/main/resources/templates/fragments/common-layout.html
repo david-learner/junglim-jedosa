@@ -22,7 +22,11 @@
                 <img src="/images/logo/logo.black.png" alt="logo">
             </a>
         </div>
-        <div id="header-quick-menu" class="col-4 p-0 d-flex justify-content-end">
+        <div th:if="${session.loginUser}" id="header-quick-menu" class="col-4 p-0 d-flex justify-content-end">
+            <a href="/logout" class="mt-auto mb-auto pr-3">로그아웃</a>
+            <a href="/mypage" class="mt-auto mb-auto">내정보</a>
+        </div>
+        <div th:unless="${session.loginUser}" id="header-quick-menu" class="col-4 p-0 d-flex justify-content-end">
             <a href="/login" class="mt-auto mb-auto pr-3">로그인</a>
             <a href="/sign-up" class="mt-auto mb-auto">회원가입</a>
         </div>

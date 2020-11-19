@@ -1,7 +1,9 @@
 package com.jedosa.junglim.account;
 
 import com.jedosa.junglim.account.domain.LoginDto;
+import com.jedosa.junglim.account.domain.SessionAccountDto;
 import com.jedosa.junglim.account.domain.SignUpDto;
+import lombok.Getter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
@@ -58,10 +60,14 @@ public class AccountController {
 
     @PostMapping("login")
     public ResponseEntity<Void> login(@ModelAttribute LoginDto loginDto, HttpSession session) {
-        if(!accountService.login(loginDto)) {
-            throw new IllegalArgumentException("비밀번호가 일치하지 않습니다");
-        };
-        session.setAttribute("loginUserEmail", loginDto.getEmail());
-        return ResponseEntity.status(HttpStatus.SEE_OTHER).location(URI.create("/index")).build();
+        SessionAccountDto sessionAccountDto = accountService.login(loginDto);
+        session.setAttribute("loginUser", sessionAccountDto);
+        return ResponseEntity.status(HttpStatus.OK).location(URI.create("/index")).build();
+    }
+
+    @GetMapping("logout")
+    public String logout(HttpSession session) {
+        session.removeAttribute("loginUser");
+        return "home/index";
     }
 }
