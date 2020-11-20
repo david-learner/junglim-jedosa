@@ -11,7 +11,7 @@ import java.time.LocalDateTime;
 @Getter
 public class Account {
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private LocalDateTime createdDateTime;
     private LocalDateTime modifiedDateTime;
@@ -26,6 +26,8 @@ public class Account {
     private Address address;
     private Boolean siteUsageAgreement;
     private Boolean personalInfoAgreement;
+    @Enumerated(EnumType.STRING)
+    private Grade grade;
 
     public Account(String email, String password, String name, String phone, Address address, Boolean siteUsageAgreement, Boolean personalInfoAgreement) {
         this.createdDateTime = LocalDateTime.now();
@@ -36,5 +38,13 @@ public class Account {
         this.address = address;
         this.siteUsageAgreement = siteUsageAgreement;
         this.personalInfoAgreement = personalInfoAgreement;
+        this.grade = Grade.NORMAL;
+    }
+
+    public void changeGradeNormalToAdmin() {
+        if (grade == Grade.NORMAL) {
+            grade = Grade.ADMIN;
+        }
+        throw new IllegalArgumentException("이미 관리자 등급입니다");
     }
 }

@@ -11,9 +11,11 @@ public class SessionAccountDto {
 
     private String email;
     private String name;
+    private Grade grade;
 
     public SessionAccountDto(Account account) {
         this.email = account.getEmail();
         this.name = account.getName();
+        this.grade = account.getGrade();
     }
 }
