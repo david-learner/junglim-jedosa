@@ -6,7 +6,7 @@
 </head>
 <body>
 <div class="container">
-    <header th:replace="fragments/common-layout :: header"></header>
+    <header th:replace="fragments/common-layout :: normal-header"></header>
     <div>
         <div id="content">
             <form action="/sign-up" method="post" id="sign-up-form">
@@ -133,13 +133,13 @@
                     <div class="form-group row">
                         <label for="sign-up-password" class="col-xl-2 col-form-label">비밀번호</label>
                         <div class="col-xl-5"><input type="password" class="form-control" id="sign-up-password"
-                                                     name="password" value="lemon123"></div>
+                                                     name="password" value="11111111"></div>
                     </div>
                     <div class="form-group row">
                         <label for="sign-up-password-confirmation" class="col-xl-2 col-form-label">비밀번호 확인</label>
                         <div class="col-xl-5"><input type="password" class="form-control"
                                                      id="sign-up-password-confirmation" name="passwordConfirmation"
-                                                     value="lemon123"></div>
+                                                     value="11111111"></div>
                     </div>
                     <div class="form-group row">
                         <label for="sign-up-name" class="col-xl-2 col-form-label">이름</label>
@@ -160,7 +160,7 @@
                                            readonly value="06997">
                                 </div>
                                 <div class="col-xl">
-                                    <button type="button" class="btn btn-primary" onclick="getAddress()">주소검색</button>
+                                    <button type="button" class="btn btn-primary" onclick="getAddress()">우편번호 검색</button>
                                 </div>
                             </div>
                             <input type="text" class="form-control mb-1" id="sign-up-address" name="address" readonly

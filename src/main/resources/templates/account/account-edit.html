@@ -6,7 +6,7 @@
 </head>
 <body>
 <div class="container">
-    <header th:replace="fragments/common-layout :: header"></header>
+    <header th:replace="fragments/common-layout :: normal-header"></header>
     <div>
         <div id="content">
             <form action="/sign-up" method="post" id="sign-up-form">
@@ -46,7 +46,7 @@
                                        name="zipcode" readonly value="">
                             </div>
                             <div class="col-xl">
-                                <button type="button" class="btn btn-primary" onclick="getAddress()">주소검색
+                                <button type="button" class="btn btn-primary" onclick="getAddress()">우편번호 검색
                                 </button>
                             </div>
                         </div>

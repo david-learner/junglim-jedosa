@@ -6,7 +6,7 @@
 </head>
 <body>
 <div class="container">
-    <header th:replace="fragments/common-layout :: header"></header>
+    <header th:replace="fragments/common-layout :: normal-header"></header>
     <div>
         <div id="content">
             <form action="/login" method="post" id="login-form">
@@ -17,12 +17,12 @@
                     <div class="mb-2">
                         <label for="login-email">이메일</label>
                         <input type="text" class="form-control" id="login-email" name="email"
-                               value="">
+                               value="admin@junglim.com">
                     </div>
                     <div class="mb-2">
                         <label for="login-password">비밀번호</label>
                         <input type="password" class="form-control" id="login-password"
-                                                     name="password">
+                                                     name="password" value="11111111">
                     </div>
                     <div class="d-flex justify-content-center">
                         <button type="button" onclick="loginSubmit()" class="btn btn-primary mr-1">로그인</button>

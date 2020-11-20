@@ -2,12 +2,15 @@
 <html lang="kr" xmlns:th="http://www.thymeleaf.org">
 <head th:include="fragments/common-layout :: head">
     <meta charset="UTF-8">
-    <title id="page-title">Junglim Jedosa</title>
+    <title id="page-title">페이지 제목</title>
 </head>
 <body>
 <div class="container">
     <header th:replace="fragments/common-layout :: normal-header"></header>
-    <div th:replace="fragments/common-layout :: body-footer"></div>
+    <div id="content">
+
+    </div>
 </div>
+<div th:replace="fragments/common-layout :: body-footer"></div>
 </body>
 </html>
