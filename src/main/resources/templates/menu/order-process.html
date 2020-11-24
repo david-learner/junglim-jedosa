@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="kr" xmlns:th="http://www.thymeleaf.org">
+<head th:include="fragments/common-layout :: head">
+    <meta charset="UTF-8">
+    <title id="page-title">주문 방법</title>
+</head>
+<body>
+<div class="container">
+    <header th:replace="fragments/common-layout :: normal-header"></header>
+    <div id="content">
+        <input th:value="${onePageMenu.getId()}" type="hidden" id="onePageMenu-id" >
+        <div id="summernote" th:utext="${onePageMenu.getContent()}"></div>
+    </div>
+    <div th:replace="fragments/common-layout-menu :: menu-form-controller"></div>
+</div>
+<div th:replace="fragments/common-layout :: body-footer"></div>
+</body>
+</html>
