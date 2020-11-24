@@ -18,4 +18,8 @@ public class SessionAccountDto {
         this.name = account.getName();
         this.grade = account.getGrade();
     }
+
+    public boolean isAdmin() {
+        return grade == Grade.ADMIN;
+    }
 }

@@ -41,9 +41,10 @@ public class Account {
         this.grade = Grade.NORMAL;
     }
 
-    public void changeGradeNormalToAdmin() {
+    public void upgradeToAdmin() {
         if (grade == Grade.NORMAL) {
             grade = Grade.ADMIN;
+            return;
         }
         throw new IllegalArgumentException("이미 관리자 등급입니다");
     }
