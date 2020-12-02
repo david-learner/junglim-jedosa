@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="kr" xmlns:th="http://www.thymeleaf.org">
+<head th:include="fragments/common-layout :: head">
+    <meta charset="UTF-8">
+    <title id="page-title">주문문의</title>
+</head>
+<body>
+<div class="container">
+    <header th:replace="fragments/common-layout :: normal-header"></header>
+    <div id="content">
+        <div id="content-header" class="mt-5 mb-5 d-flex justify-content-center">
+            <h1>주문문의</h1>
+        </div>
+        <div>
+            <table class="table">
+                <thead>
+                <tr>
+                    <th scope="col" class="text-center">번호</th>
+                    <th scope="col" class="text-center">제목</th>
+                    <th scope="col" class="text-center">작성자</th>
+                    <th scope="col" class="text-center">작성일</th>
+                    <th scope="col" class="text-center">답변여부</th>
+                </tr>
+                </thead>
+                <tbody th:each="article : ${articles}">
+                <tr>
+                    <th scope="row" class="text-center" th:text="*{article.getBoardArticleId()}">글번호</th>
+                    <td class="text-center">
+                        <a href="#" th:href="@{/board/order-question/articles/{id} (id=*{article.getId()})}" th:text="*{article.getTitle()}"></a>
+                    </td>
+                    <td class="text-center" th:text="*{article.getAccount().getName()}">작성자</td>
+                    <td class="text-center" th:text="*{article.getCreatedDate()}">작성일</td>
+                    <td class="text-center" th:text="*{article.getReplyStatus().getStatus()}">답변상태</td>
+                </tr>
+                </tbody>
+            </table>
+            <div class="d-flex justify-content-end">
+                <a href="/board/order-question/articles" class="btn btn-primary">문의하기</a>
+            </div>
+            <nav class="mt-5 mb-5">
+                <ul class="pagination justify-content-center" th:object="${pagination}">
+                    <li th:if="*{getPage() == 0}" class="page-item disabled">
+                        <a class="page-link" href="#" tabindex="-1">
+                            <span>&laquo;</span>
+                        </a>
+                    </li>
+                    <li th:unless="*{getPage() == 0}" class="page-item">
+                        <a class="page-link" href="#" th:href="@{/board/order-question(page=*{getPreviousPage()})}">
+                            <span>&laquo;</span>
+                        </a>
+                    </li>
+                    <li class="page-item"
+                        th:each="number : *{getNumbers()}"
+                        th:with="currentPage=*{getPage()}+1"
+                        th:classappend="${number == currentPage ? 'active' : ''}">
+                        <a class="page-link" href="#" th:text="${number}"
+                           th:href="@{/board/order-question(page=${number}-1)}">number</a>
+                    </li>
+                    <li th:if="*{getPageForUser() == getTotalPages()}" class="page-item disabled">
+                        <a class="page-link" href="#" tabindex="-1"><span>&raquo;</span></a>
+                    </li>
+                    <li th:unless="*{getPageForUser() == getTotalPages()}" class="page-item">
+                        <a class="page-link" href="#" th:href="@{/board/order-question(page=*{getNextPage()})}">
+                            <span>&raquo;</span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+
+    </div>
+</div>
+<div th:replace="fragments/common-layout :: body-footer"></div>
+<footer th:replace="fragments/common-layout :: normal-footer"></footer>
+</body>
+</html>

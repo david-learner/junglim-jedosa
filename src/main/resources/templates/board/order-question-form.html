@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="kr" xmlns:th="http://www.thymeleaf.org">
+<head th:include="fragments/common-layout :: head">
+    <meta charset="UTF-8">
+    <title id="page-title">주문문의</title>
+</head>
+<body>
+<div class="container">
+    <header th:replace="fragments/common-layout :: normal-header"></header>
+    <div id="content">
+        <div id="content-header" class="mt-5 mb-5 d-flex justify-content-center">
+            <h1>주문문의 - 문의하기</h1>
+        </div>
+        <div id="content-body" class="mb-5">
+            <!-- data -->
+            <input type="hidden" id="board-name" name="board-name" value="order-question">
+            <input type="hidden" id="board-id" name="board-id" th:value="${boardId}">
+            <input type="hidden" id="member-id" name="member-id" th:value="${session.loginUser.getId()}">
+
+            <!-- summernote content -->
+            <input type="text" id="title" class="form-control mb-3" placeholder="제목">
+            <div id="article-body">
+            </div>
+            <div id="article-controller" class="d-flex justify-content-end mt-3">
+                <a href="#" th:onclick="saveArticle()" class="btn btn-primary mr-3">등록</a>
+                <a href="#" th:onclick="goBack()" class="btn btn-danger">취소</a>
+            </div>
+        </div>
+    </div>
+</div>
+<div th:replace="fragments/common-layout :: body-footer"></div>
+<footer th:replace="fragments/common-layout :: normal-footer"></footer>
+<script>
+    $('#article-body').summernote({
+        focus: true,
+        height: 500,
+        callbacks: {
+            onImageUpload: function (files) {
+                // 사용자가 업로드할 이미지
+                let data = new FormData()
+                data.append("file", files[0]);
+
+                // 이미지를 서버에 업로드
+                $.ajax({
+                    type: 'POST',
+                    enctype: 'multipart/form-data',
+                    url: '/files/upload',
+                    data: data,
+                    processData: false,
+                    contentType: false,
+                    cache: false
+                }).done(function (data, textStatus, jqXHR) {
+                    // 정상적으로 업로드된 이미지를 에디터 본문에 추가
+                    $('#article-body').summernote('insertImage', '\\' + data.path, 'image');
+                });
+            }
+        }
+    });
+</script>
+</body>
+</html>

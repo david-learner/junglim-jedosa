@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="kr" xmlns:th="http://www.thymeleaf.org">
+<head th:include="fragments/common-layout :: head">
+    <meta charset="UTF-8">
+    <title id="page-title">주문문의</title>
+</head>
+<body>
+<div class="container">
+    <header th:replace="fragments/common-layout :: normal-header"></header>
+    <div id="content" class="board-content">
+        <div id="content-header" class="mt-5 mb-5 d-flex justify-content-center">
+            <h1>주문문의 - 문의하기</h1>
+        </div>
+        <div id="content-body" class="mb-5" th:object="${article}">
+            <!-- data -->
+            <input type="hidden" id="board-name" name="board-name" value="order-question">
+            <input type="hidden" id="member-id" name="member-id" th:value="${session.loginUser.getId()}">
+            <input type="hidden" id="is-notice" name="is-notice" th:value="${article.getIsNotice()}">
+            <input type="hidden" id="reply-status" name="reply-status" th:value="${article.getReplyStatus()}">
+            <input type="hidden" id="password" name="password" th:value="${article.getPassword()}">
+            <input type="hidden" id="thumbnail" name="thumbnail" th:value="${article.getThumbnail()}">
+
+            <!-- summernote content -->
+            <div id="article-title" th:text="*{getTitle()}" class="border-bottom border-dark pb-3 mb-3"></div>
+            <input id="article-title-edit-form" th:value="*{getTitle()}" type="text" class="form-control d-none mb-3" placeholder="제목">
+            <div id="article-info" class="border-bottom border-dark pb-3 mb-3 d-flex justify-content-between">
+                <div>
+                    <span>글 고유번호:</span>
+                    <span id="article-id" th:text="*{getId()}"></span>
+                </div>
+                <div>
+                    <span>작성자:</span>
+                    <span th:text="*{getAccount().getName()}"></span>
+                </div>
+                <div>
+                    <span>작성일:</span>
+                    <span th:text="*{getCreatedDate()}"></span>
+                </div>
+                <div>
+                    <span>답변여부:</span>
+                    <span th:text="*{getReplyStatus().getStatus()}"></span>
+                </div>
+            </div>
+            <div id="article-body" class="mb-5" th:utext="*{getContent()}"></div>
+            <div th:if="${session.loginUser.isAdmin()} OR *{getIsOwn()}"
+                 id="article-controller" class="d-flex justify-content-end mt-3">
+                <div id="article-view-controller">
+                    <a href="#" th:onclick="editArticleForm()" class="btn btn-primary mr-1">수정</a>
+                    <a href="#" th:onclick="deleteArticle()" class="btn btn-danger">삭제</a>
+                </div>
+                <div id="article-edit-controller" class="d-none">
+                    <a href="#" th:onclick="editArticle()" class="btn btn-primary mr-1">확인</a>
+                    <a href="#" th:onclick="goBack()" class="btn btn-danger">취소</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div th:replace="fragments/common-layout :: body-footer"></div>
+<footer th:replace="fragments/common-layout :: normal-footer"></footer>
+</body>
+</html>
