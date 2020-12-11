@@ -29,6 +29,8 @@ public class Article {
     @Column(columnDefinition = "boolean default false")
     private Boolean isNotice;
     private String title;
+    @Lob
+    @Column(columnDefinition = "MEDIUMTEXT")
     private String content;
     private String thumbnail;
     @Enumerated(EnumType.STRING)
@@ -114,5 +116,9 @@ public class Article {
 
     public void delete() {
         this.deleted = true;
+    }
+
+    public void replied() {
+        this.replyStatus = ReplyStatus.DONE;
     }
 }
