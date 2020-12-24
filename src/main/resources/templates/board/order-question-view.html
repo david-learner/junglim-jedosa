@@ -14,7 +14,6 @@
         <div id="content-body" class="mb-5" th:object="${article}">
             <!-- data -->
             <input type="hidden" id="board-name" name="board-name" value="order-question">
-            <input type="hidden" id="member-id" name="member-id" th:value="${session.loginUser.getId()}">
             <input type="hidden" id="is-notice" name="is-notice" th:value="${article.getIsNotice()}">
             <input type="hidden" id="reply-status" name="reply-status" th:value="${article.getReplyStatus()}">
             <input type="hidden" id="password" name="password" th:value="${article.getPassword()}">
@@ -22,7 +21,8 @@
 
             <!-- summernote content -->
             <div id="article-title" th:text="*{getTitle()}" class="border-bottom border-dark pb-3 mb-3"></div>
-            <input id="article-title-edit-form" th:value="*{getTitle()}" type="text" class="form-control d-none mb-3" placeholder="제목">
+            <input id="article-title-edit-form" th:value="*{getTitle()}" type="text" class="form-control d-none mb-3"
+                   placeholder="제목">
             <div id="article-info" class="border-bottom border-dark pb-3 mb-3 d-flex justify-content-between">
                 <div>
                     <span>글 고유번호:</span>
@@ -42,15 +42,53 @@
                 </div>
             </div>
             <div id="article-body" class="mb-5" th:utext="*{getContent()}"></div>
-            <div th:if="${session.loginUser.isAdmin()} OR *{getIsOwn()}"
-                 id="article-controller" class="d-flex justify-content-end mt-3">
-                <div id="article-view-controller">
-                    <a href="#" th:onclick="editArticleForm()" class="btn btn-primary mr-1">수정</a>
-                    <a href="#" th:onclick="deleteArticle()" class="btn btn-danger">삭제</a>
+            <div id="article-footer">
+                <div th:if="${session.loginUser.isAdmin()} OR *{getIsOwn()}"
+                     id="article-controller" class="d-flex justify-content-end mt-3 mb-3">
+                    <div id="article-view-controller">
+                        <a href="/board/order-question" class="btn btn-success mr-1">목록</a>
+                        <a href="#" th:onclick="editArticleForm()" class="btn btn-primary mr-1">수정</a>
+                        <a href="#" th:onclick="deleteArticle()" class="btn btn-danger">삭제</a>
+                    </div>
+                    <div id="article-edit-controller" class="d-none">
+                        <a href="#" th:onclick="editArticle()" class="btn btn-primary mr-1">확인</a>
+                        <a href="#" th:onclick="showArticle()" class="btn btn-danger">취소</a>
+                    </div>
                 </div>
-                <div id="article-edit-controller" class="d-none">
-                    <a href="#" th:onclick="editArticle()" class="btn btn-primary mr-1">확인</a>
-                    <a href="#" th:onclick="goBack()" class="btn btn-danger">취소</a>
+                <div id="comment-area" th:if="${session.loginUser.isAdmin()}">
+                    <h3>답변</h3>
+                    <div id="comment-header">
+                        <div id="comment-editor"></div>
+                        <div id="comment-reply-controller" class="d-flex justify-content-end mt-3 mb-3">
+                            <a href="#" th:onclick="saveComment()" class="btn btn-primary mr-1">답변하기</a>
+                        </div>
+                    </div>
+                    <div id="comment-body" th:each="comment : ${comments}">
+                        <div name="comment" class="border-dark border-bottom p-3">
+                            <div name="comment-info">
+                                <input type="hidden" name="comment-id" th:value="${comment.getId()}">
+                                <span name="comment-writer" th:text="${comment.getAccount().getName()}"></span>
+                                <span name="comment-created-date" th:text="${comment.getCreatedDate()}"></span>
+                            </div>
+                            <div name="comment-content" th:utext="${comment.getContent()}"
+                                 class="comment-content m-3"></div>
+                            <div name="comment-controller" class="d-flex justify-content-end">
+                                <div name="comment-view-controller" class="m-3">
+                                    <button type="button" onclick="editCommentForm(this)" class="btn btn-success mr-1">
+                                        수정
+                                    </button>
+                                    <button type="button" onclick="deleteComment(this)" class="btn btn-danger mr-1">삭제
+                                    </button>
+                                </div>
+                                <div name="comment-edit-controller" class="m-3 d-none">
+                                    <button type="button" onclick="editComment(this)" class="btn btn-primary mr-1">확인
+                                    </button>
+                                    <button type="button" onclick="showComment(this)" class="btn btn-danger mr-1">취소
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -58,5 +96,31 @@
 </div>
 <div th:replace="fragments/common-layout :: body-footer"></div>
 <footer th:replace="fragments/common-layout :: normal-footer"></footer>
+<script>
+    $('#comment-editor').summernote({
+        height: 150,
+        callbacks: {
+            onImageUpload: function (files) {
+                // 사용자가 업로드할 이미지
+                let data = new FormData()
+                data.append("file", files[0]);
+
+                // 이미지를 서버에 업로드
+                $.ajax({
+                    type: 'POST',
+                    enctype: 'multipart/form-data',
+                    url: '/files/upload',
+                    data: data,
+                    processData: false,
+                    contentType: false,
+                    cache: false
+                }).done(function (data, textStatus, jqXHR) {
+                    // 정상적으로 업로드된 이미지를 에디터 본문에 추가
+                    $('#comment-editor').summernote('insertImage', '\\' + data.path, 'image');
+                });
+            }
+        }
+    });
+</script>
 </body>
 </html>

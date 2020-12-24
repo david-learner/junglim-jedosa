@@ -30,7 +30,10 @@
                     </td>
                     <td class="text-center" th:text="*{article.getAccount().getName()}">작성자</td>
                     <td class="text-center" th:text="*{article.getCreatedDate()}">작성일</td>
-                    <td class="text-center" th:text="*{article.getReplyStatus().getStatus()}">답변상태</td>
+                    <td class="text-center">
+                        <span th:if="*{article.getReplyStatus().name() == 'YET'}" th:text="*{article.getReplyStatus().getStatus()}" class="badge badge-outline badge-success">답변상태</span>
+                        <span th:if="*{article.getReplyStatus().name() == 'DONE'}" th:text="*{article.getReplyStatus().getStatus()}" class="badge badge-success">답변상태</span>
+                    </td>
                 </tr>
                 </tbody>
             </table>
