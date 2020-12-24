@@ -3,7 +3,9 @@ package com.jedosa.junglim.infrastructure.resolver;
 import com.jedosa.junglim.account.domain.SessionAccount;
 import com.jedosa.junglim.account.domain.SessionAccountDto;
 import com.jedosa.junglim.exception.NoLoginException;
-import com.jedosa.junglim.infrastructure.annotation.*;
+import com.jedosa.junglim.exception.NotAdminException;
+import com.jedosa.junglim.infrastructure.annotation.Admin;
+import com.jedosa.junglim.infrastructure.annotation.Login;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.core.MethodParameter;
@@ -15,16 +17,16 @@ import org.springframework.web.method.support.HandlerMethodArgumentResolver;
 import org.springframework.web.method.support.ModelAndViewContainer;
 
 /**
- * 로그인이 필요한 요청
+ * 접속한 사용자가 관리자인지 아닌지 식별
  */
 @Component
-public class LoginHandlerMethodArgumentResolver implements HandlerMethodArgumentResolver {
+public class AdminHandlerMethodArgumentResolver implements HandlerMethodArgumentResolver {
 
-    private static final Logger log = LoggerFactory.getLogger(LoginHandlerMethodArgumentResolver.class);
+    private static final Logger log = LoggerFactory.getLogger(AdminHandlerMethodArgumentResolver.class);
 
     @Override
     public boolean supportsParameter(MethodParameter parameter) {
-        if (parameter.hasParameterAnnotation(Login.class)) {
+        if (parameter.hasParameterAnnotation(Admin.class)) {
             return true;
         }
         return false;
@@ -39,6 +41,11 @@ public class LoginHandlerMethodArgumentResolver implements HandlerMethodArgument
         // 로그인 하지 않은 사용자
         if (sessionAccountDto == null || sessionAccountDto.isGuest()) {
             throw new NoLoginException();
+        }
+
+        // 관리자가 아닌 사용자
+        if (!sessionAccountDto.isAdmin()) {
+            throw new NotAdminException();
         }
 
         return sessionAccountDto;
