@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="kr" xmlns:th="http://www.thymeleaf.org">
+<head th:include="fragments/common-layout :: head">
+    <meta charset="UTF-8">
+    <title id="page-title">표지샘플</title>
+</head>
+<body>
+<div class="container">
+    <header th:replace="fragments/common-layout :: normal-header"></header>
+    <div id="content" class="board-content">
+        <div id="content-header" class="mt-5 mb-5 d-flex justify-content-center">
+            <h1>표지샘플</h1>
+        </div>
+        <div id="content-body" class="mb-5" th:object="${article}">
+            <!-- data -->
+            <input type="hidden" id="board-name" name="board-name" value="cover-sample">
+            <input type="hidden" id="is-notice" name="is-notice" th:value="${article.getIsNotice()}">
+            <input type="hidden" id="reply-status" name="reply-status" th:value="${article.getReplyStatus()}">
+            <input type="hidden" id="password" name="password" th:value="${article.getPassword()}">
+            <input type="hidden" id="thumbnail" name="thumbnail" th:value="${article.getThumbnail()}">
+
+            <!-- summernote content -->
+            <div id="article-title" th:text="*{getTitle()}" class="border-bottom border-dark pb-3 mb-3"></div>
+            <input id="article-title-edit-form" th:value="*{getTitle()}" type="text" class="form-control d-none mb-3"
+                   placeholder="제목">
+            <div id="article-info" class="border-bottom border-dark pb-3 mb-3 d-flex justify-content-between">
+                <div>
+                    <span>글 고유번호:</span>
+                    <span id="article-id" th:text="*{getId()}"></span>
+                </div>
+                <div>
+                    <span>작성자:</span>
+                    <span th:text="*{getAccount().getName()}"></span>
+                </div>
+                <div>
+                    <span>작성일:</span>
+                    <span th:text="*{getCreatedDate()}"></span>
+                </div>
+            </div>
+            <div id="article-body" class="mb-5" th:utext="*{getContent()}"></div>
+            <!--  article-footer -->
+            <div id="article-footer" th:if="${session.loginUser.isAdmin()}">
+                <div id="article-controller" class="d-flex justify-content-end mt-3 mb-3">
+                    <div id="article-view-controller">
+                        <a href="/board/cover-sample" class="btn btn-success mr-1">목록</a>
+                        <a href="#" onclick="editArticleForm()" class="btn btn-primary mr-1">수정</a>
+                        <a href="#" onclick="deleteArticle()" class="btn btn-danger">삭제</a>
+                    </div>
+                    <div id="article-edit-controller" class="d-none">
+                        <a href="#" onclick="editArticle()" class="btn btn-primary mr-1">확인</a>
+                        <a href="#" onclick="showArticle()" class="btn btn-danger">취소</a>
+                    </div>
+                </div>
+            </div>
+            <!--  article-footer -->
+            <div th:unless="${session.loginUser.isAdmin()}" class="d-flex justify-content-end mt-3 mb-3">
+                <!--  article-controller -->
+                <a href="/board/cover-sample" class="btn btn-success mr-1">목록</a>
+            </div>
+        </div>
+    </div>
+</div>
+<div th:replace="fragments/common-layout :: body-footer"></div>
+<footer th:replace="fragments/common-layout :: normal-footer"></footer>
+<script>
+    $('#comment-editor').summernote({
+        height: 150,
+        callbacks: {
+            onImageUpload: function (files) {
+                // 사용자가 업로드할 이미지
+                let data = new FormData()
+                data.append("file", files[0]);
+
+                // 이미지를 서버에 업로드
+                $.ajax({
+                    type: 'POST',
+                    enctype: 'multipart/form-data',
+                    url: '/files/upload',
+                    data: data,
+                    processData: false,
+                    contentType: false,
+                    cache: false
+                }).done(function (data, textStatus, jqXHR) {
+                    // 정상적으로 업로드된 이미지를 에디터 본문에 추가
+                    $('#comment-editor').summernote('insertImage', '\\' + data.path, 'image');
+                });
+            }
+        }
+    });
+</script>
+</body>
+</html>
