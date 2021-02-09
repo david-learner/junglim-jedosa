@@ -11,6 +11,7 @@ import com.jedosa.junglim.article.repository.ArticleRepository;
 import com.jedosa.junglim.article.repository.ArticleSearchCondition;
 import com.jedosa.junglim.exception.NoAccountException;
 import com.jedosa.junglim.exception.NoArticleException;
+import com.jedosa.junglim.exception.NoLoginException;
 import com.jedosa.junglim.exception.NotOwnException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -36,15 +37,18 @@ public class ArticleService {
         this.accountRepository = accountRepository;
     }
 
-    public ArticlesDto getArticlesOfBlockWithPagination(Integer currentPage, ArticleSearchCondition condition) {
-
-        Pageable pageable = PageRequest.of(currentPage, Pagination.BLOCK_SIZE);
+    public ArticlesDto getArticlesOfBlockWithPagination(ArticleSearchCondition condition) {
+        Integer page = condition.getPage();
+        Pageable pageable = PageRequest.of(page, Pagination.BLOCK_SIZE);
+        if (condition.isCoverSample()) {
+            pageable = PageRequest.of(page, Pagination.GALLERY_BLOCK_SIZE);
+        }
         Page<Article> articlesPage = articleRepository.search(condition, pageable);
         List<Article> articles = articlesPage.getContent();
         Pagination pagination = new Pagination(articlesPage);
 
         List<ArticleDto> articleDtos = new ArrayList<>();
-        long topBoardArticleNumber = Pagination.calculateTopBoardArticleNumber(currentPage, articlesPage.getTotalElements());
+        long topBoardArticleNumber = Pagination.calculateTopBoardArticleNumber(page, articlesPage.getTotalElements());
         // 게시글 순서를 나타내는 번호를 만들어서
         // DB로부터 불러온 데이터 순서에 맞게 DTO에 넣는다
         for (int index = 1; index <= articles.size(); index++) {
@@ -65,9 +69,27 @@ public class ArticleService {
         return articleRepository.save(article);
     }
 
+    /**
+     * 사용자가 요청한 글 제공
+     */
     public ArticleDto getArticle(Long id, SessionAccountDto sessionAccountDto) {
         Article article = articleRepository.findById(id).orElseThrow(NoArticleException::new);
+        if (sessionAccountDto == null) {
+            return new ArticleDto(article);
+        }
         return new ArticleDto(article, sessionAccountDto.getId());
+    }
+
+    /**
+     * 사용자가 요청한 글이 사용자 소유인지 식별 후 글 제공
+     */
+    public ArticleDto getOwnArticle(Long id, SessionAccountDto sessionAccountDto) {
+        Article article = articleRepository.findById(id).orElseThrow(NoArticleException::new);
+        Account account = accountRepository.findById(sessionAccountDto.getId()).orElseThrow(NoLoginException::new);
+        if (!article.isOwn(account)) {
+            throw new NotOwnException();
+        }
+        return new ArticleDto(article, account);
     }
 
     @Transactional
