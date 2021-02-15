@@ -9,10 +9,7 @@ import com.jedosa.junglim.article.dto.ArticleDto;
 import com.jedosa.junglim.article.dto.ArticlesDto;
 import com.jedosa.junglim.article.repository.ArticleRepository;
 import com.jedosa.junglim.article.repository.ArticleSearchCondition;
-import com.jedosa.junglim.exception.NoAccountException;
-import com.jedosa.junglim.exception.NoArticleException;
-import com.jedosa.junglim.exception.NoLoginException;
-import com.jedosa.junglim.exception.NotOwnException;
+import com.jedosa.junglim.exception.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
@@ -23,6 +20,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @Transactional(readOnly = true)
@@ -62,8 +60,28 @@ public class ArticleService {
         return new ArticlesDto(articleDtos, pagination);
     }
 
+    public List<ArticleDto> getNotices(ArticleSearchCondition condition) {
+        List<Article> articles = articleRepository.search(condition);
+        return articles.stream().map(ArticleDto::new).collect(Collectors.toList());
+    }
+
+    /**
+     *  게시글 작성 
+     */
     @Transactional
     public Article writeArticle(ArticleDto articleDto, SessionAccountDto sessionAccountDto) {
+        // 공지사항 작성
+        if(articleDto.getIsNotice()) {
+            if (!sessionAccountDto.isAdmin()) {
+                throw new NotAdminException();
+            }
+            Long noticeCount = articleRepository.count(ArticleSearchCondition.ofNotice(articleDto.getBoardId()));
+            if (noticeCount >= ArticleSearchCondition.NOTICE_LIMIT) {
+                throw new OverNoticeCountException();
+            }
+        }
+
+        // 일반 글 작성
         Account account = accountRepository.findById(sessionAccountDto.getId()).orElseThrow(NoAccountException::new);
         Article article = articleDto.toArticle(account, articleDto.getBoardId());
         return articleRepository.save(article);
