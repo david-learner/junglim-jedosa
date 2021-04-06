@@ -29,7 +29,6 @@ public class Order {
     private Account orderer;
     private BigDecimal totalPrice;
     private BigDecimal allItemsTotalPrice;
-    private Boolean isOrdered = Boolean.FALSE;
     @OneToMany(mappedBy = "order", cascade = CascadeType.ALL)
     private List<OrderItem> orderItems = new ArrayList<>();
     @Embedded
@@ -37,6 +36,8 @@ public class Order {
     @OneToOne
     private Payment payment;
     private LocalDateTime createdDateTime = LocalDateTime.now();
+    @Enumerated(EnumType.STRING)
+    private OrderStatus status;
 
     public Order toUpdatedOrder(DeliveryInfo deliveryInfo, Payment payment) {
         return Order.builder()
@@ -44,7 +45,7 @@ public class Order {
                 .orderer(orderer)
                 .totalPrice(totalPrice)
                 .allItemsTotalPrice(allItemsTotalPrice)
-                .isOrdered(isOrdered)
+                .status(status)
                 .orderItems(orderItems)
                 .deliveryInfo(deliveryInfo)
                 .payment(payment)
@@ -56,7 +57,7 @@ public class Order {
 
         return Order.builder()
                 .orderer(orderer)
-                .isOrdered(Boolean.FALSE)
+                .status(OrderStatus.ORDER_WAITING)
                 .deliveryInfo(deliveryInfo)
                 .createdDateTime(LocalDateTime.now())
                 .build();
@@ -96,11 +97,11 @@ public class Order {
     }
 
     public void ordered() {
-        this.isOrdered = Boolean.TRUE;
+        this.status = OrderStatus.ORDER_COMPLETE;
     }
 
     public Boolean isOrdered() {
-        return isOrdered;
+        return status != OrderStatus.ORDER_WAITING;
     }
 
     public void removeOrderItemsFromCart() {
