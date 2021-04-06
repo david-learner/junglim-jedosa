@@ -8,8 +8,8 @@
 <div class="container">
     <header th:replace="fragments/common-layout :: normal-header"></header>
     <div id="content">
-        <input th:value="${onePageMenu.getId()}" type="hidden" id="onePageMenu-id" >
-        <div id="summernote" th:utext="${onePageMenu.getContent()}"></div>
+        <input th:value="${onePageMenu.getId()}" type="hidden" id="one-page-menu-id" >
+        <div id="article-body" th:utext="${onePageMenu.getContent()}"></div>
     </div>
     <div th:replace="fragments/common-layout-menu :: menu-form-controller"></div>
 </div>

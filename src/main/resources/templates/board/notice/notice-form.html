@@ -16,7 +16,8 @@
             <input type="hidden" id="board-name" name="board-name" value="notice">
             <input type="hidden" id="board-id" name="board-id" th:value="${boardId}">
             <input type="hidden" id="member-id" name="member-id" th:value="${session.loginUser.getId()}">
-
+            <!-- article options -->
+            <input type="hidden" id="is-notice" name="is-notice">
             <!-- summernote content -->
             <input type="text" id="title" class="form-control mb-3" placeholder="제목">
             <div id="article-body">

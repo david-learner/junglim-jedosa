@@ -23,7 +23,7 @@ public class GuestInterceptor extends HandlerInterceptorAdapter {
         // 게스트 식별 인터셉터
         SessionAccountDto sessionAccount = (SessionAccountDto) request.getSession().getAttribute(SessionAccount.KEY);
         if (sessionAccount == null) {
-            log.info("INTERCEPTOR:: This user is GUEST");
+            log.info("User is Guest.");
             request.getSession().setAttribute(SessionAccount.KEY, SessionAccountDto.GUEST);
         }
         return super.preHandle(request, response, handler);

@@ -29,6 +29,6 @@ public class SignUpDto {
 
     public Account toAccount () {
         Address embeddedAddress = new Address(zipcode, address, detailedAddress);
-        return new Account(email, password, name, phone, embeddedAddress, siteUsageAgreement, personalInfoAgreement);
+        return new Account(email, password, name, phone, embeddedAddress, siteUsageAgreement, personalInfoAgreement, Grade.NORMAL);
     }
 }

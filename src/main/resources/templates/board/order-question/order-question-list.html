@@ -22,8 +22,8 @@
                         <th scope="col" class="text-center col-1">답변여부</th>
                     </tr>
                 </thead>
-                <tbody th:each="notice : ${notices}">
-                    <tr class="bg-light d-flex">
+                <tbody>
+                    <tr class="bg-light d-flex" th:each="notice : ${notices}">
                         <td class="text-center col-1"><b>공지사항</b></td>
                         <td class="text-center col-6">
                             <a href="#" th:href="@{/board/order-question/{id} (id=*{notice.getId()})}" th:text="*{notice.getTitle()}"></a>
@@ -33,8 +33,8 @@
                         <td class="text-center col-1"><b>*</b></td>
                     </tr>
                 </tbody>
-                <tbody th:each="article : ${articles}">
-                    <tr class="d-flex">
+                <tbody>
+                    <tr class="d-flex" th:each="article : ${articles}">
                         <td class="text-center col-1" th:text="*{article.getBoardArticleId()}">글번호</td>
                         <td class="text-center col-6">
                             <a href="#" th:href="@{/board/order-question/{id} (id=*{article.getId()})}" th:text="*{article.getTitle()}"></a>
@@ -42,8 +42,8 @@
                         <td class="text-center col-2" th:text="*{article.getAccount().getName()}">작성자</td>
                         <td class="text-center col-2" th:text="*{article.getCreatedDate()}">작성일</td>
                         <td class="text-center col-1">
-                            <span th:if="*{article.getReplyStatus().name() == 'YET'}" th:text="*{article.getReplyStatus().getStatus()}" class="badge badge-outline badge-success">답변상태</span>
-                            <span th:if="*{article.getReplyStatus().name() == 'DONE'}" th:text="*{article.getReplyStatus().getStatus()}" class="badge badge-success">답변상태</span>
+                            <span th:if="*{article.getReplyStatus().name() == 'YET'}" th:text="*{article.getReplyStatus().getStatus()}" class="badge badge-outline badge-success">미답변</span>
+                            <span th:if="*{article.getReplyStatus().name() == 'DONE'}" th:text="*{article.getReplyStatus().getStatus()}" class="badge badge-success">답변완료</span>
                         </td>
                     </tr>
                 </tbody>

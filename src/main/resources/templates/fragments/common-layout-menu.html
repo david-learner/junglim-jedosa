@@ -1,10 +1,11 @@
 <!DOCTYPE html>
+<!-- 상단 메뉴 내 컨텐츠 수정을 위한 컨트롤러 페이지 -->
 <html lang="kr" xmlns:th="http://www.thymeleaf.org">
-<div th:fragment="menu-form-controller" th:if="${session.loginUser}">
-    <div th:if="${session.loginUser.getGrade().name() == 'ADMIN'}" class="d-flex justify-content-end">
+<div th:fragment="menu-form-controller">
+    <div th:if="${session.loginUser.isAdmin()}" class="d-flex justify-content-end">
         <button type="button" id="content-edit-btn" onclick="openMenuPageEditForm()" class="btn btn-primary">수정</button>
         <button type="button" id="content-save-btn" onclick="updateMenuPage()" class="btn btn-success d-none">저장</button>
-        <button type="button" id="content-cancel-btn" onclick="" class="btn btn-danger d-none">취소</button>
+        <button type="button" id="content-cancel-btn" onclick="returnMenuPage()" class="btn btn-danger d-none">취소</button>
     </div>
 </div>
 </html>

@@ -12,29 +12,24 @@
             <h1>공지사항</h1>
         </div>
         <div id="content-body">
-            <table class="table">
+            <table class="table table-hover">
                 <thead>
-                <tr>
-                    <th scope="col" class="text-center">번호</th>
-                    <th scope="col" class="text-center">제목</th>
-                    <th scope="col" class="text-center">작성자</th>
-                    <th scope="col" class="text-center">작성일</th>
-                    <th scope="col" class="text-center">답변여부</th>
-                </tr>
+                    <tr class="d-flex">
+                        <th scope="col" class="text-center col-2">번호</th>
+                        <th scope="col" class="text-center col-6">제목</th>
+                        <th scope="col" class="text-center col-2">작성자</th>
+                        <th scope="col" class="text-center col-2">작성일</th>
+                    </tr>
                 </thead>
-                <tbody th:each="article : ${articles}">
-                <tr>
-                    <th scope="row" class="text-center" th:text="*{article.getBoardArticleId()}">글번호</th>
-                    <td class="text-center">
-                        <a href="#" th:href="@{/board/notice/{id} (id=*{article.getId()})}" th:text="*{article.getTitle()}"></a>
-                    </td>
-                    <td class="text-center" th:text="*{article.getAccount().getName()}">작성자</td>
-                    <td class="text-center" th:text="*{article.getCreatedDate()}">작성일</td>
-                    <td class="text-center">
-                        <span th:if="*{article.getReplyStatus().name() == 'YET'}" th:text="*{article.getReplyStatus().getStatus()}" class="badge badge-outline badge-success">답변상태</span>
-                        <span th:if="*{article.getReplyStatus().name() == 'DONE'}" th:text="*{article.getReplyStatus().getStatus()}" class="badge badge-success">답변상태</span>
-                    </td>
-                </tr>
+                <tbody>
+                    <tr class="d-flex" th:each="article : ${articles}">
+                        <td class="text-center col-2" th:text="*{article.getBoardArticleId()}">글번호</td>
+                        <td class="text-center col-6">
+                            <a href="#" th:href="@{/board/notice/{id} (id=*{article.getId()})}" th:text="*{article.getTitle()}">제목</a>
+                        </td>
+                        <td class="text-center col-2" th:text="*{article.getAccount().getName()}">작성자</td>
+                        <td class="text-center col-2" th:text="*{article.getCreatedDate()}">작성일</td>
+                    </tr>
                 </tbody>
             </table>
             <div th:if="${session.loginUser.isAdmin()}" class="d-flex justify-content-end">

@@ -24,14 +24,42 @@ public class ArticleRepositoryImpl implements ArticleRepositoryCustom {
         QueryResults<Article> results = jpaQueryFactory
                 .selectFrom(article)
                 .where(article.deleted.eq(condition.getIsDeleted())
-                        .and(article.boardId.eq(condition.getBoardId())))
+                        .and(article.boardId.eq(condition.getBoardId()))
+                        .and(article.isNotice.eq(condition.getIsNotice())))
                 .offset(pageable.getOffset())
                 .limit(pageable.getPageSize())
                 .orderBy(article.id.desc())
                 .fetchResults();
 
         List<Article> content = results.getResults();
-        Long total = results.getTotal();
+        long total = results.getTotal();
         return new PageImpl<>(content, pageable, total);
+    }
+
+    @Override
+    public List<Article> search(ArticleSearchCondition condition) {
+        QueryResults<Article> results = jpaQueryFactory
+                .selectFrom(article)
+                .where(article.deleted.eq(condition.getIsDeleted())
+                        .and(article.boardId.eq(condition.getBoardId()))
+                        .and(article.isNotice.eq(condition.getIsNotice())))
+                .limit(condition.getLimit())
+                .orderBy(article.id.desc())
+                .fetchResults();
+
+        return results.getResults();
+    }
+
+    @Override
+    public Long count(ArticleSearchCondition condition) {
+        Long result = jpaQueryFactory
+                .selectFrom(article)
+                .where(article.deleted.eq(condition.getIsDeleted())
+                        .and(article.boardId.eq(condition.getBoardId()))
+                        .and(article.isNotice.eq(condition.getIsNotice())))
+                .limit(condition.getLimit())
+                .fetchCount();
+
+        return result;
     }
 }

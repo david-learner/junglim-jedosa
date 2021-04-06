@@ -12,16 +12,20 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http.authorizeRequests()
+                // dev
+                .mvcMatchers("/h2-console/**").permitAll()
                 // static resources
-                .mvcMatchers("/lib/**", "/css/**", "/js/**", "/fonts/**", "/h2-console/**", "/favicon.ico").permitAll()
+                .mvcMatchers("/lib/**", "/css/**", "/js/**", "/fonts/**", "/images/**", "/favicon.ico").permitAll()
+                // home views
+                .mvcMatchers("/", "/index", "/**").permitAll()
                 // views
-                .mvcMatchers("/", "sign-up", "index", "account/**").permitAll()
+                .mvcMatchers("/sign-up", "/login", "/account/**", "/admin/**", "/menu/**", "/files/**", "/uploaded-files/**", "/board/**").permitAll()
                 //.mvcMatchers(HttpMethod.GET, "/profile/*").permitAll() // GET 요청일 때만 허용
                 .anyRequest().authenticated()
 //                .and().csrf().ignoringAntMatchers("/h2-console/**")
                 .and().csrf().disable()
                 .headers().frameOptions().disable();
-        //
+
 //        http.csrf().ignoringAntMatchers("/h2-console/**");
 //        http.headers().frameOptions().disable();
     }

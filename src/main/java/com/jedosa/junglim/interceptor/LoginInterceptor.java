@@ -9,6 +9,7 @@ import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.util.Optional;
 
 public class LoginInterceptor extends HandlerInterceptorAdapter {
 
@@ -17,11 +18,15 @@ public class LoginInterceptor extends HandlerInterceptorAdapter {
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
 
-        SessionAccountDto sessionAccount = (SessionAccountDto) request.getSession().getAttribute(SessionAccount.KEY);
-        log.debug("Login User Account: {}", sessionAccount);
-        if (sessionAccount == null) {
-            throw new NoLoginException();
-        }
+        Optional<SessionAccountDto> sessionAccount =
+                Optional.ofNullable((SessionAccountDto) request.getSession().getAttribute(SessionAccount.KEY));
+        sessionAccount.ifPresent(account -> {
+            log.debug("Logged in User Account is {}", account.getGrade().name());
+            if (account.isGuest()) {
+                throw new NoLoginException();
+            }
+        });
+
         return super.preHandle(request, response, handler);
     }
 }

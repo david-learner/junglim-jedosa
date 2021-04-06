@@ -35,6 +35,10 @@ public class ArticleService {
         this.accountRepository = accountRepository;
     }
 
+    public List<Article> getArticles(ArticleSearchCondition condition) {
+        return articleRepository.search(condition);
+    }
+
     public ArticlesDto getArticlesOfBlockWithPagination(ArticleSearchCondition condition) {
         Integer page = condition.getPage();
         Pageable pageable = PageRequest.of(page, Pagination.BLOCK_SIZE);

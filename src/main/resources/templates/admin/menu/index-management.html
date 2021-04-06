@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="kr" xmlns:th="http://www.thymeleaf.org">
+<head th:include="fragments/common-layout :: head">
+    <meta charset="UTF-8">
+    <title id="page-title">관리자 - 메뉴관리 - 메인화면</title>
+</head>
+<body>
+<header th:replace="fragments/common-layout :: admin-header"></header>
+<div class="container-fluid">
+    <div class="row">
+        <nav th:replace="fragments/common-layout :: admin-sidebar"></nav>
+        <div id="content" class="col pt-5 pl-5">
+            <div id="content-header">
+                <h1>메뉴관리 - 메인화면</h1>
+            </div>
+            <div id="content-body">
+                <div class="mt-5">
+                    <div>
+                        <h3>상품 샘플 슬라이드 이미지</h3>
+                    </div>
+                    <div class="mt-3 pl-3">
+                        <div>
+                            <h5>상품 샘플 이미지 1</h5>
+                            <div class="form-group mt-3">
+                                <input type="file" class="form-control-file w-25" data-product-image-sequence="1">
+                                <button type="button" onclick="updateProductSampleImage(this)" class="btn btn-primary mr-1">저장</button>
+                                <button type="button" onclick="deleteProductSampleImage(this)" class="btn btn-danger mr-1">삭제</button>
+                                <div name="product-sample-image-preview">
+                                    <img th:if="${productSampleImages[0].getPath() != ''}" th:src="${productSampleImages[0].getPath()}" src="#" alt="슬라이드 이미지를 추가하세요">
+                                    <img th:unless="${productSampleImages[0].getPath() != ''}" src="#" alt="슬라이드 이미지를 추가하세요">
+                                </div>
+                            </div>
+                        </div>
+                        <div>
+                            <h5>상품 샘플 이미지 2</h5>
+                            <div class="form-group mt-3">
+                                <input type="file" class="form-control-file w-25" data-product-image-sequence="2">
+                                <button type="button" onclick="updateProductSampleImage(this)" class="btn btn-primary mr-1">저장</button>
+                                <button type="button" onclick="deleteProductSampleImage(this)" class="btn btn-danger mr-1">삭제</button>
+                                <div name="product-sample-image-preview">
+                                    <img th:if="${productSampleImages[1].getPath() != ''}" th:src="${productSampleImages[1].getPath()}" src="#" alt="슬라이드 이미지를 추가하세요">
+                                    <img th:unless="${productSampleImages[1].getPath() != ''}" src="#" alt="슬라이드 이미지를 추가하세요">
+                                </div>
+                            </div>
+                        </div>
+                        <div>
+                            <h5>상품 샘플 이미지 3</h5>
+                            <div class="form-group mt-3">
+                                <input type="file" class="form-control-file w-25" data-product-image-sequence="3">
+                                <button type="button" onclick="updateProductSampleImage(this)" class="btn btn-primary mr-1">저장</button>
+                                <button type="button" onclick="deleteProductSampleImage(this)" class="btn btn-danger mr-1">삭제</button>
+                                <div name="product-sample-image-preview">
+                                    <img th:if="${productSampleImages[2].getPath() != ''}" th:src="${productSampleImages[2].getPath()}" src="#" alt="슬라이드 이미지를 추가하세요">
+                                    <img th:unless="${productSampleImages[2].getPath() != ''}" src="#" alt="슬라이드 이미지를 추가하세요">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div th:replace="fragments/common-layout :: body-footer"></div>
+</body>
+</html>

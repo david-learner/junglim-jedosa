@@ -1,0 +1,19 @@
+/* bootstrap의 2% 부족한 부분을 보충하기 위한 CSS */
+/* border */
+.border-1 {
+    border-width:1px !important;
+}
+.border-2 {
+    border-width:2px !important;
+}
+.border-3 {
+    border-width:3px !important;
+}
+
+.border-black {
+    border-color: #000000 !important;
+}
+
+.border-gray {
+    border-top: 1px solid #dadada !important;
+}

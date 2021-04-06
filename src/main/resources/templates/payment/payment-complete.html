@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="kr" xmlns:th="http://www.thymeleaf.org">
+<head th:include="fragments/common-layout :: head">
+    <meta charset="UTF-8">
+    <title id="page-title">결제완료</title>
+</head>
+<body>
+<div class="container">
+    <header th:replace="fragments/common-layout :: normal-header"></header>
+    <div id="content">
+        <div id="content-header" class="mt-5 mb-5 d-flex justify-content-center">
+            <h1>결제완료</h1>
+        </div>
+        <div id="content-body" class="form-group">
+            결제 완료
+            // todo 상품 정보, 결제 정보, 기타 필요한 안내 사항
+        </div>
+    </div>
+</div>
+<div th:replace="fragments/common-layout :: body-footer"></div>
+<footer th:replace="fragments/common-layout :: normal-footer"></footer>
+</body>
+</html>

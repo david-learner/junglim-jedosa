@@ -1,0 +1,10 @@
+/* sidebar */
+#admin-sidebar ul ul{
+    padding-left: 2rem;
+}
+
+/* menu - main */
+div[name='product-sample-image-preview'] img {
+    min-height: 150px;
+    max-height: 150px;
+}

@@ -16,6 +16,7 @@ import java.util.List;
 public class Pagination {
 
     public static final Integer BLOCK_SIZE = 10;
+    public static final Integer GALLERY_BLOCK_SIZE = 12;
     private Integer page;
     private Integer totalPages;
     private Integer blockStart;

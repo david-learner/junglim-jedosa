@@ -2,9 +2,146 @@
 
 body, table, div, p {font-family: 'Noto Sans KR', sans-serif;}
 
+/* header */
+.header-call .content {
+    background: url("/images/common/telephone.png") no-repeat 10px center;
+    background-size: 40px;
+    padding-left: 60px;
+}
+
+/* body footer */
+#body-footer-info {
+    background-color: #f4f4f5;
+    border-top: 1px solid #e0e0e1;
+}
+
+.body-footer-info-element {
+    padding-left: 36px;
+    border-right: 1px solid #e0e0e1;
+}
+
+.body-footer-info-element:first-child {
+    padding-left: 0;
+}
+
+.body-footer-info-element:last-child {
+    border-right: none;
+}
+
+.body-footer-info-element .info-element-content {
+    height: 60px;
+}
+
+.bank {
+    width: 280px;
+    height: 60px;
+    border: 1px solid #e0e0e1;
+    background: url("/images/common/kb.png") no-repeat center;
+    background-size: 200px;
+}
+
+.webhard {
+    width: 280px;
+    height: 60px;
+    border: 1px solid #e0e0e1;
+    background: url("/images/common/webhard.png") no-repeat center;
+    background-size: 200px;
+}
+
+.info-element-content-detail p {
+    padding-left: 70px;
+}
+
+.info-element-content-detail p span {
+    position: absolute;
+    left: 36px;
+}
+
 /* 회원가입 */
 .agreement-area {
     height: 120px;
     overflow-x: hidden;
     overflow-y: scroll;
+}
+
+/* board */
+#article-body {
+    /* todo 썸네일 이미지 fixed ratio로 */
+    min-height: 400px;
+}
+
+.article-thumbnail-preview {
+    max-height: 353px;
+}
+
+/* Board - cover sample */
+div[name="cover-sample-card"] {
+    overflow: hidden;
+}
+
+div[name="cover-sample-card"] .card-img-top {
+    height: 300px;
+}
+
+/* item */
+#item-image-viewer img[data-name="item-image"] {
+    min-width: 500px;
+    min-height: 400px;
+    max-width: 500px;
+    max-height: 400px;
+    object-fit: cover;
+}
+
+#item-image-list img[data-name="item-image"] {
+    max-width: 120px;
+    max-height: 120px;
+    object-fit: cover;
+}
+
+/* bootstrap custom */
+.badge-outline {
+    color: black;
+    border: 1px solid #999;
+    background-color: transparent;
+}
+
+.badge-outline.badge-success {
+    color: #000;
+    border-color: #28a745;
+}
+
+/* Item */
+.item-summary {
+    border-color: #dadada !important;
+    padding: 70px 0 70px 0;
+}
+
+.item-summary > p {
+    font-size: 18px;
+}
+
+.item-info-chart {
+    padding: 100px 0 100px 0;
+}
+
+.item-info-chart td {
+    text-align: center;
+    padding: 15px 0 15px 15px;
+}
+
+.item-info-chart td .binding-info {
+    text-align: left;
+}
+
+.item-info-chart tr:first-child {
+    border-top: 3px solid #000000;
+}
+
+.item-info-chart tr {
+    border-bottom: 1px solid #dadada;
+}
+
+.item-info-chart th {
+    text-align: center;
+    background-color: #f4f4f5;
 }

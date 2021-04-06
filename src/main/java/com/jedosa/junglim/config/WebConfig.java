@@ -26,13 +26,15 @@ public class WebConfig implements WebMvcConfigurer {
         registry.addInterceptor(new LoginInterceptor())
                 // 관리자 페이지
                 .addPathPatterns("/admin/**")
-                // 주문문의 게시판
-                .addPathPatterns("/board/order-question/articles/**");
+                // 모든 게시판 등록 폼
+                .addPathPatterns("/board/*/form");
 
         // 관리자 인증 필요한 페이지
         registry.addInterceptor(new AdminAuthorizationInterceptor())
                 .addPathPatterns("/admin/**")
-                .addPathPatterns("/menu/*/edit/**");
+                .addPathPatterns("/menu/*/edit/**")
+                // 게시판
+                .addPathPatterns("/board/notice/form");
     }
 
     @Override

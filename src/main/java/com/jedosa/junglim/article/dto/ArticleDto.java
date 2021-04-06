@@ -85,13 +85,13 @@ public class ArticleDto {
     public Article toArticle(Account account, Long boardId) {
 
         if (id != null) {
-            return new Article(this.id, LocalDateTime.now(), Boolean.FALSE, boardId, account,
-                    Boolean.FALSE, this.title, content, null, ReplyStatus.YET, null,
+            return new Article(id, LocalDateTime.now(), Boolean.FALSE, boardId, account,
+                    isNotice, title, null, content, thumbnail, ReplyStatus.YET, null,
                     Boolean.FALSE, 0L);
         }
 
         return new Article(LocalDateTime.now(), Boolean.FALSE, boardId, account,
-                Boolean.FALSE, this.title, content, null, ReplyStatus.YET, null,
+                isNotice, title, content, thumbnail, ReplyStatus.YET, null,
                 Boolean.FALSE, 0L);
     }
 

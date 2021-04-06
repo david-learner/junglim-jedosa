@@ -34,10 +34,8 @@ function signUpSubmit() {
         data: signUpFormData,
         contentType: "application/x-www-form-urlencoded"
     }).done(function (data, textStatus, jqXHR) {
-        console.log(data)
-        console.log(textStatus)
-        console.log(jqXHR)
         alert("회원가입이 성공적으로 완료되었습니다")
+        window.location = jqXHR.getResponseHeader("location");
     }).fail(function (jqXHR, textStatus, errorThrown) {
         alert(jqXHR.responseText);
     });

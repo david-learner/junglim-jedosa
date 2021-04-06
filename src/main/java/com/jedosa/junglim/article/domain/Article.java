@@ -29,6 +29,7 @@ public class Article {
     @Column(columnDefinition = "boolean default false")
     private Boolean isNotice;
     private String title;
+    private String category;
     @Lob
     @Column(columnDefinition = "MEDIUMTEXT")
     private String content;
@@ -42,7 +43,11 @@ public class Article {
     @Column(columnDefinition = "bigint default 1")
     private Long viewCount;
 
-    public Article(Long id, LocalDateTime createdDateTime, Boolean deleted, Long boardId, Account account, Boolean isNotice, String title, String content, String thumbnail, ReplyStatus replyStatus, String password, Boolean isLock, Long viewCount) {
+    public Article(Long id, LocalDateTime createdDateTime, Boolean deleted,
+                   Long boardId, Account account, Boolean isNotice,
+                   String title, String category, String content,
+                   String thumbnail, ReplyStatus replyStatus, String password,
+                   Boolean isLock, Long viewCount) {
         this.id = id;
         this.createdDateTime = createdDateTime;
         this.deleted = deleted;
@@ -50,6 +55,7 @@ public class Article {
         this.account = account;
         this.isNotice = isNotice;
         this.title = title;
+        this.category = category;
         this.content = content;
         this.thumbnail = thumbnail;
         this.replyStatus = replyStatus;
@@ -58,7 +64,10 @@ public class Article {
         this.viewCount = viewCount;
     }
 
-    public Article(LocalDateTime createdDateTime, Boolean deleted, Long boardId, Account account, Boolean isNotice, String title, String content, String thumbnail, ReplyStatus replyStatus, String password, Boolean isLock, Long viewCount) {
+    public Article(LocalDateTime createdDateTime, Boolean deleted, Long boardId,
+                   Account account, Boolean isNotice, String title,
+                   String content, String thumbnail, ReplyStatus replyStatus,
+                   String password, Boolean isLock, Long viewCount) {
         this.createdDateTime = createdDateTime;
         this.deleted = deleted;
         this.boardId = boardId;
@@ -74,7 +83,7 @@ public class Article {
     }
 
     public static Article ofDefault(Long boardId, Account account) {
-        return new Article(null, LocalDateTime.now(), false, boardId, account, false, "기본 글 제목", "<h1>기본 글 본문</h1>", null, ReplyStatus.YET, null, false, 1L);
+        return new Article(null, LocalDateTime.now(), false, boardId, account, false, "기본 글 제목", null, "<h1>기본 글 본문</h1>", null, ReplyStatus.YET, null, false, 1L);
     }
 
     public Article updateFromArticleDto (ArticleDto articleDto, Account account) {

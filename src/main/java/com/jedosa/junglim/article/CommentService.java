@@ -5,28 +5,18 @@ import com.jedosa.junglim.account.domain.Account;
 import com.jedosa.junglim.account.domain.SessionAccountDto;
 import com.jedosa.junglim.article.domain.Article;
 import com.jedosa.junglim.article.domain.Comment;
-import com.jedosa.junglim.article.domain.Pagination;
-import com.jedosa.junglim.article.dto.ArticleDto;
-import com.jedosa.junglim.article.dto.ArticlesDto;
 import com.jedosa.junglim.article.dto.CommentDto;
 import com.jedosa.junglim.article.repository.ArticleRepository;
-import com.jedosa.junglim.article.repository.ArticleSearchCondition;
 import com.jedosa.junglim.article.repository.CommentRepository;
 import com.jedosa.junglim.exception.NoAccountException;
 import com.jedosa.junglim.exception.NoArticleException;
 import com.jedosa.junglim.exception.NoCommentException;
-import com.jedosa.junglim.exception.NotOwnException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service

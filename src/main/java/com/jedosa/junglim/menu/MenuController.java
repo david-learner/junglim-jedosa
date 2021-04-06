@@ -1,8 +1,9 @@
 package com.jedosa.junglim.menu;
 
+import com.jedosa.junglim.article.repository.ArticleRepository;
 import com.jedosa.junglim.exception.NoOnePageMenuException;
-import com.jedosa.junglim.menu.domain.OnePageMenuDto;
 import com.jedosa.junglim.menu.domain.OnePageMenu;
+import com.jedosa.junglim.menu.domain.OnePageMenuDto;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
@@ -17,9 +18,11 @@ public class MenuController {
     private static final Logger log = LoggerFactory.getLogger(MenuController.class);
 
     private final MenuRepository menuRepository;
+    private final ArticleRepository articleRepository;
 
-    public MenuController(MenuRepository menuRepository) {
+    public MenuController(MenuRepository menuRepository, ArticleRepository articleRepository) {
         this.menuRepository = menuRepository;
+        this.articleRepository = articleRepository;
     }
 
     // 주문방법
