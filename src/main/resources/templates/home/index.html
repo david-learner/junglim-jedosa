@@ -20,10 +20,10 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <tr class="d-flex">
-                            <td class="text-center col-6">서울시 동작구 동작대로</td>
-                            <td class="text-center col-3">결제완료</td>
-                            <td class="text-center col-3">2021-02-15</td>
+                        <tr class="d-flex" th:each="order : ${orders.getOrders()}">
+                            <td class="text-center col-6" th:text="*{order.getAddress()}">서울시 동작구 동작대로</td>
+                            <td class="text-center col-3" th:text="*{order.getStatus()}">결제완료</td>
+                            <td class="text-center col-3" th:text="*{order.getDate()}">2021-02-15</td>
                         </tr>
                     </tbody>
                 </table>

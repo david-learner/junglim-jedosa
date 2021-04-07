@@ -7,14 +7,8 @@ import com.jedosa.junglim.order.domain.DeliveryInfo;
 import com.jedosa.junglim.order.domain.DeliveryType;
 import com.jedosa.junglim.order.domain.Order;
 import com.jedosa.junglim.order.domain.OrderItem;
-import com.jedosa.junglim.order.dto.OrderDto;
-import com.jedosa.junglim.order.dto.OrderItemDto;
-import com.jedosa.junglim.order.dto.OrderItemIdsDto;
-import com.jedosa.junglim.order.dto.ResponseOrderDto;
-import com.jedosa.junglim.order.repository.OrderItemRepository;
-import com.jedosa.junglim.order.repository.OrderItemRepositoryCustom;
-import com.jedosa.junglim.order.repository.OrderItemSearchCondition;
-import com.jedosa.junglim.order.repository.OrderRepository;
+import com.jedosa.junglim.order.dto.*;
+import com.jedosa.junglim.order.repository.*;
 import com.jedosa.junglim.payment.domain.Payment;
 import com.jedosa.junglim.payment.repository.PaymentRepository;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -30,20 +24,16 @@ public class OrderService {
 
     private final OrderItemRepository orderItemRepository;
     private final OrderItemRepositoryCustom orderItemRepositoryCustom;
+    private final OrderRepositoryCustom orderRepositoryCustom;
     private final OrderRepository orderRepository;
     private final AccountRepository accountRepository;
     private final PaymentRepository paymentRepository;
     private final JdbcTemplate jdbcTemplate;
 
-    public OrderService(
-            OrderItemRepository orderItemRepository,
-            OrderItemRepositoryCustom orderItemRepositoryCustom,
-            OrderRepository orderRepository,
-            AccountRepository accountRepository,
-            PaymentRepository paymentRepository,
-            JdbcTemplate jdbcTemplate) {
+    public OrderService(OrderItemRepository orderItemRepository, OrderItemRepositoryCustom orderItemRepositoryCustom, OrderRepositoryCustom orderRepositoryCustom, OrderRepository orderRepository, AccountRepository accountRepository, PaymentRepository paymentRepository, JdbcTemplate jdbcTemplate) {
         this.orderItemRepository = orderItemRepository;
         this.orderItemRepositoryCustom = orderItemRepositoryCustom;
+        this.orderRepositoryCustom = orderRepositoryCustom;
         this.orderRepository = orderRepository;
         this.accountRepository = accountRepository;
         this.paymentRepository = paymentRepository;
@@ -116,5 +106,11 @@ public class OrderService {
     public Boolean isOrdered(Long id) {
         Order order = orderRepository.findById(id).orElseThrow(NoSuchElementException::new);
         return order.isOrdered();
+    }
+
+    public ResponseRecentOrders getRecentOrders() {
+        List<RecentOrder> orders = orderRepositoryCustom
+                .findByLimit(5).stream().map(RecentOrder::new).collect(Collectors.toList());
+        return new ResponseRecentOrders(orders);
     }
 }
