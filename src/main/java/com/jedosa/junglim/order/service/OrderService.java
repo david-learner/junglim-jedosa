@@ -2,6 +2,10 @@ package com.jedosa.junglim.order.service;
 
 import com.jedosa.junglim.account.AccountRepository;
 import com.jedosa.junglim.account.domain.Account;
+import com.jedosa.junglim.article.domain.Article;
+import com.jedosa.junglim.article.domain.Pagination;
+import com.jedosa.junglim.article.dto.ArticleDto;
+import com.jedosa.junglim.article.dto.ArticlesDto;
 import com.jedosa.junglim.exception.NoAccountException;
 import com.jedosa.junglim.order.domain.DeliveryInfo;
 import com.jedosa.junglim.order.domain.DeliveryType;
@@ -11,10 +15,15 @@ import com.jedosa.junglim.order.dto.*;
 import com.jedosa.junglim.order.repository.*;
 import com.jedosa.junglim.payment.domain.Payment;
 import com.jedosa.junglim.payment.repository.PaymentRepository;
+import org.aspectj.weaver.ast.Or;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.stream.Collectors;
@@ -112,5 +121,26 @@ public class OrderService {
         List<RecentOrder> orders = orderRepositoryCustom
                 .findByLimit(5).stream().map(RecentOrder::new).collect(Collectors.toList());
         return new ResponseRecentOrders(orders);
+    }
+
+    // page랑 order랑 같이 가져와야 한다. 담을 객체 만들기
+    public OrdersDto getOrdersWithPagination(OrderSearchCondition condition, Integer blockSize) {
+        Integer page = condition.getPage();
+        Pageable pageable = PageRequest.of(page, blockSize);
+        Page<Order> ordersPage = orderRepositoryCustom.search(condition, pageable);
+        List<Order> orders = ordersPage.getContent();
+        Pagination pagination = new Pagination(ordersPage);
+
+        List<OrderDto> orderDtos = new ArrayList<>();
+        long topBoardArticleNumber = Pagination.calculateTopBoardArticleNumber(page, ordersPage.getTotalElements());
+        for (int index = 1; index <= orders.size(); index++) {
+            Order order = orders.get(index - 1);
+            OrderDto orderDto = new OrderDto(order);
+            orderDtos.add(orderDto);
+            orderDto.setBoardItemSequence(topBoardArticleNumber);
+            topBoardArticleNumber--;
+        }
+
+        return new OrdersDto(orderDtos, pagination);
     }
 }
