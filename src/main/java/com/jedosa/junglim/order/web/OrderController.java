@@ -68,8 +68,7 @@ public class OrderController {
         // todo 결제시 주문의 상태가 주문됨으로 변경되는지
 
         // 주문서 응답 DTO 조립
-        ResponseOrderDto responseOrderDto = orderService.getOrder(id);
-        model.addAttribute("orderDto", responseOrderDto);
+        model.addAttribute("orderDto", orderService.getOrderForm(id));
         return "/order/order";
     }
 
