@@ -12,6 +12,7 @@ import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Entity
 @Getter
@@ -53,12 +54,12 @@ public class Order {
                 .build();
     }
 
-    public static Order of(Account orderer, DeliveryInfo deliveryInfo) {
+    public static Order of(Account orderer) {
 
         return Order.builder()
                 .orderer(orderer)
                 .status(OrderStatus.ORDER_WAITING)
-                .deliveryInfo(deliveryInfo)
+                .deliveryInfo(new DeliveryInfo())
                 .createdDateTime(LocalDateTime.now())
                 .build();
     }
@@ -90,7 +91,7 @@ public class Order {
 
     private BigDecimal calculateTotalPrice() {
         // 택배일 때 배송비 포함 총 가격
-        if (deliveryInfo.getDeliveryType().equals(DeliveryType.PARCEL)) {
+        if (deliveryInfo.getDeliveryType() == DeliveryType.PARCEL) {
             return calculateSumOfAllItemPrices().add(deliveryInfo.getDeliveryFee());
         }
         return calculateSumOfAllItemPrices();

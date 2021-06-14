@@ -69,9 +69,13 @@ public class OrderController {
 
         // 주문서 응답 DTO 조립
         model.addAttribute("orderDto", orderService.getOrderForm(id));
+        model.addAttribute("deliveryFee", orderService.getDeliveryFee().toBigInteger().toString());
         return "/order/order";
     }
 
+    /**
+     * 주문서를 생성하고 주문서 작성 페이지를 보여준다
+     */
     @PostMapping("/orders")
     public ResponseEntity<Void> generateOrder(@RequestBody OrderItemIdsDto orderItemIds, @Login SessionAccountDto sessionAccountDto) {
         // generate Order With OrderItemIds and OrdererId

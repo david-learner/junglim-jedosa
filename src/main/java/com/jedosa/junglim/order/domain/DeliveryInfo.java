@@ -22,11 +22,7 @@ public class DeliveryInfo {
     private String receiverPhone;
     private Address receiverAddress;
     @Enumerated(EnumType.STRING)
-    private DeliveryType deliveryType = DeliveryType.PARCEL;
-    private BigDecimal deliveryFee = BigDecimal.ZERO;
+    private DeliveryType deliveryType;
+    private BigDecimal deliveryFee;
     private String messageToDeliver;
-
-    public DeliveryInfo(BigDecimal deliveryFee) {
-        this.deliveryFee = deliveryFee;
-    }
 }

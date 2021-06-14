@@ -4,7 +4,6 @@ import com.jedosa.junglim.order.domain.Order;
 import lombok.Getter;
 import lombok.Setter;
 
-import java.math.BigDecimal;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -24,8 +23,6 @@ public class ResponseOrderFormDto {
     private String ordererZipcode;
     private String ordererAddress;
     private String ordererDetailedAddress;
-    // Delivery
-    private String deliveryFee;
 
     public ResponseOrderFormDto(Order order) {
         this.orderId = order.getId();
@@ -39,6 +36,5 @@ public class ResponseOrderFormDto {
         this.ordererZipcode = order.getOrderer().getAddress().getZipcode();
         this.ordererAddress = order.getOrderer().getAddress().getAddress();
         this.ordererDetailedAddress = order.getOrderer().getAddress().getDetailedAddress();
-        this.deliveryFee = order.getDeliveryInfo().getDeliveryFee().toBigInteger().toString();
     }
 }

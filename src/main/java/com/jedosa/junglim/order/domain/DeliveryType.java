@@ -7,9 +7,9 @@ public enum DeliveryType {
     PARCEL("택배"),
     VISIT("방문수령");
 
-    private String name;
+    private String labelForKorean;
 
-    DeliveryType(String name) {
-        this.name = name;
+    DeliveryType(String labelForKorean) {
+        this.labelForKorean = labelForKorean;
     }
 }

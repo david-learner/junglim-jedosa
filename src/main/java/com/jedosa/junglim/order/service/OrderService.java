@@ -2,10 +2,7 @@ package com.jedosa.junglim.order.service;
 
 import com.jedosa.junglim.account.AccountRepository;
 import com.jedosa.junglim.account.domain.Account;
-import com.jedosa.junglim.article.domain.Article;
 import com.jedosa.junglim.article.domain.Pagination;
-import com.jedosa.junglim.article.dto.ArticleDto;
-import com.jedosa.junglim.article.dto.ArticlesDto;
 import com.jedosa.junglim.exception.NoAccountException;
 import com.jedosa.junglim.order.domain.DeliveryInfo;
 import com.jedosa.junglim.order.domain.DeliveryType;
@@ -15,7 +12,6 @@ import com.jedosa.junglim.order.dto.*;
 import com.jedosa.junglim.order.repository.*;
 import com.jedosa.junglim.payment.domain.Payment;
 import com.jedosa.junglim.payment.repository.PaymentRepository;
-import org.aspectj.weaver.ast.Or;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -73,21 +69,24 @@ public class OrderService {
         orderItemRepository.saveAll(orderItems);
     }
 
+    public BigDecimal getDeliveryFee() {
+        return jdbcTemplate.queryForObject("SELECT TOP 1 FEE FROM DELIVERY_PROPERTY", BigDecimal.class);
+    }
+
     public Order generateOrder(OrderItemIdsDto orderItemIds, Long ordererId) {
-        // 배송비 가져오기
-        BigDecimal deliveryFee = jdbcTemplate.queryForObject("SELECT TOP 1 FEE FROM DELIVERY_PROPERTY", BigDecimal.class);
         // 주문자 정보 가져오기
         Account orderer = accountRepository.findById(ordererId).orElseThrow(NoAccountException::new);
         //  Order에 orderer, orderItems 정보 추가
-        DeliveryInfo deliveryInfo = DeliveryInfo.builder().deliveryType(DeliveryType.PARCEL).deliveryFee(deliveryFee).build();
-        Order order = Order.of(orderer, deliveryInfo);
+        Order order = Order.of(orderer);
         // todo 주문서 정보 업데이트 되는지 확인
         // 여기서 save해야 orderId가 생성되어 orderItems에 orderId를 전달할 수 있다
-        Order savedOrder = orderRepository.save(order);
+//        Order savedOrder = orderRepository.save(order);
         List<OrderItem> orderItems = orderItemRepository.findAllById(orderItemIds.getOrderItemIds());
-        savedOrder.addOrderItems(orderItems);
 
-        return orderRepository.save(savedOrder);
+        order.addOrderItems(orderItems);
+        return orderRepository.save(order);
+//        savedOrder.addOrderItems(orderItems);
+//        return orderRepository.save(savedOrder);
     }
 
     public Order updateOrder(OrderDto orderDto, Long orderId) {
@@ -97,13 +96,6 @@ public class OrderService {
         order(order);
         // 배송 및 결제 정보가 업데이트된 주문서 저장
         return orderRepository.save(order.toUpdatedOrder(orderDto.toDeliveryInfo(), savedPayment));
-    }
-
-    public ResponseOrderDto getOrder(Long id) {
-        Order order = orderRepository.findById(id).orElseThrow(NoSuchElementException::new);
-        return new ResponseOrderDto(order);
-        //List<OrderItem> orderItems = orderItemRepositoryCustom.search(OrderItemSearchCondition.of(orderId));
-        //return orderItems.stream().map(OrderItemDto::new).collect(Collectors.toList());
     }
 
     // 주문 상태를 주문됨으로 변경
@@ -131,16 +123,26 @@ public class OrderService {
         List<Order> orders = ordersPage.getContent();
         Pagination pagination = new Pagination(ordersPage);
 
-        List<OrderDto> orderDtos = new ArrayList<>();
+        List<ResponseAdminOrderListItemDto> orderDtos = new ArrayList<>();
         long topBoardArticleNumber = Pagination.calculateTopBoardArticleNumber(page, ordersPage.getTotalElements());
         for (int index = 1; index <= orders.size(); index++) {
             Order order = orders.get(index - 1);
-            OrderDto orderDto = new OrderDto(order);
+            ResponseAdminOrderListItemDto orderDto = new ResponseAdminOrderListItemDto(order);
             orderDtos.add(orderDto);
             orderDto.setBoardItemSequence(topBoardArticleNumber);
             topBoardArticleNumber--;
         }
 
         return new OrdersDto(orderDtos, pagination);
+    }
+
+    public ResponseOrderDetailDto getOrderDetail(Long orderId) {
+        Order order = orderRepository.getOne(orderId);
+        return new ResponseOrderDetailDto(order);
+    }
+
+    public ResponseOrderFormDto getOrderForm(Long orderId) {
+        Order order = orderRepository.getOne(orderId);
+        return new ResponseOrderFormDto(order);
     }
 }
