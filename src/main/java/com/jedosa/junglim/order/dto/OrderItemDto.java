@@ -117,6 +117,7 @@ public class OrderItemDto {
     }
 
     public String getItemOptionsAsHtml() {
+        // 인쇄 및 제본
         if (itemId == 1L) {
             List<String> itemOptions = new ArrayList<>();
             itemOptions.add("사이즈: " + paperSize);
@@ -147,6 +148,6 @@ public class OrderItemDto {
 
             return String.join("<br>", itemOptions);
         }
-        return null;
+        return "상품 옵션이 지정되지 않았습니다. 관리자에게 문의하세요.";
     }
 }

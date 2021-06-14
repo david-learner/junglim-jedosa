@@ -18,7 +18,7 @@ public class RecentOrder {
     public RecentOrder(Order order) {
         this.name = order.getOrderer().getName();
         this.address = AddressBlidner.blindAsStar(order.getOrderer().getAddress().getAddress());
-        this.status = order.getStatus().getName();
+        this.status = order.getStatus().toLabelForKorean();
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
         this.date = order.getCreatedDateTime().format(formatter);
     }
