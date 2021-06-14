@@ -14,34 +14,32 @@
                 <h1>주문관리</h1>
             </div>
             <div id="content-body">
-                <table class="table">
-                    <thead>
-                        <tr class="d-flex">
-                            <th scope="col" class="text-center col-2">주문번호</th>
-                            <th scope="col" class="text-center col-1">이름</th>
-                            <th scope="col" class="text-center col-5">주문내용</th>
-                            <th scope="col" class="text-center col-1">비용</th>
-                            <th scope="col" class="text-center col-1">배송여부</th>
-                            <th scope="col" class="text-center col-2">주문/결제상태</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr class="d-flex" th:each="order : ${ordersDto.getOrderDtos()}">
-                            <td class="text-center col-2" th:text="*{order.getOrderId()}"></td>
-                            <td class="text-center col-1" th:text="*{order.getOrdererName()}"></td>
-                            <!-- todo 구분, 주문내용 합치기 -->
-                            <td class="text-center col-5">
-                                <div th:each="orderItem : ${order.getOrderItemDtos()}" class="mt-2 mb-4 bg-light">
-                                    <div><b th:text="'<<'+*{orderItem.getItemName()}+'>>'"></b></div>
-                                    <div th:utext="*{orderItem.getItemOptionsAsHtml()}"></div>
-                                </div>
-                            </td>
-                            <td class="text-center col-1" th:text="*{order.getAmount().toBigInteger()}"></td>
-                            <td class="text-center col-1" th:text="*{order.getDeliveryType().getName()}"></td>
-                            <td class="text-center col-2" th:text="*{order.getStatus().getName()}"></td>
-                        </tr>
-                    </tbody>
-                </table>
+                <div name="order-list">
+                    <div class="order-list-header container">
+                        <div class="row">
+                            <div name="header" class="text-center col">주문일시</div>
+                            <div name="header" class="text-center col-2">주문번호</div>
+                            <div name="header" class="text-center col-1">이름</div>
+                            <div name="header" class="text-center col-2">상품분류</div>
+                            <div name="header" class="text-center col">비용</div>
+                            <div name="header" class="text-center col">배송여부</div>
+                            <div name="header" class="text-center col">주문/결제상태</div>
+                        </div>
+                    </div>
+                    <div class="order-list-body">
+                        <a th:href="@{/admin/orders/{id} (id=*{orderDto.getOrderId()})}" th:each="orderDto : ${ordersDto.getOrderDtos()}">
+                            <div class="row">
+                                <div class="text-center col" th:text="*{orderDto.getOrderCreatedDate()}"></div>
+                                <div class="text-center col-2" th:text="*{orderDto.getOrderId()}"></div>
+                                <div class="text-center col-1" th:text="*{orderDto.getOrdererName()}"></div>
+                                <div class="text-center col-2" th:text="*{orderDto.getItemName()}"></div>
+                                <div class="text-center col" th:text="*{orderDto.getTotalPrice()}"></div>
+                                <div class="text-center col" th:text="*{orderDto.getDeliveryType()}"></div>
+                                <div class="text-center col" th:text="*{orderDto.getStatus()}"></div>
+                            </div>
+                        </a>
+                    </div>
+                </div>
                 <nav class="mt-5 mb-5">
                     <ul class="pagination justify-content-center" th:object="${pagination}">
                         <li th:if="*{getPage() == 0}" class="page-item disabled">

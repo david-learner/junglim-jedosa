@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="kr" xmlns:th="http://www.thymeleaf.org">
+<head th:include="fragments/common-layout :: head">
+    <meta charset="UTF-8">
+    <title id="page-title">관리자 - 주문 상세보기</title>
+</head>
+<body>
+<header th:replace="fragments/common-layout :: admin-header"></header>
+<div class="container-fluid">
+    <div class="row">
+        <nav th:replace="fragments/common-layout :: admin-sidebar"></nav>
+        <div id="content" class="col pt-5 pl-5">
+            <div id="content-header">
+                <h1>주문 상세정보</h1>
+            </div>
+            <div id="content-body">
+                <div class="d-flex border border-3 border-gray p-3 mt-3 mb-5">
+                    <div class="d-flex mr-4">
+                        <div class="mr-2"><b>주문일자</b></div>
+                        <div th:text="${order.getCreatedDateTime()}"></div>
+                    </div>
+                    <div class="d-flex">
+                        <div class="mr-2"><b>주문번호</b></div>
+                        <div th:text="${order.getOrderUid()}"></div>
+                    </div>
+                </div>
+                <div class="mb-5">
+                    <h3>상품 정보</h3>
+                    <div class="receiver-info">
+                        <div>
+                            <div class="row mb-2">
+                                <div class="col text-center"><b>상품분류</b></div>
+                                <div class="col text-center"><b>상품상세</b></div>
+                                <div class="col text-center"><b>상품금액</b></div>
+                                <div class="col text-center"><b>부가세</b></div>
+                                <div class="col text-center"><b>배송비</b></div>
+                                <div class="col text-center"><b>주문/결제/배송상태</b></div>
+                            </div>
+                            <div th:each="orderItem : ${order.getOrderItemDtos()}" class="row mb-1">
+                                <div th:text="*{orderItem.getItemName()}" class="col text-center"></div>
+                                <div th:utext="*{orderItem.getItemOptionsAsHtml()}" class="col"></div>
+                                <div th:text="*{orderItem.getItemPrice().toBigInteger()}" class="col text-center"></div>
+                                <div th:text="*{orderItem.getVat().toBigInteger()}" class="col text-center"></div>
+                                <div th:text="${order.getDeliveryFee().toBigInteger()}" class="col text-center"></div>
+                                <div th:text="${order.getStatus().toLabelForKorean()}" class="col text-center"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div>
+                    <h3>배송지 정보</h3>
+                    <div class="d-flex receiver-info">
+                        <div class="receiver-info-left">
+                            <table class="receiver-table">
+                                <tr>
+                                    <th scope="row">수령인</th>
+                                    <td th:text="${order.getReceiverName()}"></td>
+                                </tr>
+                                <tr>
+                                    <th scope="row">연락처</th>
+                                    <td th:text="${order.getReceiverPhone()}"></td>
+                                </tr>
+                                <tr>
+                                    <th scope="row">배송지</th>
+                                    <td>
+                                        [[${order.getReceiverZipcode()}]]<br>
+                                        [[${order.getReceiverAddress()}]]<br>
+                                        [[${order.getReceiverDetailedAddress()}]]
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th scope="row">배송메모</th>
+                                    <td th:text="${order.getMessageToDeliver()}"></td>
+                                </tr>
+                            </table>
+                        </div>
+                        <div>
+                            <table class="receiver-table">
+                                <tr>
+                                    <th scope="row">주문자</th>
+                                    <td th:text="${order.getOrdererName()}"></td>
+                                </tr>
+                                <tr>
+                                    <th scope="row">연락처</th>
+                                    <td th:text="${order.getOrdererPhone()}"></td>
+                                </tr>
+                                <tr>
+                                    <th scope="row">이메일</th>
+                                    <td th:text="${order.getOrdererEmail()}"></td>
+                                </tr>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div th:replace="fragments/common-layout :: body-footer"></div>
+</body>
+</html>
