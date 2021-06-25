@@ -43,9 +43,11 @@
                         <div class="col-4 pt-2 pb-2">제본유형</div>
                         <div class="col-8 pt-2 pb-2">
                             <select name="binding-type" id="binding-type">
-                                <option value="무선">무선</option>
-                                <option value="중철">중철</option>
-                                <option value="링제본">링제본</option>
+                                <option th:each="bindingType : ${bindingTypes}"
+                                        th:value="${bindingType.name}"
+                                        th:text="${bindingType.name}"
+                                        th:data-price="${bindingType.price.toBigInteger()}">
+                                </option>
                             </select>
                         </div>
                         <div class="col-4 pt-2 pb-2">제본방향</div>
