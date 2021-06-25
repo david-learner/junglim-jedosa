@@ -23,7 +23,7 @@ public class ApiItemManagementController {
         return itemOptionService.saveBindingType(type.toBindingType());
     }
 
-    @PutMapping("/api/admin/items/{itemId}/binding/bindingtypes/update")
+    @PutMapping("/api/admin/items/{itemId}/binding/bindingtypes/{bindingTypeId}")
     public BindingType updateBindingType(@RequestBody BindingTypeDto type,
                                          @Admin SessionAccountDto sessionAccountDto) {
         return itemOptionService.saveBindingType(type.toBindingType());

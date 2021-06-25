@@ -140,7 +140,7 @@ function updateBindingType(clickedElement) {
         "price" : bindingTypePrice
     };
 
-    let requestUrl = "/api/admin/items/" + itemId + "/binding/bindingtypes/update";
+    let requestUrl = "/api/admin/items/" + itemId + "/binding/bindingtypes/" + bindingTypeId;
 
     $.ajax({
         url: requestUrl,
