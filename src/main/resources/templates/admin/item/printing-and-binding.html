@@ -16,10 +16,14 @@
             <div id="content-body">
                 <input type="hidden" id="item-id" th:value="${itemId}">
                 <div name="binding">
-                    <div>제본 가격표</div>
+                    <h3>제본 가격표</h3>
                     <div class="container mt-3">
-                        <div name="binding-type" data-item-option-category-name="binding-types">
-                            <div>제본 유형</div>
+                        <div name="binding-type"
+                             class="mb-3"
+                             data-item-option-category-name="binding"
+                             data-item-option-sub-category-name="binding-types">
+                            <h4>제본 유형</h4>
+                            <div>ex) 무선, 중철, 크리스탈링 ...</div>
                             <!-- 테이블 헤더 -->
                             <div class="row border-bottom border-2 border-black p-2">
                                 <div class="col">제본 유형</div>
@@ -63,28 +67,32 @@
                     </div>
                 </div>
                 <div name="cover">
-                    <div>표지 옵션 가격표</div>
+                    <h3>표지 옵션 가격표</h3>
                     <div class="container mt-3">
-                        <div name="coating-type" data-item-option-category-name="coating-types">
-                            <div>표지 유형</div>
+                        <div name="coating-type"
+                             class="mb-3"
+                             data-item-option-category-name="cover"
+                             data-item-option-sub-category-name="coating-types">
+                            <h4>코팅 유형</h4>
+                            <div>ex) 무광, 유광, 펄 ...</div>
                             <!-- 테이블 헤더 -->
                             <div class="row border-bottom border-2 border-black p-2">
-                                <div class="col">표지 유형</div>
+                                <div class="col">코팅 유형</div>
                                 <div class="col">금액(원)</div>
                                 <div class="col"></div>
                             </div>
                             <!-- 테이블 바디 -->
                             <div class="row border-bottom border-gray p-2" name="coating-type-price-table-item"
-                                 th:data-item-option-id="${bindingType.getId()}" th:each="bindingType : ${bindingTypes}">
+                                 th:data-item-option-id="${coatingType.getId()}" th:each="coatingType : ${coatingTypes}">
                                 <div class="col">
                                     <input type="text" name="item-option-name" readonly
-                                           th:data-item-option-name="${bindingType.getName()}"
-                                           th:value="${bindingType.getName()}">
+                                           th:data-item-option-name="${coatingType.getName()}"
+                                           th:value="${coatingType.getName()}">
                                 </div>
                                 <div class="col">
                                     <input type="number" name="item-option-price" readonly
-                                           th:data-item-option-price="${bindingType.getPrice().toBigInteger()}"
-                                           th:value="${bindingType.getPrice().toBigInteger()}">
+                                           th:data-item-option-price="${coatingType.getPrice().toBigInteger()}"
+                                           th:value="${coatingType.getPrice().toBigInteger()}">
                                 </div>
                                 <div class="col">
                                     <div name="controllerForSaved">
@@ -103,7 +111,102 @@
                             </div>
                             <!-- 테이블 행 추가 컨트롤러 -->
                             <div class="controller d-flex justify-content-center mt-3">
-                                <button class="btn btn-primary" onclick="addNewItemOptionForm(this)">제본 유형 추가</button>
+                                <button class="btn btn-primary" onclick="addNewItemOptionForm(this)">코팅 유형 추가</button>
+                            </div>
+                        </div>
+                        <div name="design-type"
+                             class="mb-3"
+                             data-item-option-category-name="cover"
+                             data-item-option-sub-category-name="design-types">
+                            <h4>디자인 유형</h4>
+                            <div>ex) 디자인 선택안함, 디자인01, 디자인02 ...</div>
+                            <!-- 테이블 헤더 -->
+                            <div class="row border-bottom border-2 border-black p-2">
+                                <div class="col">디자인 유형</div>
+                                <div class="col">금액(원)</div>
+                                <div class="col"></div>
+                            </div>
+                            <!-- 테이블 바디 -->
+                            <div class="row border-bottom border-gray p-2" name="design-type-price-table-item"
+                                 th:data-item-option-id="${designType.getId()}" th:each="designType : ${designTypes}">
+                                <div class="col">
+                                    <input type="text" name="item-option-name" readonly
+                                           th:data-item-option-name="${designType.getName()}"
+                                           th:value="${designType.getName()}">
+                                </div>
+                                <div class="col">
+                                    <input type="number" name="item-option-price" readonly
+                                           th:data-item-option-price="${designType.getPrice().toBigInteger()}"
+                                           th:value="${designType.getPrice().toBigInteger()}">
+                                </div>
+                                <div class="col">
+                                    <div name="controllerForSaved">
+                                        <div name="updateController" style="display: none">
+                                            <button class="btn btn-primary" onclick="updateItemOption(this)">저장</button>&nbsp;
+                                            <button class="btn btn-danger" onclick="revealDeleteController(this)">취소
+                                            </button>
+                                        </div>
+                                        <div name="deleteController">
+                                            <button class="btn btn-success" onclick="revealUpdateController(this)">수정
+                                            </button>&nbsp;
+                                            <button class="btn btn-danger" onclick="deleteItemOption(this)">삭제</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- 테이블 행 추가 컨트롤러 -->
+                            <div class="controller d-flex justify-content-center mt-3">
+                                <button class="btn btn-primary" onclick="addNewItemOptionForm(this)">디자인 유형 추가</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div name="paper">
+                    <h3>종이 옵션 가격표</h3>
+                    <div class="container mt-3">
+                        <div name="flyleaf-color-type"
+                             class="mb-3"
+                             data-item-option-category-name="paper"
+                             data-item-option-sub-category-name="flyleaf-color-types">
+                            <h4>간지 색상 유형</h4>
+                            <div>ex) 분홍, 초록, 파랑 ...</div>
+                            <!-- 테이블 헤더 -->
+                            <div class="row border-bottom border-2 border-black p-2">
+                                <div class="col">간지 색상 유형</div>
+                                <div class="col">1장당 금액(원)</div>
+                                <div class="col"></div>
+                            </div>
+                            <!-- 테이블 바디 -->
+                            <div class="row border-bottom border-gray p-2" name="flyleaf-type-price-table-item"
+                                 th:data-item-option-id="${flyleafColorType.getId()}" th:each="flyleafColorType : ${flyleafColorTypes}">
+                                <div class="col">
+                                    <input type="text" name="item-option-name" readonly
+                                           th:data-item-option-name="${flyleafColorType.getName()}"
+                                           th:value="${flyleafColorType.getName()}">
+                                </div>
+                                <div class="col">
+                                    <input type="number" name="item-option-price" readonly
+                                           th:data-item-option-price="${flyleafColorType.getPrice().toBigInteger()}"
+                                           th:value="${flyleafColorType.getPrice().toBigInteger()}">
+                                </div>
+                                <div class="col">
+                                    <div name="controllerForSaved">
+                                        <div name="updateController" style="display: none">
+                                            <button class="btn btn-primary" onclick="updateItemOption(this)">저장</button>&nbsp;
+                                            <button class="btn btn-danger" onclick="revealDeleteController(this)">취소
+                                            </button>
+                                        </div>
+                                        <div name="deleteController">
+                                            <button class="btn btn-success" onclick="revealUpdateController(this)">수정
+                                            </button>&nbsp;
+                                            <button class="btn btn-danger" onclick="deleteItemOption(this)">삭제</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- 테이블 행 추가 컨트롤러 -->
+                            <div class="controller d-flex justify-content-center mt-3">
+                                <button class="btn btn-primary" onclick="addNewItemOptionForm(this)">간지 색상 유형 추가</button>
                             </div>
                         </div>
                     </div>

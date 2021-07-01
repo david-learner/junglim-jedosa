@@ -7,9 +7,9 @@ import java.math.BigDecimal;
 
 @Entity
 @NoArgsConstructor
-public class CoatingType extends BaseItemOption {
+public class DesignType extends BaseItemOption {
 
-    public CoatingType(Long itemId, Long id, String name, BigDecimal price) {
+    public DesignType(Long itemId, Long id, String name, BigDecimal price) {
         super(itemId, id, name, price);
     }
 }

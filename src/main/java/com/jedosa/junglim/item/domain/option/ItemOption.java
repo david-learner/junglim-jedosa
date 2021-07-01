@@ -15,7 +15,7 @@ import javax.persistence.Embeddable;
 public class ItemOption {
 
     private String paperSize; // 출력물 사이즈
-    private String bindingType; // 제본 형식 (무선, 중철, 링)
+    private String bindingType; // 제본 유형 (무선, 중철, 링)
     private String bindingDirection; // 제본 방향 (좌철, 상철)
     private String coverPrintingType; // 커버 출력 형식 (양면, 단면)
     private String coverPrintingColorType; // 커버 출력 색상 (흑백, 컬러)

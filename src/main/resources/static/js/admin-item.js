@@ -114,6 +114,7 @@ function updateItemOptionData(row, data) {
 function saveItemOption(clickedElement) {
     let row = clickedElement.parentElement.parentElement.parentElement.parentElement;
     let itemOptionCategoryName = row.parentElement.dataset.itemOptionCategoryName;
+    let itemOptionSubCategoryName = row.parentElement.dataset.itemOptionSubCategoryName;
     let itemId = document.getElementById("item-id").value;
     let itemOptionName = row.querySelector("input[name='item-option-name']").value;
     let itemOptionPrice = row.querySelector("input[name='item-option-price']").value;
@@ -124,14 +125,14 @@ function saveItemOption(clickedElement) {
         alert("상품 옵션 가격은 숫자만 입력할 수 있습니다.");
         return;
     }
-
+    // todo ItemCategory, ItemSubCategory 2개 필요. binding, cover / binding type, coating type
     let itemOptionData = {
         "itemId" : itemId,
         "name" : itemOptionName,
         "price" : itemOptionPrice
     };
 
-    let requestUrl = "/api/admin/items/" + itemId + "/binding/" + itemOptionCategoryName;
+    let requestUrl = "/api/admin/items/" + itemId + "/" + itemOptionCategoryName + "/" + itemOptionSubCategoryName;
 
     $.ajax({
         url: requestUrl,
@@ -164,6 +165,7 @@ function updateItemOption(clickedElement) {
     let row = clickedElement.parentElement.parentElement.parentElement.parentElement;
     let itemId = document.getElementById("item-id").value;
     let itemOptionCategoryName = row.parentElement.dataset.itemOptionCategoryName;
+    let itemOptionSubCategoryName = row.parentElement.dataset.itemOptionSubCategoryName;
     let itemOptionId = row.dataset.itemOptionId;
     let itemOptionName = row.querySelector("input[name='item-option-name']").value;
     let itemOptionPrice = row.querySelector("input[name='item-option-price']").value;
@@ -175,7 +177,7 @@ function updateItemOption(clickedElement) {
         "price" : itemOptionPrice
     };
 
-    let requestUrl = "/api/admin/items/" + itemId + "/binding/" + itemOptionCategoryName + "/" + itemOptionId;
+    let requestUrl = "/api/admin/items/" + itemId + "/" + itemOptionCategoryName + "/" + itemOptionSubCategoryName + "/" + itemOptionId;
 
     $.ajax({
         url: requestUrl,
@@ -200,6 +202,7 @@ function deleteItemOption(clickedElement) {
     let row = clickedElement.parentElement.parentElement.parentElement.parentElement;
     let itemId = document.getElementById("item-id").value;
     let itemOptionCategoryName = row.parentElement.dataset.itemOptionCategoryName;
+    let itemOptionSubCategoryName = row.parentElement.dataset.itemOptionSubCategoryName;
     let itemOptionId = row.dataset.itemOptionId;
     let itemOptionName = row.querySelector("input[name='item-option-name']").value;
     let inputName = prompt("정말 삭제하시겠습니까?\n삭제하려는 상품 옵션의 이름을 적어주세요", "");
@@ -208,7 +211,7 @@ function deleteItemOption(clickedElement) {
         return;
     }
 
-    let requestUrl = "/api/admin/items/" + itemId + "/binding/" + itemOptionCategoryName + "/" + itemOptionId;
+    let requestUrl = "/api/admin/items/" + itemId + "/"+ itemOptionCategoryName + "/" + itemOptionSubCategoryName + "/" + itemOptionId;
 
     $.ajax({
         url: requestUrl,
