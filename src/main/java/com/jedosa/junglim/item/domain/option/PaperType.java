@@ -11,12 +11,17 @@ import javax.persistence.Id;
 @Entity
 @NoArgsConstructor
 @Getter
-public class Paper {
+public class PaperType {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+    private Long itemId;
     private String name;
-    private Integer width;
-    private Integer height;
+
+    public PaperType(Long id, Long itemId, String name) {
+        this.id = id;
+        this.itemId = itemId;
+        this.name = name;
+    }
 }

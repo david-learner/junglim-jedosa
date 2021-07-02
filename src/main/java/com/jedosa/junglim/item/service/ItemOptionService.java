@@ -1,16 +1,8 @@
 package com.jedosa.junglim.item.service;
 
-import com.jedosa.junglim.item.domain.option.BindingType;
-import com.jedosa.junglim.item.domain.option.CoatingType;
-import com.jedosa.junglim.item.domain.option.DesignType;
-import com.jedosa.junglim.item.domain.option.FlyleafColorType;
-import com.jedosa.junglim.item.domain.repository.BindingTypeRepository;
-import com.jedosa.junglim.item.domain.repository.CoatingTypeRepository;
-import com.jedosa.junglim.item.domain.repository.DesignTypeRepository;
-import com.jedosa.junglim.item.domain.repository.FlyleafColorTypeRepository;
-import com.jedosa.junglim.item.dto.CoatingTypeDto;
-import com.jedosa.junglim.item.dto.DesignTypeDto;
-import com.jedosa.junglim.item.dto.FlyleafColorTypeDto;
+import com.jedosa.junglim.item.domain.option.*;
+import com.jedosa.junglim.item.domain.repository.*;
+import com.jedosa.junglim.item.dto.*;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -23,15 +15,21 @@ public class ItemOptionService {
     private final CoatingTypeRepository coatingTypeRepository;
     private final DesignTypeRepository designTypeRepository;
     private final FlyleafColorTypeRepository flyleafColorTypeRepository;
+    private final PaperTypeRepository paperTypeRepository;
+    private final PaperSizeTypeRepository paperSizeTypeRepository;
 
     public ItemOptionService(BindingTypeRepository bindingTypeRepository,
                              CoatingTypeRepository coatingTypeRepository,
                              DesignTypeRepository designTypeRepository,
-                             FlyleafColorTypeRepository flyleafColorTypeRepository) {
+                             FlyleafColorTypeRepository flyleafColorTypeRepository,
+                             PaperTypeRepository paperTypeRepository,
+                             PaperSizeTypeRepository paperSizeTypeRepository) {
         this.bindingTypeRepository = bindingTypeRepository;
         this.coatingTypeRepository = coatingTypeRepository;
         this.designTypeRepository = designTypeRepository;
         this.flyleafColorTypeRepository = flyleafColorTypeRepository;
+        this.paperTypeRepository = paperTypeRepository;
+        this.paperSizeTypeRepository = paperSizeTypeRepository;
     }
 
     public BindingType saveBindingType(BindingType type) {
@@ -74,11 +72,35 @@ public class ItemOptionService {
         return flyleafColorTypeRepository.save(type);
     }
 
-    public void deleteFlyleafColorType(Long FlyleafTypeId) {
-        flyleafColorTypeRepository.deleteById(FlyleafTypeId);
+    public void deleteFlyleafColorType(Long flyleafTypeId) {
+        flyleafColorTypeRepository.deleteById(flyleafTypeId);
     }
 
     public List<FlyleafColorTypeDto> getAllFlyleafColorTypes() {
         return flyleafColorTypeRepository.findAll().stream().map(FlyleafColorTypeDto::new).collect(Collectors.toList());
+    }
+
+    public PaperTypeDto savePaperType(PaperType type) {
+        return new PaperTypeDto(paperTypeRepository.save(type));
+    }
+
+    public void deletePaperType(Long paperTypeId) {
+        paperTypeRepository.deleteById(paperTypeId);
+    }
+
+    public List<PaperTypeDto> getAllPaperTypes() {
+        return paperTypeRepository.findAll().stream().map(PaperTypeDto::new).collect(Collectors.toList());
+    }
+
+    public PaperSizeTypeDto savePaperSizeType(PaperSizeType type) {
+        return new PaperSizeTypeDto(paperSizeTypeRepository.save(type));
+    }
+
+    public void deletePaperSizeType(Long paperSizeTypeId) {
+        paperSizeTypeRepository.deleteById(paperSizeTypeId);
+    }
+
+    public List<PaperSizeTypeDto> getAllPaperSizeTypes() {
+        return paperSizeTypeRepository.findAll().stream().map(PaperSizeTypeDto::new).collect(Collectors.toList());
     }
 }

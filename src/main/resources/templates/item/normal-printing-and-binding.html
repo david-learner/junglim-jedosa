@@ -33,8 +33,10 @@
                         <div class="col-4"><b>사이즈</b></div>
                         <div class="col-8">
                             <select name="paper-size" id="paper-size">
-                                <option value="a4">A4(국배판) 210 X 297</option>
-                                <option value=" 신국판">신국판 152 X 255</option>
+                                <option th:each="paperSizeType : ${paperSizeTypes}"
+                                        th:value="${paperSizeType.name}"
+                                        th:text="${paperSizeType.name}">
+                                </option>
                             </select>
                         </div>
                     </div>
@@ -77,23 +79,33 @@
                         <div class="col-4 pt-2 pb-2">종이</div>
                         <div class="col-8 pt-2 pb-2">
                             <select name="cover-paper-type" id="cover-paper-type">
-                                <option value="듀오매트-스노우지-백색-200g">듀오매트(스노우지)/백색/200g</option>
-                                <option value="아트지-백색-200g">아트지/백색/200g</option>
+                                <option th:each="paperType : ${paperTypes}"
+                                        th:value="${paperType.name}"
+                                        th:text="${paperType.name}">
+                                </option>
                             </select>
                         </div>
                         <div class="col-4 pt-2 pb-2">코팅</div>
                         <div class="col-8 pt-2 pb-2">
                             <select name="cover-coating-type" id="cover-coating-type">
-                                <option value="무광">무광코팅</option>
-                                <option value="유광">유광코팅</option>
+                                <option th:each="coatingType : ${coatingTypes}"
+                                        th:value="${coatingType.name}"
+                                        th:text="${coatingType.name}"
+                                        th:data-price="${coatingType.price.toBigInteger()}">
+                                </option>
                             </select>
                         </div>
                         <div class="col-4 pt-2 pb-2">디자인</div>
                         <div class="col-8 pt-2 pb-2">
                             <select name="cover-design-name" id="cover-design-name" class="mr-2">
-                                <option value="디자인 선택안함">디자인 선택안함</option>
-                                <option value="junglim-0001">정림제도사 1번 표지</option>
-                                <option value="junglim-0002">정림제도사 2번 표지</option>
+                                <option th:each="designType : ${designTypes}"
+                                        th:value="${designType.name}"
+                                        th:text="${designType.name}"
+                                        th:data-price="${designType.price.toBigInteger()}">
+                                </option>
+<!--                                <option value="디자인 선택안함">디자인 선택안함</option>-->
+<!--                                <option value="junglim-0001">정림제도사 1번 표지</option>-->
+<!--                                <option value="junglim-0002">정림제도사 2번 표지</option>-->
                             </select>
                             <span><a href="/board/cover-sample" onclick="return popup(this, '표지 살펴보기')">표지 살펴보기</a></span>
                         </div>
@@ -115,8 +127,10 @@
                         <div class="col-4 pt-2 pb-2">종이</div>
                         <div class="col-8 pt-2 pb-2">
                             <select name="content-paper-type" id="content-paper-type">
-                                <option value="듀오매트-스노우지-백색-200g">듀오매트(스노우지)/백색/200g</option>
-                                <option value="아트지-백색-200g">아트지/백색/200g</option>
+                                <option th:each="paperType : ${paperTypes}"
+                                        th:value="${paperType.name}"
+                                        th:text="${paperType.name}">
+                                </option>
                             </select>
                         </div>
                     </div>
@@ -131,10 +145,11 @@
                             <div class="col-4 pt-2 pb-2">색상</div>
                             <div class="col-8 pt-2 pb-2">
                                 <select name="flyleaf-color-type" id="flyleaf-color-type">
-                                    <option value="yellow">노랑</option>
-                                    <option value="pink">분홍</option>
-                                    <option value="green">초록</option>
-                                    <option value="blue">파랑</option>
+                                    <option th:each="flyleafColor : ${flyleafColorTypes}"
+                                            th:value="${flyleafColor.name}"
+                                            th:text="${flyleafColor.name}"
+                                            th:data-price="${flyleafColor.price.toBigInteger()}">
+                                    </option>
                                 </select>
                             </div>
                             <div class="col-4 pt-2 pb-2">1부당 간지 수량</div>

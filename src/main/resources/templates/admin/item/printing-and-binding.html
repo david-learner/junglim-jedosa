@@ -15,6 +15,91 @@
             </div>
             <div id="content-body">
                 <input type="hidden" id="item-id" th:value="${itemId}">
+                <div name="paper">
+                    <h3>종이 종류 및 규격</h3>
+                    <div class="container mt-3">
+                        <div name="paper-type"
+                             class="mb-3"
+                             data-item-option-category-name="paper"
+                             data-item-option-sub-category-name="paper-types">
+                            <h4>종이 종류</h4>
+                            <div>ex) 스노우지/백색/200g ...</div>
+                            <!-- 테이블 헤더 -->
+                            <div class="row border-bottom border-2 border-black p-2">
+                                <div class="col">종이</div>
+                                <div class="col"></div>
+                            </div>
+                            <!-- 테이블 바디 -->
+                            <div class="row border-bottom border-gray p-2" name="paper-type-price-table-item"
+                                 th:data-item-option-id="${paperType.getId()}" th:each="paperType : ${paperTypes}">
+                                <div class="col">
+                                    <input type="text" name="item-option-name" class="form-control" readonly
+                                           th:data-item-option-name="${paperType.getName()}"
+                                           th:value="${paperType.getName()}">
+                                </div>
+                                <div class="col">
+                                    <div name="controllerForSaved">
+                                        <div name="updateController" style="display: none">
+                                            <button class="btn btn-primary" onclick="updateItemOption(this)">저장</button>&nbsp;
+                                            <button class="btn btn-danger" onclick="revealDeleteController(this)">취소
+                                            </button>
+                                        </div>
+                                        <div name="deleteController">
+                                            <button class="btn btn-success" onclick="revealUpdateController(this)">수정
+                                            </button>&nbsp;
+                                            <button class="btn btn-danger" onclick="deleteItemOption(this)">삭제</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- 테이블 행 추가 컨트롤러 -->
+                            <div class="controller d-flex justify-content-center mt-3">
+                                <button class="btn btn-primary" onclick="addNewItemOptionForm(this)">종이 유형 추가</button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="container mt-3">
+                        <div name="paper-type"
+                             class="mb-3"
+                             data-item-option-category-name="paper"
+                             data-item-option-sub-category-name="paper-size-types">
+                            <h4>종이 규격</h4>
+                            <div>ex) A3, A4, 신국판 ...</div>
+                            <!-- 테이블 헤더 -->
+                            <div class="row border-bottom border-2 border-black p-2">
+                                <div class="col">규격</div>
+                                <div class="col"></div>
+                            </div>
+                            <!-- 테이블 바디 -->
+                            <div class="row border-bottom border-gray p-2" name="paper-size-type-price-table-item"
+                                 th:data-item-option-id="${paperSizeType.getId()}" th:each="paperSizeType : ${paperSizeTypes}">
+                                <div class="col">
+                                    <input type="text" name="item-option-name" class="form-control" readonly
+                                           th:data-item-option-name="${paperSizeType.getName()}"
+                                           th:value="${paperSizeType.getName()}">
+                                </div>
+                                <div class="col">
+                                    <div name="controllerForSaved">
+                                        <div name="updateController" style="display: none">
+                                            <button class="btn btn-primary" onclick="updateItemOption(this)">저장</button>&nbsp;
+                                            <button class="btn btn-danger" onclick="revealDeleteController(this)">취소
+                                            </button>
+                                        </div>
+                                        <div name="deleteController">
+                                            <button class="btn btn-success" onclick="revealUpdateController(this)">수정
+                                            </button>&nbsp;
+                                            <button class="btn btn-danger" onclick="deleteItemOption(this)">삭제</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- 테이블 행 추가 컨트롤러 -->
+                            <div class="controller d-flex justify-content-center mt-3">
+                                <button class="btn btn-primary" onclick="addNewItemOptionForm(this)">종이 규격 유형 추가</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
                 <div name="binding">
                     <h3>제본 가격표</h3>
                     <div class="container mt-3">
@@ -35,12 +120,12 @@
                                  th:data-item-option-id="${bindingType.getId()}" th:each="bindingType : ${bindingTypes}">
 <!--                                <input type="hidden" name="item-option-id" th:value="${bindingType.getId()}">-->
                                 <div class="col">
-                                    <input type="text" name="item-option-name" readonly
+                                    <input type="text" name="item-option-name" class="form-control" readonly
                                            th:data-item-option-name="${bindingType.getName()}"
                                            th:value="${bindingType.getName()}">
                                 </div>
                                 <div class="col">
-                                    <input type="number" name="item-option-price" readonly
+                                    <input type="number" name="item-option-price" class="form-control" readonly
                                            th:data-item-option-price="${bindingType.getPrice().toBigInteger()}"
                                            th:value="${bindingType.getPrice().toBigInteger()}">
                                 </div>
@@ -85,12 +170,12 @@
                             <div class="row border-bottom border-gray p-2" name="coating-type-price-table-item"
                                  th:data-item-option-id="${coatingType.getId()}" th:each="coatingType : ${coatingTypes}">
                                 <div class="col">
-                                    <input type="text" name="item-option-name" readonly
+                                    <input type="text" name="item-option-name" class="form-control" readonly
                                            th:data-item-option-name="${coatingType.getName()}"
                                            th:value="${coatingType.getName()}">
                                 </div>
                                 <div class="col">
-                                    <input type="number" name="item-option-price" readonly
+                                    <input type="number" name="item-option-price" class="form-control" readonly
                                            th:data-item-option-price="${coatingType.getPrice().toBigInteger()}"
                                            th:value="${coatingType.getPrice().toBigInteger()}">
                                 </div>
@@ -130,12 +215,12 @@
                             <div class="row border-bottom border-gray p-2" name="design-type-price-table-item"
                                  th:data-item-option-id="${designType.getId()}" th:each="designType : ${designTypes}">
                                 <div class="col">
-                                    <input type="text" name="item-option-name" readonly
+                                    <input type="text" name="item-option-name" class="form-control" readonly
                                            th:data-item-option-name="${designType.getName()}"
                                            th:value="${designType.getName()}">
                                 </div>
                                 <div class="col">
-                                    <input type="number" name="item-option-price" readonly
+                                    <input type="number" name="item-option-price" class="form-control" readonly
                                            th:data-item-option-price="${designType.getPrice().toBigInteger()}"
                                            th:value="${designType.getPrice().toBigInteger()}">
                                 </div>
@@ -159,14 +244,77 @@
                                 <button class="btn btn-primary" onclick="addNewItemOptionForm(this)">디자인 유형 추가</button>
                             </div>
                         </div>
+                        <div name="paper-type"
+                             class="mb-3"
+                             data-item-option-category-name="cover"
+                             data-item-option-sub-category-name="paper-types">
+                            <h4>표지 종이 유형</h4>
+                            <div></div>
+                            <!-- 테이블 헤더 -->
+                            <div class="row row-cols-6 border-bottom border-2 border-black p-2">
+                                <div class="col">종이 유형</div>
+                                <div class="col">규격</div>
+                                <div class="col">색상(흑백/컬러)</div>
+                                <div class="col">단면 금액(원)</div>
+                                <div class="col">양면 금액(원)</div>
+                                <div class="col"></div>
+                            </div>
+                            <!-- 테이블 바디 -->
+                            <div class="row row-cols-6 border-bottom border-gray p-2" name="coating-type-price-table-item"
+                                 th:data-item-option-id="${coatingType.getId()}" th:each="coatingType : ${coatingTypes}">
+                                <div class="col">
+                                    <input type="text" name="item-option-name" class="form-control" readonly
+                                           th:data-item-option-name="${coatingType.getName()}"
+                                           th:value="${coatingType.getName()}">
+                                </div>
+                                <div class="col">
+                                    <input type="number" name="item-option-price" class="form-control" readonly
+                                           th:data-item-option-price="${coatingType.getPrice().toBigInteger()}"
+                                           th:value="${coatingType.getPrice().toBigInteger()}">
+                                </div>
+                                <div class="col">
+                                    <input type="number" name="item-option-price" class="form-control" readonly
+                                           th:data-item-option-price="${coatingType.getPrice().toBigInteger()}"
+                                           th:value="${coatingType.getPrice().toBigInteger()}">
+                                </div>
+                                <div class="col">
+                                    <input type="number" name="item-option-price" class="form-control" readonly
+                                           th:data-item-option-price="${coatingType.getPrice().toBigInteger()}"
+                                           th:value="${coatingType.getPrice().toBigInteger()}">
+                                </div>
+                                <div class="col">
+                                    <input type="number" name="item-option-price" class="form-control" readonly
+                                           th:data-item-option-price="${coatingType.getPrice().toBigInteger()}"
+                                           th:value="${coatingType.getPrice().toBigInteger()}">
+                                </div>
+                                <div class="col">
+                                    <div name="controllerForSaved">
+                                        <div name="updateController" style="display: none">
+                                            <button class="btn btn-primary" onclick="updateItemOption(this)">저장</button>&nbsp;
+                                            <button class="btn btn-danger" onclick="revealDeleteController(this)">취소
+                                            </button>
+                                        </div>
+                                        <div name="deleteController">
+                                            <button class="btn btn-success" onclick="revealUpdateController(this)">수정
+                                            </button>&nbsp;
+                                            <button class="btn btn-danger" onclick="deleteItemOption(this)">삭제</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- 테이블 행 추가 컨트롤러 -->
+                            <div class="controller d-flex justify-content-center mt-3">
+                                <button class="btn btn-primary" onclick="addNewItemOptionForm(this)">표지 종이 유형 추가</button>
+                            </div>
+                        </div>
                     </div>
                 </div>
-                <div name="paper">
+                <div name="flyleaf">
                     <h3>종이 옵션 가격표</h3>
                     <div class="container mt-3">
                         <div name="flyleaf-color-type"
                              class="mb-3"
-                             data-item-option-category-name="paper"
+                             data-item-option-category-name="flyleaf"
                              data-item-option-sub-category-name="flyleaf-color-types">
                             <h4>간지 색상 유형</h4>
                             <div>ex) 분홍, 초록, 파랑 ...</div>
@@ -180,12 +328,12 @@
                             <div class="row border-bottom border-gray p-2" name="flyleaf-type-price-table-item"
                                  th:data-item-option-id="${flyleafColorType.getId()}" th:each="flyleafColorType : ${flyleafColorTypes}">
                                 <div class="col">
-                                    <input type="text" name="item-option-name" readonly
+                                    <input type="text" name="item-option-name" class="form-control" readonly
                                            th:data-item-option-name="${flyleafColorType.getName()}"
                                            th:value="${flyleafColorType.getName()}">
                                 </div>
                                 <div class="col">
-                                    <input type="number" name="item-option-price" readonly
+                                    <input type="number" name="item-option-price" class="form-control" readonly
                                            th:data-item-option-price="${flyleafColorType.getPrice().toBigInteger()}"
                                            th:value="${flyleafColorType.getPrice().toBigInteger()}">
                                 </div>
@@ -212,12 +360,11 @@
                     </div>
                 </div>
             </div>
-            <!-- 새로운 아이템 옵션 행 템플릿 시작 -->
+            <!-- 유형-가격 형태의 새로운 아이템 옵션 행 템플릿 시작 -->
             <div class="row border-bottom border-gray p-2" id="new-item-option-template"
                  name="new-item-option-template" style="display: none">
-                <input type="hidden" name="item-option-id">
-                <div class="col"><input type="text" name="item-option-name"></div>
-                <div class="col"><input type="number" name="item-option-price"></div>
+                <div class="col"><input type="text" name="item-option-name" class="form-control"></div>
+                <div class="col"><input type="number" name="item-option-price" class="form-control"></div>
                 <div class="col">
                     <div name="controllerForNew">
                         <div name="saveNewController">
@@ -239,7 +386,34 @@
                     </div>
                 </div>
             </div>
-            <!-- 새로운 아이템 옵션 행 템플릿 끝 -->
+            <!-- 유형-가격 형태의 새로운 아이템 옵션 행 템플릿 끝 -->
+            <!-- 유형 형태의 새로운 아이템 옵션 행 템플릿 시작 -->
+            <div class="row border-bottom border-gray p-2" id="new-key-type-item-option-template"
+                 name="new-key-type-item-option-template" style="display: none">
+                <div class="col">
+                    <input type="text" name="item-option-name" class="form-control">
+                </div>
+                <div class="col">
+                    <div name="controllerForNew">
+                        <div name="saveNewController">
+                            <button class="btn btn-primary" onclick="saveItemOption(this)">저장</button>&nbsp;
+                            <button class="btn btn-danger" onclick="removeNewItemOptionForm(this)">취소</button>
+                        </div>
+                    </div>
+                    <div name="controllerForSaved" style="display: none">
+                        <div name="updateController" style="display: none">
+                            <button class="btn btn-primary" onclick="updateItemOption(this)">저장</button>&nbsp;
+                            <button class="btn btn-danger" onclick="revealDeleteController(this)">취소
+                            </button>
+                        </div>
+                        <div name="deleteController">
+                            <button class="btn btn-success" onclick="revealUpdateController(this)">수정
+                            </button>&nbsp;
+                            <button class="btn btn-danger" onclick="deleteItemOption(this)">삭제</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 </div>

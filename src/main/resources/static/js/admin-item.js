@@ -2,11 +2,17 @@
 // 새로운 아이템 옵션을 테이블에 추가하기 위해 입력 폼을 생성한다
 function addNewItemOptionForm(clickedElement) {
     // 추가하려는 아이템 옵션 가격표
-    let parent = clickedElement.parentElement.parentElement;
+    let table = clickedElement.parentElement.parentElement;
+    let fullCategoryName = getFullCategoryName(table);
     // 추가하려는 아이템 옵션 가격표 마지막 행
     // 옵션 추가 버튼 제외. 테이블에 행이 존재하지 않을 경우 테이블 머리 열이 선택됨
-    let lastRowName = parent.lastElementChild.previousElementSibling.getAttribute("name")
+    let lastRowName = table.lastElementChild.previousElementSibling.getAttribute("name")
     let nameForNotSaved = "new-item-option-template";
+
+    if (fullCategoryName === 'paper/paper-types' || fullCategoryName === 'paper/paper-size-types') {
+        nameForNotSaved = "new-key-type-item-option-template";
+    }
+
     if (lastRowName === nameForNotSaved) {
         alert("저장되지 않은 아이템 유형이 존재합니다.\n저장 후 추가해주세요.");
         return;
@@ -17,7 +23,7 @@ function addNewItemOptionForm(clickedElement) {
     copiedItem.style.display = "";
     // id는 한 페이지당 하나만 존재해야 하므로 삭제한다
     copiedItem.removeAttribute("id");
-    parent.insertBefore(copiedItem, parent.lastElementChild);
+    table.insertBefore(copiedItem, table.lastElementChild);
 }
 
 /**
@@ -61,31 +67,59 @@ function revealDeleteController(clickedElement) {
     toggleInputReadOnly(row);
 
     function restoreOriginalValue(row) {
+        let fullCategoryName = getFullCategoryName(row.parentElement);
+
         let itemOptionNameElement = row.querySelector("input[name='item-option-name']");
-        let itemOptionPriceElement = row.querySelector("input[name='item-option-price']")
         let originalItemOptionName = itemOptionNameElement.dataset.itemOptionName;
-        let originalItemOptionPrice = itemOptionPriceElement.dataset.itemOptionPrice;
         row.querySelector("input[name='item-option-name']").value = originalItemOptionName;
-        row.querySelector("input[name='item-option-price']").value = originalItemOptionPrice;
+
+        if (fullCategoryName !== 'paper/paper-types' && fullCategoryName !== 'paper/paper-size-types') {
+            let itemOptionPriceElement = row.querySelector("input[name='item-option-price']");
+            let originalItemOptionPrice = itemOptionPriceElement.dataset.itemOptionPrice;
+            row.querySelector("input[name='item-option-price']").value = originalItemOptionPrice;
+        }
     }
+}
+
+function getFullCategoryName(table) {
+    let categoryName = table.dataset.itemOptionCategoryName;
+    let subCategoryName = table.dataset.itemOptionSubCategoryName;
+    let fullCategoryName = categoryName + '/' + subCategoryName;
+    console.log('full category name is ' + fullCategoryName);
+    return fullCategoryName;
 }
 
 /**
  * 아이템 옵션 입력 칸을 읽기전용 또는 수정 가능한 상태로 변경한다
  */
 function toggleInputReadOnly(row) {
-    let inputOptionName = "item-option-name";
-    let inputOptionPrice = "item-option-price";
+    let fullCategoryName = getFullCategoryName(row.parentElement);
 
-    let isNameReadOnly = row.querySelector("input[name='" + inputOptionName + "']").getAttribute("readonly");
-    let isPriceReadOnly = row.querySelector("input[name='" + inputOptionPrice + "']").getAttribute("readonly");
+    if(fullCategoryName === 'paper/paper-types' || fullCategoryName === 'paper/paper-size-types') {
+        let inputOptionName = "item-option-name";
+        let isNameReadOnly = row.querySelector("input[name='" + inputOptionName + "']").getAttribute("readonly");
 
-    if (isNameReadOnly === null && isPriceReadOnly === null) {
-        row.querySelector("input[name='" + inputOptionName + "']").setAttribute("readonly", "")
-        row.querySelector("input[name='" + inputOptionPrice + "']").setAttribute("readonly", "")
-    } else {
-        row.querySelector("input[name='" + inputOptionName + "']").removeAttribute("readonly")
-        row.querySelector("input[name='" + inputOptionPrice + "']").removeAttribute("readonly")
+        if (isNameReadOnly === null) {
+            row.querySelector("input[name='" + inputOptionName + "']").setAttribute("readonly", "")
+        } else {
+            row.querySelector("input[name='" + inputOptionName + "']").removeAttribute("readonly")
+        }
+    }
+
+    if (fullCategoryName !== 'paper/paper-types' && fullCategoryName !== 'paper/paper-size-types') {
+        let inputOptionName = "item-option-name";
+        let isNameReadOnly = row.querySelector("input[name='" + inputOptionName + "']").getAttribute("readonly");
+
+        let inputOptionPrice = "item-option-price";
+        let isPriceReadOnly = row.querySelector("input[name='" + inputOptionPrice + "']").getAttribute("readonly");
+
+        if (isNameReadOnly === null && isPriceReadOnly === null) {
+            row.querySelector("input[name='" + inputOptionName + "']").setAttribute("readonly", "")
+            row.querySelector("input[name='" + inputOptionPrice + "']").setAttribute("readonly", "")
+        } else {
+            row.querySelector("input[name='" + inputOptionName + "']").removeAttribute("readonly")
+            row.querySelector("input[name='" + inputOptionPrice + "']").removeAttribute("readonly")
+        }
     }
 }
 
@@ -96,16 +130,23 @@ function updateItemOptionData(row, data) {
     // data is JsonObject
     let id = data.id; // 최초 저장시 id를 화면 내 업데이트 해주기 위해서 필요하다
     let name = data.name;
-    let price = data.price;
     let itemOptionNameElement = row.querySelector("input[name='item-option-name']");
-    let itemOptionPriceElement = row.querySelector("input[name='item-option-price']");
+    let price = 0;
+    let itemOptionPriceElement = null;
+    let fullCategoryName = getFullCategoryName(row.parentElement)
+
     // update text value
     itemOptionNameElement.value = name;
-    itemOptionPriceElement.value = price;
     // update dataset
     row.dataset.itemOptionId = id;
     itemOptionNameElement.dataset.itemOptionName = name;
-    itemOptionPriceElement.dataset.itemOptionPrice = price;
+
+    if (fullCategoryName !== 'paper/paper-types' && fullCategoryName !== 'paper/paper-size-types') {
+        price = data.price;
+        itemOptionPriceElement = row.querySelector("input[name='item-option-price']");
+        itemOptionPriceElement.value = price;
+        itemOptionPriceElement.dataset.itemOptionPrice = price;
+    }
 }
 
 /**
@@ -115,22 +156,30 @@ function saveItemOption(clickedElement) {
     let row = clickedElement.parentElement.parentElement.parentElement.parentElement;
     let itemOptionCategoryName = row.parentElement.dataset.itemOptionCategoryName;
     let itemOptionSubCategoryName = row.parentElement.dataset.itemOptionSubCategoryName;
+    let fullCategoryName = itemOptionCategoryName + '/' + itemOptionSubCategoryName;
     let itemId = document.getElementById("item-id").value;
     let itemOptionName = row.querySelector("input[name='item-option-name']").value;
-    let itemOptionPrice = row.querySelector("input[name='item-option-price']").value;
-
-    // validation
-    let allowOnlyNumbersRegex = new RegExp(/^[0-9]*$/);
-    if (itemOptionPrice === "" || itemOptionPrice === undefined || !allowOnlyNumbersRegex.test(itemOptionPrice)) {
-        alert("상품 옵션 가격은 숫자만 입력할 수 있습니다.");
-        return;
-    }
-    // todo ItemCategory, ItemSubCategory 2개 필요. binding, cover / binding type, coating type
+    let itemOptionPrice = 0;
     let itemOptionData = {
         "itemId" : itemId,
         "name" : itemOptionName,
-        "price" : itemOptionPrice
     };
+
+    if (fullCategoryName !== 'paper/paper-types' && fullCategoryName !== 'paper/paper-size-types') {
+        itemOptionPrice = row.querySelector("input[name='item-option-price']").value;
+        itemOptionData = {
+            "itemId" : itemId,
+            "name" : itemOptionName,
+            "price" : itemOptionPrice
+        };
+
+        // validation
+        let allowOnlyNumbersRegex = new RegExp(/^[0-9]*$/);
+        if (itemOptionPrice === "" || itemOptionPrice === undefined || !allowOnlyNumbersRegex.test(itemOptionPrice)) {
+            alert("상품 옵션 가격은 숫자만 입력할 수 있습니다.");
+            return;
+        }
+    }
 
     let requestUrl = "/api/admin/items/" + itemId + "/" + itemOptionCategoryName + "/" + itemOptionSubCategoryName;
 
@@ -166,16 +215,26 @@ function updateItemOption(clickedElement) {
     let itemId = document.getElementById("item-id").value;
     let itemOptionCategoryName = row.parentElement.dataset.itemOptionCategoryName;
     let itemOptionSubCategoryName = row.parentElement.dataset.itemOptionSubCategoryName;
+    let fullCategoryName = itemOptionCategoryName + '/' + itemOptionSubCategoryName;
     let itemOptionId = row.dataset.itemOptionId;
     let itemOptionName = row.querySelector("input[name='item-option-name']").value;
-    let itemOptionPrice = row.querySelector("input[name='item-option-price']").value;
-
+    let itemOptionPrice = 0;
     let itemOptionData = {
         "itemId" : itemId,
         "id" : itemOptionId,
         "name" : itemOptionName,
-        "price" : itemOptionPrice
     };
+
+    if (fullCategoryName !== 'paper/paper-types' && fullCategoryName !== 'paper/paper-size-types') {
+        itemOptionPrice = row.querySelector("input[name='item-option-price']").value;
+
+        itemOptionData = {
+            "itemId" : itemId,
+            "id" : itemOptionId,
+            "name" : itemOptionName,
+            "price" : itemOptionPrice
+        };
+    }
 
     let requestUrl = "/api/admin/items/" + itemId + "/" + itemOptionCategoryName + "/" + itemOptionSubCategoryName + "/" + itemOptionId;
 

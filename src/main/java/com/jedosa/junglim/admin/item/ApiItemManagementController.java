@@ -2,14 +2,8 @@ package com.jedosa.junglim.admin.item;
 
 import com.jedosa.junglim.account.domain.SessionAccountDto;
 import com.jedosa.junglim.infrastructure.annotation.Admin;
-import com.jedosa.junglim.item.domain.option.BindingType;
-import com.jedosa.junglim.item.domain.option.CoatingType;
-import com.jedosa.junglim.item.domain.option.DesignType;
-import com.jedosa.junglim.item.domain.option.FlyleafColorType;
-import com.jedosa.junglim.item.dto.BindingTypeDto;
-import com.jedosa.junglim.item.dto.CoatingTypeDto;
-import com.jedosa.junglim.item.dto.DesignTypeDto;
-import com.jedosa.junglim.item.dto.FlyleafColorTypeDto;
+import com.jedosa.junglim.item.domain.option.*;
+import com.jedosa.junglim.item.dto.*;
 import com.jedosa.junglim.item.service.ItemOptionService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -107,7 +101,7 @@ public class ApiItemManagementController {
     /**
      * 간지 유형을 저장한다
      */
-    @PostMapping("/api/admin/items/{itemId}/paper/flyleaf-color-types")
+    @PostMapping("/api/admin/items/{itemId}/flyleaf/flyleaf-color-types")
     public FlyleafColorType saveFlyleafType(@RequestBody FlyleafColorTypeDto type,
                                             @Admin SessionAccountDto sessionAccountDto) {
         return itemOptionService.saveFlyleafColorType((FlyleafColorType) type.toDomain());
@@ -116,7 +110,7 @@ public class ApiItemManagementController {
     /**
      * 간지 유형을 수정한다
      */
-    @PutMapping("/api/admin/items/{itemId}/paper/flyleaf-color-types/{flyleafColorTypeId}")
+    @PutMapping("/api/admin/items/{itemId}/flyleaf/flyleaf-color-types/{flyleafColorTypeId}")
     public FlyleafColorType updateFlyleafType(@RequestBody FlyleafColorTypeDto type,
                                               @Admin SessionAccountDto sessionAccountDto) {
         return itemOptionService.saveFlyleafColorType((FlyleafColorType) type.toDomain());
@@ -125,9 +119,63 @@ public class ApiItemManagementController {
     /**
      * 간지 유형을 삭제한다
      */
-    @DeleteMapping("/api/admin/items/{itemId}/paper/flyleaf-color-types/{flyleafColorTypeId}")
+    @DeleteMapping("/api/admin/items/{itemId}/flyleaf/flyleaf-color-types/{flyleafColorTypeId}")
     public ResponseEntity<Void> deleteFlyleafType(@PathVariable Long flyleafColorTypeId, @Admin SessionAccountDto sessionAccountDto) {
         itemOptionService.deleteFlyleafColorType(flyleafColorTypeId);
+        return ResponseEntity.ok().build();
+    }
+
+    /**
+     * 종이 유형을 저장한다
+     */
+    @PostMapping("/api/admin/items/{itemId}/paper/paper-types")
+    public PaperTypeDto savePaperType(@RequestBody PaperTypeDto type,
+                                            @Admin SessionAccountDto sessionAccountDto) {
+        return itemOptionService.savePaperType((PaperType) type.toDomain());
+    }
+
+    /**
+     * 종이 유형을 수정한다
+     */
+    @PutMapping("/api/admin/items/{itemId}/paper/paper-types/{paperTypeId}")
+    public PaperTypeDto updatePaperType(@RequestBody PaperTypeDto type,
+                                              @Admin SessionAccountDto sessionAccountDto) {
+        return itemOptionService.savePaperType((PaperType) type.toDomain());
+    }
+
+    /**
+     * 종이 유형을 삭제한다
+     */
+    @DeleteMapping("/api/admin/items/{itemId}/paper/paper-types/{paperTypeId}")
+    public ResponseEntity<Void> deletePaperType(@PathVariable Long paperTypeId, @Admin SessionAccountDto sessionAccountDto) {
+        itemOptionService.deletePaperType(paperTypeId);
+        return ResponseEntity.ok().build();
+    }
+
+    /**
+     * 종이 규격 유형을 저장한다
+     */
+    @PostMapping("/api/admin/items/{itemId}/paper/paper-size-types")
+    public PaperSizeTypeDto savePaperSizeType(@RequestBody PaperSizeTypeDto type,
+                                      @Admin SessionAccountDto sessionAccountDto) {
+        return itemOptionService.savePaperSizeType((PaperSizeType) type.toDomain());
+    }
+
+    /**
+     * 종이 규격 유형을 수정한다
+     */
+    @PutMapping("/api/admin/items/{itemId}/paper/paper-size-types/{paperSizeTypeId}")
+    public PaperSizeTypeDto updatePaperSizeType(@RequestBody PaperSizeTypeDto type,
+                                        @Admin SessionAccountDto sessionAccountDto) {
+        return itemOptionService.savePaperSizeType((PaperSizeType) type.toDomain());
+    }
+
+    /**
+     * 종이 규격 유형을 삭제한다
+     */
+    @DeleteMapping("/api/admin/items/{itemId}/paper/paper-size-types/{paperSizeTypeId}")
+    public ResponseEntity<Void> deletePaperSizeType(@PathVariable Long paperSizeTypeId, @Admin SessionAccountDto sessionAccountDto) {
+        itemOptionService.deletePaperSizeType(paperSizeTypeId);
         return ResponseEntity.ok().build();
     }
 }
