@@ -9,8 +9,14 @@ function addNewItemOptionForm(clickedElement) {
     let lastRowName = table.lastElementChild.previousElementSibling.getAttribute("name")
     let nameForNotSaved = "new-item-option-template";
 
+    // 종이 유형, 종이 규격 추가시
     if (fullCategoryName === 'paper/paper-types' || fullCategoryName === 'paper/paper-size-types') {
         nameForNotSaved = "new-key-type-item-option-template";
+    }
+
+    // 표지 종이 유형 추가시
+    if (fullCategoryName === 'cover/paper-types' || fullCategoryName === 'content/paper-types') {
+        nameForNotSaved = "new-paper-printing-type-item-option-template";
     }
 
     if (lastRowName === nameForNotSaved) {
@@ -69,11 +75,89 @@ function revealDeleteController(clickedElement) {
     function restoreOriginalValue(row) {
         let fullCategoryName = getFullCategoryName(row.parentElement);
 
-        let itemOptionNameElement = row.querySelector("input[name='item-option-name']");
-        let originalItemOptionName = itemOptionNameElement.dataset.itemOptionName;
-        row.querySelector("input[name='item-option-name']").value = originalItemOptionName;
+        if (fullCategoryName === 'paper/paper-types' || fullCategoryName === 'paper/paper-size-types') {
+            let itemOptionNameElement = row.querySelector("input[name='item-option-name']");
+            let originalItemOptionName = itemOptionNameElement.dataset.itemOptionName;
+            row.querySelector("input[name='item-option-name']").value = originalItemOptionName;
+        }
 
-        if (fullCategoryName !== 'paper/paper-types' && fullCategoryName !== 'paper/paper-size-types') {
+        if (fullCategoryName === 'cover/paper-types' || fullCategoryName === 'content/paper-types') {
+            // Name SELECT 옵션 복구 시작
+            let selectElement = row.querySelector("select[name='item-option-name']");
+            let originalItemOptionName = selectElement.dataset.itemOptionName;
+            let options = selectElement.options;
+            let size = selectElement.length;
+            let indexMatchedName = null;
+
+            // 원본 값(종이 유형 이름)과 일치하는 이름을 가진 option의 index를 찾는다
+            for (let index = 0; index < size; index++) {
+
+                if (options[index].value === originalItemOptionName) {
+                    indexMatchedName = index;
+                    break;
+                }
+            }
+
+            options[indexMatchedName].selected = "selected";
+            // Name SELECT 옵션 복구 끝
+
+            // Size SELECT 옵션 복구 시작
+            selectElement = row.querySelector("select[name='item-option-size']");
+            let originalItemOptionSize = selectElement.dataset.itemOptionSize;
+            options = selectElement.options;
+            size = selectElement.length;
+            indexMatchedName = null;
+
+            // 원본 값(종이 유형 이름)과 일치하는 이름을 가진 option의 index를 찾는다
+            for (let index = 0; index < size; index++) {
+
+                if (options[index].value === originalItemOptionSize) {
+                    indexMatchedName = index;
+                    break;
+                }
+            }
+
+            // 원본 값(종이 유형 이름)과 일치하는 option에 selected를 적용하여 원본 값과 일치하는 option이 선택되게 한다
+            options[indexMatchedName].selected = "selected";
+            // Size SELECT 옵션 복구 끝
+
+            // Printing Color SELECT 옵션 복구 시작
+            selectElement = row.querySelector("select[name='item-option-printing-color']");
+            let originalItemOptionPrintingColor = selectElement.dataset.itemOptionPrintingColor;
+            options = selectElement.options;
+            size = selectElement.length;
+            indexMatchedName = null;
+
+            // 원본 값(종이 유형 이름)과 일치하는 이름을 가진 option의 index를 찾는다
+            for (let index = 0; index < size; index++) {
+
+                if (options[index].value === originalItemOptionPrintingColor) {
+                    indexMatchedName = index;
+                    break;
+                }
+            }
+
+            // 원본 값(종이 유형 이름)과 일치하는 option에 selected를 적용하여 원본 값과 일치하는 option이 선택되게 한다
+            options[indexMatchedName].selected = "selected";
+            // Printing Color SELECT 옵션 복구 끝
+
+            let itemOptionSingleSidePriceElement = row.querySelector("input[name='item-option-single-side-price']");
+            let originalItemOptionSingleSidePrice = itemOptionSingleSidePriceElement.dataset.itemOptionSingleSidePrice;
+            row.querySelector("input[name='item-option-single-side-price']").value = originalItemOptionSingleSidePrice;
+
+            let itemOptionDoubleSidePriceElement = row.querySelector("input[name='item-option-double-side-price']");
+            let originalItemOptionDoubleSidePrice = itemOptionDoubleSidePriceElement.dataset.itemOptionDoubleSidePrice;
+            row.querySelector("input[name='item-option-double-side-price']").value = originalItemOptionDoubleSidePrice;
+        }
+
+        if (fullCategoryName !== 'paper/paper-types' &&
+            fullCategoryName !== 'paper/paper-size-types' &&
+            fullCategoryName !== 'cover/paper-types' &&
+            fullCategoryName !== 'content/paper-types') {
+
+            let itemOptionNameElement = row.querySelector("input[name='item-option-name']");
+            let originalItemOptionName = itemOptionNameElement.dataset.itemOptionName;
+            row.querySelector("input[name='item-option-name']").value = originalItemOptionName;
             let itemOptionPriceElement = row.querySelector("input[name='item-option-price']");
             let originalItemOptionPrice = itemOptionPriceElement.dataset.itemOptionPrice;
             row.querySelector("input[name='item-option-price']").value = originalItemOptionPrice;
@@ -96,29 +180,63 @@ function toggleInputReadOnly(row) {
     let fullCategoryName = getFullCategoryName(row.parentElement);
 
     if(fullCategoryName === 'paper/paper-types' || fullCategoryName === 'paper/paper-size-types') {
-        let inputOptionName = "item-option-name";
-        let isNameReadOnly = row.querySelector("input[name='" + inputOptionName + "']").getAttribute("readonly");
+        let itemOptionName = "item-option-name";
+        let isNameReadOnly = row.querySelector("input[name='" + itemOptionName + "']").getAttribute("readonly");
 
         if (isNameReadOnly === null) {
-            row.querySelector("input[name='" + inputOptionName + "']").setAttribute("readonly", "")
+            row.querySelector("input[name='" + itemOptionName + "']").setAttribute("readonly", "")
         } else {
-            row.querySelector("input[name='" + inputOptionName + "']").removeAttribute("readonly")
+            row.querySelector("input[name='" + itemOptionName + "']").removeAttribute("readonly")
         }
     }
 
-    if (fullCategoryName !== 'paper/paper-types' && fullCategoryName !== 'paper/paper-size-types') {
-        let inputOptionName = "item-option-name";
-        let isNameReadOnly = row.querySelector("input[name='" + inputOptionName + "']").getAttribute("readonly");
+    if(fullCategoryName === 'cover/paper-types' || fullCategoryName === 'content/paper-types') {
+        let itemOptionName = "item-option-name";
+        let isNameReadOnly = row.querySelector("select[name='" + itemOptionName + "']").getAttribute("disabled");
+        let itemOptionSize = "item-option-size";
+        let isSizeReadOnly = row.querySelector("select[name='" + itemOptionSize + "']").getAttribute("disabled");
+        let itemOptionPrintingColor = "item-option-printing-color";
+        let isPrintingColorReadOnly = row.querySelector("select[name='" + itemOptionPrintingColor + "']").getAttribute("disabled");
+        let itemOptionSingleSidePrice = "item-option-single-side-price";
+        let isSingleSideReadOnly = row.querySelector("input[name='" + itemOptionSingleSidePrice + "']").getAttribute("readonly");
+        let itemOptionDoubleSidePrice = "item-option-double-side-price";
+        let isDoubleSideReadOnly = row.querySelector("input[name='" + itemOptionDoubleSidePrice + "']").getAttribute("readonly");
 
-        let inputOptionPrice = "item-option-price";
-        let isPriceReadOnly = row.querySelector("input[name='" + inputOptionPrice + "']").getAttribute("readonly");
+        if (isNameReadOnly === null &&
+            isSizeReadOnly === null &&
+            isPrintingColorReadOnly === null &&
+            isSingleSideReadOnly === null &&
+            isDoubleSideReadOnly === null) {
+            row.querySelector("select[name='" + itemOptionName + "']").setAttribute("disabled", "")
+            row.querySelector("select[name='" + itemOptionSize + "']").setAttribute("disabled", "")
+            row.querySelector("select[name='" + itemOptionPrintingColor + "']").setAttribute("disabled", "")
+            row.querySelector("input[name='" + itemOptionSingleSidePrice + "']").setAttribute("readonly", "")
+            row.querySelector("input[name='" + itemOptionDoubleSidePrice + "']").setAttribute("readonly", "")
+        } else {
+            row.querySelector("select[name='" + itemOptionName + "']").removeAttribute("disabled")
+            row.querySelector("select[name='" + itemOptionSize + "']").removeAttribute("disabled")
+            row.querySelector("select[name='" + itemOptionPrintingColor + "']").removeAttribute("disabled")
+            row.querySelector("input[name='" + itemOptionSingleSidePrice + "']").removeAttribute("readonly")
+            row.querySelector("input[name='" + itemOptionDoubleSidePrice + "']").removeAttribute("readonly")
+        }
+    }
+
+    if (fullCategoryName !== 'paper/paper-types' &&
+        fullCategoryName !== 'paper/paper-size-types' &&
+        fullCategoryName !== 'cover/paper-types' &&
+        fullCategoryName !== 'content/paper-types') {
+
+        let itemOptionName = "item-option-name";
+        let isNameReadOnly = row.querySelector("input[name='" + itemOptionName + "']").getAttribute("readonly");
+        let itemOptionPrice = "item-option-price";
+        let isPriceReadOnly = row.querySelector("input[name='" + itemOptionPrice + "']").getAttribute("readonly");
 
         if (isNameReadOnly === null && isPriceReadOnly === null) {
-            row.querySelector("input[name='" + inputOptionName + "']").setAttribute("readonly", "")
-            row.querySelector("input[name='" + inputOptionPrice + "']").setAttribute("readonly", "")
+            row.querySelector("input[name='" + itemOptionName + "']").setAttribute("readonly", "")
+            row.querySelector("input[name='" + itemOptionPrice + "']").setAttribute("readonly", "")
         } else {
-            row.querySelector("input[name='" + inputOptionName + "']").removeAttribute("readonly")
-            row.querySelector("input[name='" + inputOptionPrice + "']").removeAttribute("readonly")
+            row.querySelector("input[name='" + itemOptionName + "']").removeAttribute("readonly")
+            row.querySelector("input[name='" + itemOptionPrice + "']").removeAttribute("readonly")
         }
     }
 }
@@ -130,18 +248,65 @@ function updateItemOptionData(row, data) {
     // data is JsonObject
     let id = data.id; // 최초 저장시 id를 화면 내 업데이트 해주기 위해서 필요하다
     let name = data.name;
-    let itemOptionNameElement = row.querySelector("input[name='item-option-name']");
     let price = 0;
+    let size = "";
+    let printingColor = "";
+    let singleSidePrice = 0;
+    let doubleSidePrice = 0;
+    let itemOptionNameElement = null;
     let itemOptionPriceElement = null;
+    let itemOptionSizeElement = null;
+    let itemOptionPrintingColorElement = null;
+    let itemOptionSingleSidePriceElement = null;
+    let itemOptionDoubleSidePriceElement = null;
     let fullCategoryName = getFullCategoryName(row.parentElement)
 
-    // update text value
-    itemOptionNameElement.value = name;
-    // update dataset
-    row.dataset.itemOptionId = id;
-    itemOptionNameElement.dataset.itemOptionName = name;
+    if (fullCategoryName === 'cover/paper-types' || fullCategoryName === 'content/paper-types') {
+        itemOptionNameElement = row.querySelector("select[name='item-option-name']");
+        itemOptionNameElement.value = name; // update text value
+        row.dataset.itemOptionId = id; // update dataset
+        itemOptionNameElement.dataset.itemOptionName = name;
 
-    if (fullCategoryName !== 'paper/paper-types' && fullCategoryName !== 'paper/paper-size-types') {
+        size = data.size;
+        itemOptionSizeElement = row.querySelector("select[name='item-option-size']");
+        itemOptionSizeElement.options[itemOptionSizeElement.selectedIndex].value = size;
+        itemOptionSizeElement.dataset.itemOptionSize = size;
+
+        printingColor = data.printingColor;
+        itemOptionPrintingColorElement = row.querySelector("select[name='item-option-printing-color']");
+        itemOptionPrintingColorElement.options[itemOptionPrintingColorElement.selectedIndex].value = printingColor;
+        itemOptionPrintingColorElement.dataset.itemOptionPrintingColor = printingColor;
+
+        singleSidePrice = data.singleSidePrice;
+        itemOptionSingleSidePriceElement = row.querySelector("input[name='item-option-single-side-price']");
+        itemOptionSingleSidePriceElement.value = singleSidePrice;
+        itemOptionSingleSidePriceElement.dataset.itemOptionSingleSidePrice = singleSidePrice;
+
+        doubleSidePrice = data.doubleSidePrice;
+        itemOptionDoubleSidePriceElement = row.querySelector("input[name='item-option-double-side-price']");
+        itemOptionDoubleSidePriceElement.value = doubleSidePrice;
+        itemOptionDoubleSidePriceElement.dataset.itemOptionDoubleSidePrice = doubleSidePrice;
+    }
+
+    if (fullCategoryName === 'paper/paper-types' &&
+        fullCategoryName === 'paper/paper-size-types') {
+
+        itemOptionNameElement = row.querySelector("input[name='item-option-name']");
+        itemOptionNameElement.value = name; // update text value
+        row.dataset.itemOptionId = id; // update dataset
+        itemOptionNameElement.dataset.itemOptionName = name;
+    }
+
+    if (fullCategoryName !== 'paper/paper-types' &&
+        fullCategoryName !== 'paper/paper-size-types' &&
+        fullCategoryName !== 'cover/paper-types' &&
+        fullCategoryName !== 'content/paper-types') {
+
+        itemOptionNameElement = row.querySelector("input[name='item-option-name']");
+        itemOptionNameElement.value = name; // update text value
+        row.dataset.itemOptionId = id; // update dataset
+        itemOptionNameElement.dataset.itemOptionName = name;
+
         price = data.price;
         itemOptionPriceElement = row.querySelector("input[name='item-option-price']");
         itemOptionPriceElement.value = price;
@@ -158,14 +323,50 @@ function saveItemOption(clickedElement) {
     let itemOptionSubCategoryName = row.parentElement.dataset.itemOptionSubCategoryName;
     let fullCategoryName = itemOptionCategoryName + '/' + itemOptionSubCategoryName;
     let itemId = document.getElementById("item-id").value;
-    let itemOptionName = row.querySelector("input[name='item-option-name']").value;
+    let itemOptionName = "";
     let itemOptionPrice = 0;
-    let itemOptionData = {
-        "itemId" : itemId,
-        "name" : itemOptionName,
-    };
+    let itemOptionData = {};
+    let itemOptionSize = "";
+    let itemOptionPrintingColor = "";
+    let itemOptionSingleSidePrice = 0;
+    let itemOptionDoubleSidePrice = 0;
 
-    if (fullCategoryName !== 'paper/paper-types' && fullCategoryName !== 'paper/paper-size-types') {
+    if (fullCategoryName === 'paper/paper-types' || fullCategoryName === 'paper/paper-size-types') {
+        itemOptionName = row.querySelector("input[name='item-option-name']").value;
+
+        itemOptionData = {
+            "itemId" : itemId,
+            "name" : itemOptionName,
+        };
+    }
+
+    if (fullCategoryName === 'cover/paper-types' || fullCategoryName === 'content/paper-types') {
+        itemOptionName = row.querySelector("select[name='item-option-name']").value;
+        itemOptionSize = row.querySelector("select[name='item-option-size']").value;
+        itemOptionPrintingColor = row.querySelector("select[name='item-option-printing-color']").value;
+        itemOptionSingleSidePrice = row.querySelector("input[name='item-option-single-side-price']").value;
+        itemOptionDoubleSidePrice = row.querySelector("input[name='item-option-double-side-price']").value;
+
+        if (!isNumber(itemOptionSingleSidePrice) || !isNumber(itemOptionDoubleSidePrice)) {
+            return;
+        }
+
+        itemOptionData = {
+            "itemId" : itemId,
+            "category" : itemOptionCategoryName,
+            "name" : itemOptionName,
+            "size" : itemOptionSize,
+            "printingColor" : itemOptionPrintingColor,
+            "singleSidePrice" : itemOptionSingleSidePrice,
+            "doubleSidePrice" : itemOptionDoubleSidePrice
+        };
+    }
+
+    if (fullCategoryName !== 'paper/paper-types' &&
+        fullCategoryName !== 'paper/paper-size-types' &&
+        fullCategoryName !== 'cover/paper-types' &&
+        fullCategoryName !== 'content/paper-types') {
+        itemOptionName = row.querySelector("input[name='item-option-name']").value;
         itemOptionPrice = row.querySelector("input[name='item-option-price']").value;
         itemOptionData = {
             "itemId" : itemId,
@@ -173,10 +374,7 @@ function saveItemOption(clickedElement) {
             "price" : itemOptionPrice
         };
 
-        // validation
-        let allowOnlyNumbersRegex = new RegExp(/^[0-9]*$/);
-        if (itemOptionPrice === "" || itemOptionPrice === undefined || !allowOnlyNumbersRegex.test(itemOptionPrice)) {
-            alert("상품 옵션 가격은 숫자만 입력할 수 있습니다.");
+        if (!isNumber(itemOptionPrice)) {
             return;
         }
     }
@@ -200,6 +398,16 @@ function saveItemOption(clickedElement) {
     });
 }
 
+// 숫자만 입력을 허용한다
+function isNumber(value) {
+    let allowOnlyNumbersRegex = new RegExp(/^[0-9]*$/);
+    if (value === "" || value === undefined || !allowOnlyNumbersRegex.test(value)) {
+        alert("가격 항목은 숫자만 입력할 수 있습니다.");
+        return false;
+    }
+    return true;
+}
+
 /**
  * 저장된 아이템 옵션 행(row)임을 알기 위해서 new item option에만 붙는 이름을 제거한다
  */
@@ -217,15 +425,56 @@ function updateItemOption(clickedElement) {
     let itemOptionSubCategoryName = row.parentElement.dataset.itemOptionSubCategoryName;
     let fullCategoryName = itemOptionCategoryName + '/' + itemOptionSubCategoryName;
     let itemOptionId = row.dataset.itemOptionId;
-    let itemOptionName = row.querySelector("input[name='item-option-name']").value;
-    let itemOptionPrice = 0;
-    let itemOptionData = {
-        "itemId" : itemId,
-        "id" : itemOptionId,
-        "name" : itemOptionName,
-    };
+    let itemOptionName = null;
+    let itemOptionPrice = null;
+    let itemOptionSize = null;
+    let itemOptionPrintingColor = null;
+    let itemOptionSingleSidePrice = null;
+    let itemOptionDoubleSidePrice = null;
+    let itemOptionData = null;
 
-    if (fullCategoryName !== 'paper/paper-types' && fullCategoryName !== 'paper/paper-size-types') {
+    if (fullCategoryName === 'paper/paper-types' || fullCategoryName === 'paper/paper-size-types') {
+        itemOptionName = row.querySelector("input[name='item-option-name']").value;
+
+        itemOptionData = {
+            "itemId" : itemId,
+            "id" : itemOptionId,
+            "name" : itemOptionName,
+        };
+    }
+
+    if (fullCategoryName === 'cover/paper-types' || fullCategoryName === 'content/paper-types') {
+
+        let nameElement = row.querySelector("select[name='item-option-name']");
+        itemOptionName = nameElement.options[nameElement.selectedIndex].value;
+        let sizeElement = row.querySelector("select[name='item-option-size']");
+        itemOptionSize = sizeElement.options[sizeElement.selectedIndex].value;
+        let printingColorElement = row.querySelector("select[name='item-option-printing-color']");
+        itemOptionPrintingColor = printingColorElement.options[printingColorElement.selectedIndex].value;
+        itemOptionSingleSidePrice = row.querySelector("input[name='item-option-single-side-price']").value;
+        itemOptionDoubleSidePrice = row.querySelector("input[name='item-option-double-side-price']").value;
+
+        if (!isNumber(itemOptionSingleSidePrice) || !isNumber(itemOptionDoubleSidePrice)) {
+            return;
+        }
+
+        itemOptionData = {
+            "itemId" : itemId,
+            "id" : itemOptionId,
+            "category" : itemOptionCategoryName,
+            "name" : itemOptionName,
+            "size" : itemOptionSize,
+            "printingColor" : itemOptionPrintingColor,
+            "singleSidePrice" : itemOptionSingleSidePrice,
+            "doubleSidePrice" : itemOptionDoubleSidePrice
+        };
+    }
+
+    if (fullCategoryName !== 'paper/paper-types' &&
+        fullCategoryName !== 'paper/paper-size-types' &&
+        fullCategoryName !== 'cover/paper-types' &&
+        fullCategoryName !== 'content/paper-types') {
+        itemOptionName = row.querySelector("input[name='item-option-name']").value;
         itemOptionPrice = row.querySelector("input[name='item-option-price']").value;
 
         itemOptionData = {
@@ -263,7 +512,18 @@ function deleteItemOption(clickedElement) {
     let itemOptionCategoryName = row.parentElement.dataset.itemOptionCategoryName;
     let itemOptionSubCategoryName = row.parentElement.dataset.itemOptionSubCategoryName;
     let itemOptionId = row.dataset.itemOptionId;
-    let itemOptionName = row.querySelector("input[name='item-option-name']").value;
+    let fullCategoryName = getFullCategoryName(row.parentElement);
+    let itemOptionName = null;
+
+    if (fullCategoryName === 'cover/paper-types' || fullCategoryName === 'content/paper-types') {
+        let itemOptionNameElement = row.querySelector("select[name='item-option-name']")
+        itemOptionName = itemOptionNameElement.options[itemOptionNameElement.selectedIndex].value;
+    }
+
+    if (fullCategoryName !== 'cover/paper-types' && fullCategoryName !== 'content/paper-types') {
+        itemOptionName = row.querySelector("input[name='item-option-name']").value
+    }
+
     let inputName = prompt("정말 삭제하시겠습니까?\n삭제하려는 상품 옵션의 이름을 적어주세요", "");
     if (itemOptionName !== inputName) {
         alert("삭제하려는 상품 옵션의 이름과 일치하지 않습니다.");

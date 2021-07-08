@@ -178,4 +178,58 @@ public class ApiItemManagementController {
         itemOptionService.deletePaperSizeType(paperSizeTypeId);
         return ResponseEntity.ok().build();
     }
+
+    /**
+     * 표지 종이 유형을 저장한다
+     */
+    @PostMapping("/api/admin/items/{itemId}/cover/paper-types")
+    public PaperPrintingTypeDto saveCoverPaperType(@RequestBody PaperPrintingTypeDto type,
+                                              @Admin SessionAccountDto sessionAccountDto) {
+        return itemOptionService.savePaperPrintingType((PaperPrintingType) type.toDomain());
+    }
+
+    /**
+     * 표지 종이 유형을 수정한다
+     */
+    @PutMapping("/api/admin/items/{itemId}/cover/paper-types/{paperPrintingTypeId}")
+    public PaperPrintingTypeDto updateCoverPaperType(@RequestBody PaperPrintingTypeDto type,
+                                                @Admin SessionAccountDto sessionAccountDto) {
+        return itemOptionService.savePaperPrintingType((PaperPrintingType) type.toDomain());
+    }
+
+    /**
+     * 표지 종이 유형을 삭제한다
+     */
+    @DeleteMapping("/api/admin/items/{itemId}/cover/paper-types/{paperPrintingTypeId}")
+    public ResponseEntity<Void> deleteCoverPaperType(@PathVariable Long paperPrintingTypeId, @Admin SessionAccountDto sessionAccountDto) {
+        itemOptionService.deletePaperPrintingType(paperPrintingTypeId);
+        return ResponseEntity.ok().build();
+    }
+
+    /**
+     * 본문 종이 유형을 저장한다
+     */
+    @PostMapping("/api/admin/items/{itemId}/content/paper-types")
+    public PaperPrintingTypeDto saveContentPaperType(@RequestBody PaperPrintingTypeDto type,
+                                                   @Admin SessionAccountDto sessionAccountDto) {
+        return itemOptionService.savePaperPrintingType((PaperPrintingType) type.toDomain());
+    }
+
+    /**
+     * 본문 종이 유형을 수정한다
+     */
+    @PutMapping("/api/admin/items/{itemId}/content/paper-types/{paperPrintingTypeId}")
+    public PaperPrintingTypeDto updateContentPaperType(@RequestBody PaperPrintingTypeDto type,
+                                                     @Admin SessionAccountDto sessionAccountDto) {
+        return itemOptionService.savePaperPrintingType((PaperPrintingType) type.toDomain());
+    }
+
+    /**
+     * 본문 종이 유형을 삭제한다
+     */
+    @DeleteMapping("/api/admin/items/{itemId}/content/paper-types/{paperPrintingTypeId}")
+    public ResponseEntity<Void> deleteContentPaperType(@PathVariable Long paperPrintingTypeId, @Admin SessionAccountDto sessionAccountDto) {
+        itemOptionService.deletePaperPrintingType(paperPrintingTypeId);
+        return ResponseEntity.ok().build();
+    }
 }

@@ -249,7 +249,7 @@
                              data-item-option-category-name="cover"
                              data-item-option-sub-category-name="paper-types">
                             <h4>표지 종이 유형</h4>
-                            <div></div>
+                            <div>* 종이 유형과 규격이 보이지 않는다면 종이 종류 및 규격 항목에서 각 항목들을 추가하신 뒤 새로고침(F5)하세요.</div>
                             <!-- 테이블 헤더 -->
                             <div class="row row-cols-6 border-bottom border-2 border-black p-2">
                                 <div class="col">종이 유형</div>
@@ -260,32 +260,46 @@
                                 <div class="col"></div>
                             </div>
                             <!-- 테이블 바디 -->
-                            <div class="row row-cols-6 border-bottom border-gray p-2" name="coating-type-price-table-item"
-                                 th:data-item-option-id="${coatingType.getId()}" th:each="coatingType : ${coatingTypes}">
+                            <div class="row row-cols-6 border-bottom border-gray p-2" name="cover-paper-type-price-table-item"
+                                 th:data-item-option-id="${coverPaperPrintingType.getId()}"
+                                 th:with="itemOptionId=${coverPaperPrintingType.getId()}"
+                                 th:each="coverPaperPrintingType : ${coverPaperPrintingTypes}">
                                 <div class="col">
-                                    <input type="text" name="item-option-name" class="form-control" readonly
-                                           th:data-item-option-name="${coatingType.getName()}"
-                                           th:value="${coatingType.getName()}">
+                                    <select name="item-option-name" class="form-control" disabled
+                                            th:data-item-option-name="${coverPaperPrintingType.getName()}">
+                                        <option th:each="paperType : ${paperTypes}"
+                                                th:value="${paperType.getName()}"
+                                                th:text="${paperType.getName()}"
+                                                th:selected="${coverPaperPrintingType.getName()} eq ${paperType.getName()}">
+                                        </option>
+                                    </select>
                                 </div>
                                 <div class="col">
-                                    <input type="number" name="item-option-price" class="form-control" readonly
-                                           th:data-item-option-price="${coatingType.getPrice().toBigInteger()}"
-                                           th:value="${coatingType.getPrice().toBigInteger()}">
+                                    <select name="item-option-size" class="form-control" disabled
+                                            th:data-item-option-size="${coverPaperPrintingType.getSize()}">
+                                        <option th:each="paperSizeType : ${paperSizeTypes}"
+                                                th:value="${paperSizeType.getName()}"
+                                                th:text="${paperSizeType.getName()}"
+                                                th:selected="${coverPaperPrintingType.getSize()} eq ${paperSizeType.getName()}">
+                                        </option>
+                                    </select>
                                 </div>
                                 <div class="col">
-                                    <input type="number" name="item-option-price" class="form-control" readonly
-                                           th:data-item-option-price="${coatingType.getPrice().toBigInteger()}"
-                                           th:value="${coatingType.getPrice().toBigInteger()}">
+                                    <select name="item-option-printing-color" class="form-control" disabled
+                                            th:data-item-option-printing-color="${coverPaperPrintingType.getPrintingColor()}">
+                                        <option value="흑백" th:selected="${coverPaperPrintingType.getPrintingColor()} eq '흑백'">흑백</option>
+                                        <option value="컬러" th:selected="${coverPaperPrintingType.getPrintingColor()} eq '컬러'">컬러</option>
+                                    </select>
                                 </div>
                                 <div class="col">
-                                    <input type="number" name="item-option-price" class="form-control" readonly
-                                           th:data-item-option-price="${coatingType.getPrice().toBigInteger()}"
-                                           th:value="${coatingType.getPrice().toBigInteger()}">
+                                    <input type="text" name="item-option-single-side-price" class="form-control" readonly
+                                           th:data-item-option-single-side-price="${coverPaperPrintingType.getSingleSidePrice().toBigInteger()}"
+                                           th:value="${coverPaperPrintingType.getSingleSidePrice().toBigInteger()}">
                                 </div>
                                 <div class="col">
-                                    <input type="number" name="item-option-price" class="form-control" readonly
-                                           th:data-item-option-price="${coatingType.getPrice().toBigInteger()}"
-                                           th:value="${coatingType.getPrice().toBigInteger()}">
+                                    <input type="text" name="item-option-double-side-price" class="form-control" readonly
+                                           th:data-item-option-double-side-price="${coverPaperPrintingType.getDoubleSidePrice().toBigInteger()}"
+                                           th:value="${coverPaperPrintingType.getDoubleSidePrice().toBigInteger()}">
                                 </div>
                                 <div class="col">
                                     <div name="controllerForSaved">
@@ -305,6 +319,88 @@
                             <!-- 테이블 행 추가 컨트롤러 -->
                             <div class="controller d-flex justify-content-center mt-3">
                                 <button class="btn btn-primary" onclick="addNewItemOptionForm(this)">표지 종이 유형 추가</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div name="content">
+                    <h3>본문 옵션 가격표</h3>
+                    <div class="container mt-3">
+                        <div name="paper-type"
+                             class="mb-3"
+                             data-item-option-category-name="content"
+                             data-item-option-sub-category-name="paper-types">
+                            <h4>본문 종이 유형</h4>
+                            <div>* 종이 유형과 규격이 보이지 않는다면 종이 종류 및 규격 항목에서 각 항목들을 추가하신 뒤 새로고침(F5)하세요.</div>
+                            <!-- 테이블 헤더 -->
+                            <div class="row row-cols-6 border-bottom border-2 border-black p-2">
+                                <div class="col">종이 유형</div>
+                                <div class="col">규격</div>
+                                <div class="col">색상(흑백/컬러)</div>
+                                <div class="col">단면 금액(원)</div>
+                                <div class="col">양면 금액(원)</div>
+                                <div class="col"></div>
+                            </div>
+                            <!-- 테이블 바디 -->
+                            <div class="row row-cols-6 border-bottom border-gray p-2" name="content-paper-type-price-table-item"
+                                 th:data-item-option-id="${contentPaperPrintingType.getId()}"
+                                 th:with="itemOptionId=${contentPaperPrintingType.getId()}"
+                                 th:each="contentPaperPrintingType : ${contentPaperPrintingTypes}">
+                                <div class="col">
+                                    <select name="item-option-name" class="form-control" disabled
+                                            th:data-item-option-name="${contentPaperPrintingType.getName()}">
+                                        <option th:each="paperType : ${paperTypes}"
+                                                th:value="${paperType.getName()}"
+                                                th:text="${paperType.getName()}"
+                                                th:selected="${contentPaperPrintingType.getName()} eq ${paperType.getName()}">
+                                        </option>
+                                    </select>
+                                </div>
+                                <div class="col">
+                                    <select name="item-option-size" class="form-control" disabled
+                                            th:data-item-option-size="${contentPaperPrintingType.getSize()}">
+                                        <option th:each="paperSizeType : ${paperSizeTypes}"
+                                                th:value="${paperSizeType.getName()}"
+                                                th:text="${paperSizeType.getName()}"
+                                                th:selected="${contentPaperPrintingType.getSize()} eq ${paperSizeType.getName()}">
+                                        </option>
+                                    </select>
+                                </div>
+                                <div class="col">
+                                    <select name="item-option-printing-color" class="form-control" disabled
+                                            th:data-item-option-printing-color="${contentPaperPrintingType.getPrintingColor()}">
+                                        <option value="흑백" th:selected="${contentPaperPrintingType.getPrintingColor()} eq '흑백'">흑백</option>
+                                        <option value="컬러" th:selected="${contentPaperPrintingType.getPrintingColor()} eq '컬러'">컬러</option>
+                                    </select>
+                                </div>
+                                <div class="col">
+                                    <input type="text" name="item-option-single-side-price" class="form-control" readonly
+                                           th:data-item-option-single-side-price="${contentPaperPrintingType.getSingleSidePrice().toBigInteger()}"
+                                           th:value="${contentPaperPrintingType.getSingleSidePrice().toBigInteger()}">
+                                </div>
+                                <div class="col">
+                                    <input type="text" name="item-option-double-side-price" class="form-control" readonly
+                                           th:data-item-option-double-side-price="${contentPaperPrintingType.getDoubleSidePrice().toBigInteger()}"
+                                           th:value="${contentPaperPrintingType.getDoubleSidePrice().toBigInteger()}">
+                                </div>
+                                <div class="col">
+                                    <div name="controllerForSaved">
+                                        <div name="updateController" style="display: none">
+                                            <button class="btn btn-primary" onclick="updateItemOption(this)">저장</button>&nbsp;
+                                            <button class="btn btn-danger" onclick="revealDeleteController(this)">취소
+                                            </button>
+                                        </div>
+                                        <div name="deleteController">
+                                            <button class="btn btn-success" onclick="revealUpdateController(this)">수정
+                                            </button>&nbsp;
+                                            <button class="btn btn-danger" onclick="deleteItemOption(this)">삭제</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- 테이블 행 추가 컨트롤러 -->
+                            <div class="controller d-flex justify-content-center mt-3">
+                                <button class="btn btn-primary" onclick="addNewItemOptionForm(this)">본문 종이 유형 추가</button>
                             </div>
                         </div>
                     </div>
@@ -414,6 +510,60 @@
                     </div>
                 </div>
             </div>
+            <!-- 유형 형태의 새로운 아이템 옵션 행 템플릿 끝 -->
+            <!-- 종이 출력 형태의 새로운 아이템 옵션 행 템플릿 시작 -->
+            <div class="row border-bottom border-gray p-2" id="new-paper-printing-type-item-option-template"
+                 name="new-paper-printing-type-item-option-template" style="display: none">
+                <div class="col">
+                    <select name="item-option-name" class="form-control">
+                        <option th:each="paperType : ${paperTypes}"
+                                th:value="${paperType.name}"
+                                th:text="${paperType.name}">
+                        </option>
+                    </select>
+                </div>
+                <div class="col">
+                    <select name="item-option-size" class="form-control">
+                        <option th:each="paperSizeType : ${paperSizeTypes}"
+                                th:value="${paperSizeType.name}"
+                                th:text="${paperSizeType.name}">
+                        </option>
+                    </select>
+                </div>
+                <div class="col">
+                    <select name="item-option-printing-color" class="form-control">
+                        <option value="흑백">흑백</option>
+                        <option value="컬러">컬러</option>
+                    </select>
+                </div>
+                <div class="col">
+                    <input type="number" name="item-option-single-side-price" class="form-control">
+                </div>
+                <div class="col">
+                    <input type="number" name="item-option-double-side-price" class="form-control">
+                </div>
+                <div class="col">
+                    <div name="controllerForNew">
+                        <div name="saveNewController">
+                            <button class="btn btn-primary" onclick="saveItemOption(this)">저장</button>&nbsp;
+                            <button class="btn btn-danger" onclick="removeNewItemOptionForm(this)">취소</button>
+                        </div>
+                    </div>
+                    <div name="controllerForSaved" style="display: none">
+                        <div name="updateController" style="display: none">
+                            <button class="btn btn-primary" onclick="updateItemOption(this)">저장</button>&nbsp;
+                            <button class="btn btn-danger" onclick="revealDeleteController(this)">취소
+                            </button>
+                        </div>
+                        <div name="deleteController">
+                            <button class="btn btn-success" onclick="revealUpdateController(this)">수정
+                            </button>&nbsp;
+                            <button class="btn btn-danger" onclick="deleteItemOption(this)">삭제</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- 종이 출력 형태의 새로운 아이템 옵션 행 템플릿 끝 -->
         </div>
     </div>
 </div>

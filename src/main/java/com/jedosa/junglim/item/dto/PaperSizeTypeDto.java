@@ -15,8 +15,6 @@ import javax.persistence.Id;
 @NoArgsConstructor
 public class PaperSizeTypeDto implements Domainable {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private Long itemId;
     private String name;

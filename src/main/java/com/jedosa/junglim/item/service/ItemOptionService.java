@@ -17,19 +17,22 @@ public class ItemOptionService {
     private final FlyleafColorTypeRepository flyleafColorTypeRepository;
     private final PaperTypeRepository paperTypeRepository;
     private final PaperSizeTypeRepository paperSizeTypeRepository;
+    private final PaperPrintingTypeRepository paperPrintingTypeRepository;
 
     public ItemOptionService(BindingTypeRepository bindingTypeRepository,
                              CoatingTypeRepository coatingTypeRepository,
                              DesignTypeRepository designTypeRepository,
                              FlyleafColorTypeRepository flyleafColorTypeRepository,
                              PaperTypeRepository paperTypeRepository,
-                             PaperSizeTypeRepository paperSizeTypeRepository) {
+                             PaperSizeTypeRepository paperSizeTypeRepository,
+                             PaperPrintingTypeRepository paperPrintingTypeRepository) {
         this.bindingTypeRepository = bindingTypeRepository;
         this.coatingTypeRepository = coatingTypeRepository;
         this.designTypeRepository = designTypeRepository;
         this.flyleafColorTypeRepository = flyleafColorTypeRepository;
         this.paperTypeRepository = paperTypeRepository;
         this.paperSizeTypeRepository = paperSizeTypeRepository;
+        this.paperPrintingTypeRepository = paperPrintingTypeRepository;
     }
 
     public BindingType saveBindingType(BindingType type) {
@@ -102,5 +105,21 @@ public class ItemOptionService {
 
     public List<PaperSizeTypeDto> getAllPaperSizeTypes() {
         return paperSizeTypeRepository.findAll().stream().map(PaperSizeTypeDto::new).collect(Collectors.toList());
+    }
+
+    public PaperPrintingTypeDto savePaperPrintingType(PaperPrintingType type) {
+        return new PaperPrintingTypeDto(paperPrintingTypeRepository.save(type));
+    }
+
+    public void deletePaperPrintingType(Long paperPrintingTypeId) {
+        paperPrintingTypeRepository.deleteById(paperPrintingTypeId);
+    }
+
+    public List<PaperPrintingTypeDto> getAllCoverPaperPrintingTypes() {
+        return paperPrintingTypeRepository.findAll().stream().filter(type -> type.getCategory().equals("cover")).map(PaperPrintingTypeDto::new).collect(Collectors.toList());
+    }
+
+    public List<PaperPrintingTypeDto> getAllContentPaperPrintingTypes() {
+        return paperPrintingTypeRepository.findAll().stream().filter(type -> type.getCategory().equals("content")).map(PaperPrintingTypeDto::new).collect(Collectors.toList());
     }
 }

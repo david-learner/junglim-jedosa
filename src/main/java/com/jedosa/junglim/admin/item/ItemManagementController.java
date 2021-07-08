@@ -29,6 +29,8 @@ public class ItemManagementController {
             model.addAttribute("flyleafColorTypes", itemOptionService.getAllFlyleafColorTypes());
             model.addAttribute("paperTypes", itemOptionService.getAllPaperTypes());
             model.addAttribute("paperSizeTypes", itemOptionService.getAllPaperSizeTypes());
+            model.addAttribute("coverPaperPrintingTypes", itemOptionService.getAllCoverPaperPrintingTypes());
+            model.addAttribute("contentPaperPrintingTypes", itemOptionService.getAllContentPaperPrintingTypes());
         }
 
         return "/admin/item/printing-and-binding";
