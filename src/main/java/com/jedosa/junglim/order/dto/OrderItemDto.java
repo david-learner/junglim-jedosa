@@ -37,6 +37,7 @@ public class OrderItemDto {
     private String coverCoatingType; // 커버 코팅 형식
     private String coverDesignName; // 커버 디자인 이름
     private String contentPrintingType; // 본문 출력 형식 (양면, 단면)
+    private String contentPrintingColorType; // 본문 출력 색상 (흑백, 컬러)
     private String contentPageCount; // 본문 페이지 수
     private String contentPaperType; // 본문 종이 타입
     private Boolean hasFlyleaf; // 간지 추가 여부
@@ -45,6 +46,7 @@ public class OrderItemDto {
     private Boolean hasFlyleafContentPrinting; // 간지 문구 인쇄 여부
     private String flyleafContentPrintingValue; // 간지 인쇄 문구
     private String flyleafInsertLocation; // 간지 삽입 위치
+    private String customerComment; // 고객 요청사항
     private Integer pageCountPerBook; // 1부당 페이지 수
     private Integer bookCount; // 부수
 
@@ -67,6 +69,7 @@ public class OrderItemDto {
         this.coverCoatingType = orderItem.getItemOption().getCoverCoatingType();
         this.coverDesignName = orderItem.getItemOption().getCoverDesignName();
         this.contentPrintingType = orderItem.getItemOption().getContentPrintingType();
+        this.contentPrintingColorType = orderItem.getItemOption().getContentPrintingColorType();
         this.contentPageCount = orderItem.getItemOption().getContentPageCount();
         this.contentPaperType = orderItem.getItemOption().getContentPaperType();
         this.hasFlyleaf = orderItem.getItemOption().getHasFlyleaf();
@@ -75,6 +78,7 @@ public class OrderItemDto {
         this.hasFlyleafContentPrinting = orderItem.getItemOption().getHasFlyleafContentPrinting();
         this.flyleafContentPrintingValue = orderItem.getItemOption().getFlyleafContentPrintingValue();
         this.flyleafInsertLocation = orderItem.getItemOption().getFlyleafInsertLocation();
+        this.customerComment = orderItem.getItemOption().getCustomerComment();
         this.pageCountPerBook = orderItem.getItemOption().getPageCountPerBook();
         this.bookCount = orderItem.getItemOption().getBookCount();
     }
@@ -90,6 +94,7 @@ public class OrderItemDto {
                 .coverCoatingType(coverCoatingType)
                 .coverDesignName(coverDesignName)
                 .contentPrintingType(contentPrintingType)
+                .contentPrintingColorType(contentPrintingColorType)
                 .contentPageCount(contentPageCount)
                 .contentPaperType(contentPaperType)
                 .hasFlyleaf(hasFlyleaf)
@@ -98,6 +103,7 @@ public class OrderItemDto {
                 .hasFlyleafContentPrinting(hasFlyleafContentPrinting)
                 .flyleafContentPrintingValue(flyleafContentPrintingValue)
                 .flyleafInsertLocation(flyleafInsertLocation)
+                .customerComment(customerComment)
                 .pageCountPerBook(pageCountPerBook)
                 .bookCount(bookCount).build();
 
@@ -121,29 +127,34 @@ public class OrderItemDto {
         if (itemId == 1L) {
             List<String> itemOptions = new ArrayList<>();
             itemOptions.add("사이즈: " + paperSize);
-            itemOptions.add("제본형식: " + bindingType);
+            itemOptions.add("제본유형: " + bindingType);
             itemOptions.add("제본방향: " + bindingDirection);
             // 표지
+            itemOptions.add("<b>표지</b>");
             itemOptions.add("표지 출력 형식: " + coverPrintingType);
             itemOptions.add("표지 출력 색상: " + coverPrintingColorType);
             itemOptions.add("표지 종이: " + coverPaperType);
             itemOptions.add("표지 코팅: " + coverCoatingType);
             itemOptions.add("표지 디자인: " + coverDesignName);
             // 본문
+            itemOptions.add("<b>본문</b>");
             itemOptions.add("본문 출력 형식: " + contentPrintingType);
+            itemOptions.add("본문 출력 색상: " + contentPrintingColorType);
             itemOptions.add("본문 종이: " + contentPaperType);
             itemOptions.add("본문 페이지 수: " + contentPageCount);
             // 간지 여부
             if (hasFlyleaf) {
-                itemOptions.add("<b>간지 추가</b>");
+                itemOptions.add("<b>간지</b>");
                 itemOptions.add("간지 색상: " + flyleafColorType);
                 itemOptions.add("1부당 간지 수량: " + flyleafCountPerBook);
+                itemOptions.add("간지 삽입 위치: " + flyleafInsertLocation);
             }
             if (hasFlyleafContentPrinting) {
                 itemOptions.add("<b>간지 문구 인쇄</b>");
                 itemOptions.add("간지 인쇄 문구: " + flyleafContentPrintingValue);
-                itemOptions.add("간지 삽입 위치: " + flyleafInsertLocation);
             }
+            itemOptions.add("<b>고객 요청사항</b>");
+            itemOptions.add("고객 요청사항: " + customerComment);
             itemOptions.add("1부당 페이지 수: " + pageCountPerBook);
 
             return String.join("<br>", itemOptions);

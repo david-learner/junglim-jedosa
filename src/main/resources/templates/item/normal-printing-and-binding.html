@@ -103,9 +103,6 @@
                                         th:text="${designType.name}"
                                         th:data-price="${designType.price.toBigInteger()}">
                                 </option>
-<!--                                <option value="디자인 선택안함">디자인 선택안함</option>-->
-<!--                                <option value="junglim-0001">정림제도사 1번 표지</option>-->
-<!--                                <option value="junglim-0002">정림제도사 2번 표지</option>-->
                             </select>
                             <span><a href="/board/cover-sample" onclick="return popup(this, '표지 살펴보기')">표지 살펴보기</a></span>
                         </div>
@@ -119,10 +116,12 @@
                                 <option value="양면">양면인쇄</option>
                             </select>
                         </div>
-                        <div class="col-4 pt-2 pb-2">페이지</div>
+                        <div class="col-4 pt-2 pb-2">흑백/컬러</div>
                         <div class="col-8 pt-2 pb-2">
-                            <input type="number" name="content-page-count" id="content-page-count" value="1" min="1"
-                                   onchange="updatePageCountPerBook()">
+                            <select name="content-printing-color-type" id="content-printing-color-type">
+                                <option value="흑백">흑백(1도)</option>
+                                <option value="컬러">컬러(4도)</option>
+                            </select>
                         </div>
                         <div class="col-4 pt-2 pb-2">종이</div>
                         <div class="col-8 pt-2 pb-2">
@@ -132,6 +131,11 @@
                                         th:text="${paperType.name}">
                                 </option>
                             </select>
+                        </div>
+                        <div class="col-4 pt-2 pb-2">페이지</div>
+                        <div class="col-8 pt-2 pb-2">
+                            <input type="number" name="content-page-count" id="content-page-count" value="1" min="1"
+                                   onchange="updatePageCountPerBook()">
                         </div>
                     </div>
                     <div class="row border-bottom pt-4 pb-4">
@@ -157,6 +161,10 @@
                                 <input type="number" name="flyleaf-count-per-book" id="flyleaf-count-per-book" value="1" min="1"
                                        onchange="updatePageCountPerBook()">
                             </div>
+                            <div class="col-4 pt-2 pb-2">간지 삽입페이지</div>
+                            <div class="col-8 pt-2 pb-2">
+                                <textarea name="flyleaf-insert-location" id="flyleaf-insert-location" cols="30" rows="3"></textarea>
+                            </div>
                         </div>
                         <div class="col-4 pt-2 pb-2">간지 문구 인쇄</div>
                         <div class="col-8 pt-2 pb-2">
@@ -168,10 +176,12 @@
                             <div class="col-8 pt-2 pb-2">
                                 <textarea name="flyleaf-content-printing-value" id="flyleaf-content-printing-value" cols="30" rows="3"></textarea>
                             </div>
-                            <div class="col-4 pt-2 pb-2">간지 삽입페이지</div>
-                            <div class="col-8 pt-2 pb-2">
-                                <textarea name="flyleaf-insert-location" id="flyleaf-insert-location" cols="30" rows="3"></textarea>
-                            </div>
+                        </div>
+                    </div>
+                    <div class="row border-bottom pt-4 pb-4">
+                        <div class="col-4 pt-2 pb-2"><b>별도 요청사항</b></div>
+                        <div class="col-8 pt-2 pb-2">
+                            <textarea name="customer-comment" id="customer-comment" cols="30" rows="3">없음</textarea>
                         </div>
                     </div>
                     <div class="row border-bottom pt-4 pb-4">
@@ -197,7 +207,9 @@
                         <div class="col-8 pt-2 pb-2">
                             <input type="number" name="total-price" id="total-price" readonly value="1100">원
                         </div>
-                        <div class="col-12 pt-2 pb-2 d-flex justify-content-center"><button class="btn btn-primary w-50" onclick="addToCart()">제작 신청</button></div>
+                        <div class="col-12 pt-2 pb-2 d-flex justify-content-center">
+                            <button class="btn btn-primary w-50" onclick="addToCart()">제작 신청</button>
+                        </div>
                     </div>
                 </div>
             </div>

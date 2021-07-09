@@ -68,23 +68,32 @@ function addToCart() {
     let ordererId = document.getElementById("orderer-id").value;
     let itemId = document.getElementById("item-id").value;
     let itemName = document.getElementById("item-name").value;
+    // 종이 사이즈
     let paperSize = document.getElementById("paper-size").value;
+    // 제본
     let bindingType = document.getElementById("binding-type").value;
     let bindingDirection = document.getElementById("binding-direction").value;
+    // 표지
     let coverPrintingType = document.getElementById("cover-printing-type").value;
     let coverPrintingColorType = document.getElementById("cover-printing-color-type").value;
     let coverPaperType = document.getElementById("cover-paper-type").value;
     let coverCoatingType = document.getElementById("cover-coating-type").value;
     let coverDesignName = document.getElementById("cover-design-name").value;
+    // 본문
     let contentPrintingType = document.getElementById("content-printing-type").value;
+    let contentPrintingColorType = document.getElementById("content-printing-color-type").value;
     let contentPageCount = document.getElementById("content-page-count").value;
     let contentPaperType = document.getElementById("content-paper-type").value;
+    // 간지
     let flyleaf = document.querySelector("input[name='flyleaf']:checked").value;
     let flyleafColorType = document.getElementById("flyleaf-color-type").value;
     let flyleafCountPerBook = document.getElementById("flyleaf-count-per-book").value;
     let flyleafContentPrinting = document.querySelector("input[name='flyleaf-content-printing']:checked").value;
     let flyleafContentPrintingValue = document.getElementById("flyleaf-content-printing-value").value;
     let flyleafInsertLocation = document.getElementById("flyleaf-insert-location").value;
+    // 고객 요청사항
+    let customerComment = document.getElementById("customer-comment").value;
+    // 제작
     let pageCountPerBook = document.getElementById("page-count-per-book").value;
     let bookCount = document.getElementById("book-count").value;
     let itemPrice = document.getElementById("item-price").value;
@@ -102,6 +111,7 @@ function addToCart() {
     // console.log("coverCoatingType: " + coverCoatingType)
     // console.log("coverDesignType: " + coverDesignType)
     // console.log("contentPrintingType: " + contentPrintingType)
+    // console.log("contentPrintingColorType: " + contentPrintingColorType)
     // console.log("contentPageCount: " + contentPageCount)
     // console.log("contentPaperType: " + contentPaperType)
     // console.log("flyleaf: " + flyleaf)
@@ -110,6 +120,7 @@ function addToCart() {
     // console.log("flyleafContentPrinting: " + flyleafContentPrinting)
     // console.log("flyleafContentPrintingValue: " + flyleafContentPrintingValue)
     // console.log("flyleafLocation: " + flyleafLocation)
+    // console.log("customerComment: " + customerComment)
     // console.log("pageCountPerBook: " + pageCountPerBook)
     // console.log("bookCount: " + bookCount)
     // console.log("price: " + price)
@@ -129,6 +140,7 @@ function addToCart() {
     itemOptionFormData.append("coverCoatingType", coverCoatingType);
     itemOptionFormData.append("coverDesignName", coverDesignName);
     itemOptionFormData.append("contentPrintingType", contentPrintingType);
+    itemOptionFormData.append("contentPrintingColorType", contentPrintingColorType);
     itemOptionFormData.append("contentPageCount", contentPageCount);
     itemOptionFormData.append("contentPaperType", contentPaperType);
     itemOptionFormData.append("hasFlyleaf", flyleaf);
@@ -137,6 +149,7 @@ function addToCart() {
     itemOptionFormData.append("hasFlyleafContentPrinting", flyleafContentPrinting);
     itemOptionFormData.append("flyleafContentPrintingValue", flyleafContentPrintingValue);
     itemOptionFormData.append("flyleafInsertLocation", flyleafInsertLocation);
+    itemOptionFormData.append("customerComment", customerComment);
     itemOptionFormData.append("pageCountPerBook", pageCountPerBook);
     itemOptionFormData.append("bookCount", bookCount);
     itemOptionFormData.append("itemPrice", itemPrice);
