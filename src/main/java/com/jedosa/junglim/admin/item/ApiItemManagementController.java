@@ -8,6 +8,8 @@ import com.jedosa.junglim.item.service.ItemOptionService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 public class ApiItemManagementController {
 
@@ -15,6 +17,14 @@ public class ApiItemManagementController {
 
     public ApiItemManagementController(ItemOptionService itemOptionService) {
         this.itemOptionService = itemOptionService;
+    }
+
+    /**
+     * 종이 가격 테이블을 제공한다
+     */
+    @GetMapping("/api/paper-prices")
+    public List<PaperPrintingTypeDto> getAllPaperPrices() {
+        return itemOptionService.getAllPaperPrintingTypes();
     }
 
     /**
@@ -231,5 +241,14 @@ public class ApiItemManagementController {
     public ResponseEntity<Void> deleteContentPaperType(@PathVariable Long paperPrintingTypeId, @Admin SessionAccountDto sessionAccountDto) {
         itemOptionService.deletePaperPrintingType(paperPrintingTypeId);
         return ResponseEntity.ok().build();
+    }
+
+    /**
+     * 간지 문구 출력 가격을 수정한다
+     */
+    @PutMapping("/api/admin/items/{itemId}/flyleaf/flyleaf-content/{id}")
+    public FlyleafContentPriceDto updateFlyleafContentPrice(@RequestBody FlyleafContentPriceDto type,
+                                                     @Admin SessionAccountDto sessionAccountDto) {
+        return itemOptionService.saveFlyleafContentPrice((FlyleafContentPrice) type.toDomain());
     }
 }

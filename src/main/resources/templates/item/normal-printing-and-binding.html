@@ -32,7 +32,7 @@
                     <div class="row border-bottom pt-4 pb-4">
                         <div class="col-4"><b>사이즈</b></div>
                         <div class="col-8">
-                            <select name="paper-size" id="paper-size">
+                            <select name="paper-size" id="paper-size" onchange="updatePrice()">
                                 <option th:each="paperSizeType : ${paperSizeTypes}"
                                         th:value="${paperSizeType.name}"
                                         th:text="${paperSizeType.name}">
@@ -44,7 +44,7 @@
                         <div class="col-12"><b>제본</b></div>
                         <div class="col-4 pt-2 pb-2">제본유형</div>
                         <div class="col-8 pt-2 pb-2">
-                            <select name="binding-type" id="binding-type">
+                            <select name="binding-type" id="binding-type" onchange="updatePrice()">
                                 <option th:each="bindingType : ${bindingTypes}"
                                         th:value="${bindingType.name}"
                                         th:text="${bindingType.name}"
@@ -54,7 +54,7 @@
                         </div>
                         <div class="col-4 pt-2 pb-2">제본방향</div>
                         <div class="col-8 pt-2 pb-2">
-                            <select name="binding-direction" id="binding-direction">
+                            <select name="binding-direction" id="binding-direction" onchange="updatePrice()">
                                 <option value="좌철">좌철</option>
                                 <option value="상철">상철</option>
                             </select>
@@ -64,21 +64,21 @@
                         <div class="col-12"><b>표지인쇄</b></div>
                         <div class="col-4 pt-2 pb-2">단면/양면</div>
                         <div class="col-8 pt-2 pb-2">
-                            <select name="cover-printing-type" id="cover-printing-type">
+                            <select name="cover-printing-type" id="cover-printing-type" onchange="updatePrice()">
                                 <option value="단면">단면인쇄</option>
                                 <option value="양면">양면인쇄</option>
                             </select>
                         </div>
                         <div class="col-4 pt-2 pb-2">흑백/컬러</div>
                         <div class="col-8 pt-2 pb-2">
-                            <select name="cover-printing-color-type" id="cover-printing-color-type">
+                            <select name="cover-printing-color-type" id="cover-printing-color-type" onchange="updatePrice()">
                                 <option value="흑백">흑백(1도)</option>
                                 <option value="컬러">컬러(4도)</option>
                             </select>
                         </div>
                         <div class="col-4 pt-2 pb-2">종이</div>
                         <div class="col-8 pt-2 pb-2">
-                            <select name="cover-paper-type" id="cover-paper-type">
+                            <select name="cover-paper-type" id="cover-paper-type" onchange="updatePrice()">
                                 <option th:each="paperType : ${paperTypes}"
                                         th:value="${paperType.name}"
                                         th:text="${paperType.name}">
@@ -87,7 +87,7 @@
                         </div>
                         <div class="col-4 pt-2 pb-2">코팅</div>
                         <div class="col-8 pt-2 pb-2">
-                            <select name="cover-coating-type" id="cover-coating-type">
+                            <select name="cover-coating-type" id="cover-coating-type" onchange="updatePrice()">
                                 <option th:each="coatingType : ${coatingTypes}"
                                         th:value="${coatingType.name}"
                                         th:text="${coatingType.name}"
@@ -97,7 +97,7 @@
                         </div>
                         <div class="col-4 pt-2 pb-2">디자인</div>
                         <div class="col-8 pt-2 pb-2">
-                            <select name="cover-design-name" id="cover-design-name" class="mr-2">
+                            <select name="cover-design-name" id="cover-design-name" class="mr-2" onchange="updatePrice()">
                                 <option th:each="designType : ${designTypes}"
                                         th:value="${designType.name}"
                                         th:text="${designType.name}"
@@ -111,21 +111,21 @@
                         <div class="col-12"><b>본문인쇄</b></div>
                         <div class="col-4 pt-2 pb-2">단면/양면</div>
                         <div class="col-8 pt-2 pb-2">
-                            <select name="content-printing-type" id="content-printing-type">
+                            <select name="content-printing-type" id="content-printing-type" onchange="updatePrice()">
                                 <option value="단면">단면인쇄</option>
                                 <option value="양면">양면인쇄</option>
                             </select>
                         </div>
                         <div class="col-4 pt-2 pb-2">흑백/컬러</div>
                         <div class="col-8 pt-2 pb-2">
-                            <select name="content-printing-color-type" id="content-printing-color-type">
+                            <select name="content-printing-color-type" id="content-printing-color-type" onchange="updatePrice()">
                                 <option value="흑백">흑백(1도)</option>
                                 <option value="컬러">컬러(4도)</option>
                             </select>
                         </div>
                         <div class="col-4 pt-2 pb-2">종이</div>
                         <div class="col-8 pt-2 pb-2">
-                            <select name="content-paper-type" id="content-paper-type">
+                            <select name="content-paper-type" id="content-paper-type" onchange="updatePrice()">
                                 <option th:each="paperType : ${paperTypes}"
                                         th:value="${paperType.name}"
                                         th:text="${paperType.name}">
@@ -142,8 +142,12 @@
                         <div class="col-12"><b>간지</b></div>
                         <div class="col-4 pt-2 pb-2">추가 여부</div>
                         <div class="col-8 pt-2 pb-2">
-                            <span class="mr-2"><input type="radio" name="flyleaf" value="true" onclick="toggleFlyleafOption()">&nbsp;추가</span>
-                            <span><input type="radio" name="flyleaf" value="false" onclick="toggleFlyleafOption()" checked>&nbsp;추가안함</span>
+                            <span class="mr-2">
+                                <input type="radio" name="flyleaf" value="true" onclick="toggleFlyleafOption()">&nbsp;추가
+                            </span>
+                            <span>
+                                <input type="radio" name="flyleaf" value="false" onclick="toggleFlyleafOption()" checked>&nbsp;추가안함
+                            </span>
                         </div>
                         <div id="flyleaf-option-form" class="col-12">
                             <div class="col-4 pt-2 pb-2">색상</div>
@@ -168,8 +172,14 @@
                         </div>
                         <div class="col-4 pt-2 pb-2">간지 문구 인쇄</div>
                         <div class="col-8 pt-2 pb-2">
-                            <span class="mr-2"><input type="radio" name="flyleaf-content-printing" value="true" onclick="toggleFlyleafContentPrintingOption()">&nbsp;문구 인쇄</span>
-                            <span><input type="radio" name="flyleaf-content-printing" value="false" checked onclick="toggleFlyleafContentPrintingOption()">&nbsp;문구 인쇄 안함</span>
+                            <span class="mr-2">
+                                <input type="radio" name="flyleaf-content-printing" value="true"
+                                       onclick="toggleFlyleafContentPrintingOption()" th:data-flyleaf-content-price="${flyleafContentPrice.getPrice().toBigInteger()}">&nbsp;문구 인쇄
+                            </span>
+                            <span>
+                                <input type="radio" name="flyleaf-content-printing"
+                                       value="false" checked onclick="toggleFlyleafContentPrintingOption()">&nbsp;문구 인쇄 안함
+                            </span>
                         </div>
                         <div id="flyleaf-content-printing-option-form" class="col-12">
                             <div class="col-4 pt-2 pb-2">간지 인쇄 문구</div>
@@ -191,24 +201,24 @@
                         </div>
                         <div class="col-4 pt-2 pb-2"><b>제작 수량(부수)</b></div>
                         <div class="col-8 pt-2 pb-2">
-                            <input type="number" name="book-count" id="book-count" value="1">
+                            <input type="number" name="book-count" id="book-count" value="1" min="1" onchange="updatePrice()">
                         </div>
                     </div>
                     <div class="row pt-4 pb-4">
                         <div class="col-4 pt-2 pb-2"><b>공급가격</b></div>
                         <div class="col-8 pt-2 pb-2">
-                            <input type="number" name="item-price" id="item-price" readonly value="1000">원
+                            <input type="number" name="item-price" id="item-price" readonly value="0">원
                         </div>
                         <div class="col-4 pt-2 pb-2"><b>VAT</b></div>
                         <div class="col-8 pt-2 pb-2">
-                            <input type="number" name="vat" id="vat" readonly value="100">원
+                            <input type="number" name="vat" id="vat" readonly value="0">원
                         </div>
                         <div class="col-4 pt-2 pb-2"><b>총 제작비용<br>(공급가격+VAT)</b></div>
                         <div class="col-8 pt-2 pb-2">
-                            <input type="number" name="total-price" id="total-price" readonly value="1100">원
+                            <input type="number" name="total-price" id="total-price" readonly value="0">원
                         </div>
                         <div class="col-12 pt-2 pb-2 d-flex justify-content-center">
-                            <button class="btn btn-primary w-50" onclick="addToCart()">제작 신청</button>
+                            <button class="btn btn-primary w-50" id="order-button" onclick="addToCart()">제작 신청</button>
                         </div>
                     </div>
                 </div>

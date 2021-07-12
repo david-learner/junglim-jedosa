@@ -1,5 +1,75 @@
+var paperPriceTable = {};
+
 window.onload = function () {
-    // 간지 옵션 미노출
+    updatePrice();
+}
+
+// DOMContentLoaded는 HTML만을 완전히 불러왔을 때 실행된다
+window.addEventListener('DOMContentLoaded', (event) => {
+    hideFlyleafItemOption();
+    validateEmptyOption();
+    getPaperPriceTableFromServer();
+})
+
+function getPaperPriceTableFromServer() {
+
+    $.ajax({
+        url: '/api/paper-prices',
+        method: 'GET',
+        dataType: "json",
+    }).done(function (data, textStatus, jqXHR) {
+        paperPriceTable = data;
+        console.log('paperPriceTable');
+        console.log(paperPriceTable);
+    }).fail(function (jqXHR, textStatus, errorThrown) {
+        alert(jqXHR.responseJSON.message);
+    });
+}
+
+// 주문에 필요한 옵션들이 존재하는지
+function validateEmptyOption() {
+    if(!hasOverOneOption()) {
+        disableOrderButton();
+    }
+    if (hasOverOneOption()) {
+        enableOrderButton();
+    }
+}
+
+function hasOverOneOption() {
+    if(document.getElementById("paper-size").length === 0 ||
+        document.getElementById("binding-type").length === 0 ||
+        document.getElementById("cover-printing-type").length === 0 ||
+        document.getElementById("cover-printing-color-type").length === 0 ||
+        document.getElementById("cover-paper-type").length === 0 ||
+        document.getElementById("cover-coating-type").length === 0 ||
+        document.getElementById("cover-design-name").length === 0 ||
+        document.getElementById("content-printing-type").length === 0 ||
+        document.getElementById("content-printing-color-type").length === 0 ||
+        document.getElementById("content-paper-type").length === 0 ||
+        document.getElementById("flyleaf-color-type").length === 0) {
+        return false;
+    }
+    return true;
+}
+
+// disabled 속성을 넣으면 onClick이 먹지 않기 때문에 제외
+function disableOrderButton() {
+    let orderButton = document.getElementById("order-button");
+    orderButton.setAttribute("onClick", "errorOfNotEnoughItemOption()");
+}
+
+function enableOrderButton() {
+    let orderButton = document.getElementById("order-button");
+    orderButton.setAttribute("onClick", "addToCart()");
+}
+// todo 주문버튼 막는 동작, 복구 동작 확인
+function errorOfNotEnoughItemOption() {
+    // 관리자 - 상품 옵션 항목에서 상품 옵션을 추가해야 합니다.
+    alert("현재 주문할 수 없는 상태입니다.\n관리자에서 문의하시기 바랍니다.\n(오류내용: 상품 옵션 부족)");
+}
+
+function hideFlyleafItemOption() {
     let flyleafOptionForm = document.querySelector("#flyleaf-option-form");
     if (flyleafOptionForm != null) {
         flyleafOptionForm.style.display = "none";
@@ -38,6 +108,8 @@ function toggleFlyleafContentPrintingOption() {
     } else {
         document.querySelector("#flyleaf-content-printing-option-form").style.display = "none";
     }
+
+    updatePrice();
 }
 
 function updatePageCountPerBook() {
@@ -50,17 +122,15 @@ function updatePageCountPerBook() {
     let sumForPageCountPerBook = 0;
     // 만약 간지 추가가 아니라면 간지 수는 제외
     if (hasFlyleaf === "true") {
-        console.log("HAS FLYLEAF");
         sumForPageCountPerBook = contentPageCount + flyleafCountPerBook;
-    } else { // !hasFlyleaf
-        console.log("HAS NOT FLYLEAF");
+    }
+    if (hasFlyleaf === 'false') {
         sumForPageCountPerBook = contentPageCount;
     }
-    console.log("Content Page Count: " + contentPageCount)
-    console.log("Has Flyleaf: " + hasFlyleaf)
-    console.log("flyleafCountPerBook: " + flyleafCountPerBook)
     let pageCountPerBook = document.getElementById("page-count-per-book");
     pageCountPerBook.value = sumForPageCountPerBook;
+
+    updatePrice();
 }
 
 
@@ -238,4 +308,185 @@ function order() {
     }).fail(function (jqXHR, textStatus, errorThrown) {
         alert(jqXHR.responseJSON.message);
     });
+}
+
+function updatePrice() {
+    function updatePriceElementValue(price) {
+        let priceElement = document.getElementById("item-price");
+        priceElement.value = price;
+    }
+    function updateVatElementValue(vat) {
+        let vatElement = document.getElementById("vat");
+        vatElement.value = vat;
+    }
+    function calculateVat(price) {
+        return price * 0.1;
+    }
+    function updateTotalPriceElementValue(price, vat) {
+        // 일의자리 버림
+        let sumPriceAndVat = Number(price) + Number(vat);
+        let resultForCuttingUnitDigit = sumPriceAndVat - (sumPriceAndVat % 10);
+        let totalPriceElement = document.getElementById("total-price");
+        totalPriceElement.value = resultForCuttingUnitDigit;
+    }
+
+    let price = calculatePrice();
+    let vat = calculateVat(price);
+    updatePriceElementValue(price);
+    updateVatElementValue(vat);
+    updateTotalPriceElementValue(price, vat);
+}
+
+function calculatePrice() {
+    let paperSize = getPaperSize(); // 종이 규격
+    let bindingTypePrice = getBindingTypePrice(); // 제본유형
+    let coverDesignPrice = getDesignTypePrice(); // 디자인
+    let coverCoatingPrice = getCoverCoatingTyprPrice(); // 표지 코팅
+    let coverPaperPrice = getCoverPaperTypePrice(paperSize); // 표지 종이
+    let contentPaperPrice = getContentPaperTypePrice(paperSize); // 본문 종이
+    let flyleafPaperPrice = getFlyleafPaperPrice(); // 간지 종이
+    let flyleafContentPrice = getFlyleafContentPrice(); // 간지 컨텐츠 출력
+
+    let pricePerBook =
+        Number(bindingTypePrice) +
+        Number(coverDesignPrice) +
+        Number(coverCoatingPrice) +
+        Number(coverPaperPrice) +
+        Number(contentPaperPrice) +
+        Number(flyleafPaperPrice) +
+        Number(flyleafContentPrice);
+
+    let bookCount = document.getElementById("book-count").value;
+    let price = Number(pricePerBook) * Number(bookCount);
+
+    console.log('제본유형: ' + bindingTypePrice)
+    console.log('표지디자인: ' + coverDesignPrice)
+    console.log('표지코팅: ' + coverCoatingPrice)
+    console.log('표지종이: ' + coverPaperPrice)
+    console.log('본문종이: ' + contentPaperPrice)
+    console.log('간지종이: ' + flyleafPaperPrice)
+    console.log('간지컨텐츠: ' + flyleafContentPrice)
+    console.log('1권당 비용: ' + pricePerBook);
+
+    return price;
+}
+
+function getPaperSize() {
+    let paperSizeElement = document.getElementById("paper-size");
+    return paperSizeElement.options[paperSizeElement.selectedIndex].value;
+}
+
+function getBindingTypePrice() {
+    let bindingTypeElement = document.getElementById("binding-type");
+    return bindingTypeElement.options[bindingTypeElement.selectedIndex].dataset.price;
+}
+
+function getDesignTypePrice() {
+    let coverDesignNameElement = document.getElementById("cover-design-name");
+    return coverDesignNameElement.options[coverDesignNameElement.selectedIndex].dataset.price;
+}
+
+function getCoverCoatingTyprPrice() {
+    let coverCoatingTypeElement = document.getElementById("cover-coating-type");
+    return coverCoatingTypeElement.options[coverCoatingTypeElement.selectedIndex].dataset.price;
+}
+
+function getCoverPaperTypePrice(paperSize) {
+    // 출력 유형 (단면/양면)
+    let coverPrintingTypeElement = document.getElementById("cover-printing-type");
+    let coverPrintingType = coverPrintingTypeElement.options[coverPrintingTypeElement.selectedIndex].value;
+    // 출력 색상 유형 (흑백/컬러)
+    let coverPrintingColorTypeElement = document.getElementById("cover-printing-color-type");
+    let coverPrintingColorType = coverPrintingColorTypeElement.options[coverPrintingColorTypeElement.selectedIndex].value;
+    // 종이 유형
+    let coverPaperTypeElement = document.getElementById("cover-paper-type");
+    let coverPaperType = coverPaperTypeElement.options[coverPrintingTypeElement.selectedIndex].value;
+    let resultOfSearchingPaper = paperPriceTable
+        .filter(option => option.category === 'cover')
+        .filter(option => option.name === coverPaperType)
+        .filter(option => option.printingColor === coverPrintingColorType)
+        .filter(option => option.size === paperSize);
+
+    let paperPrice = null;
+    if (resultOfSearchingPaper.length > 0) {
+        paperPrice = resultOfSearchingPaper[0]
+        enableOrderButton();
+    }
+    if (resultOfSearchingPaper.length === 0) {
+        // 종이 가격이 등록되지 않아서 발생
+        alert('해당 옵션을 선택하여 주문할 수 없습니다.\n관리자에게 문의하시기 바랍니다.')
+        disableOrderButton();
+        return;
+    }
+
+    let coverPaperSingleSidePrice = paperPrice.singleSidePrice;
+    let coverPaperDoubleSidePrice = paperPrice.doubleSidePrice;
+    let coverPageCount = 2; // 표지는 첫장, 마지막장 겉면만 해서 2페이지
+    return coverPageCount * coverPaperSingleSidePrice;
+}
+
+function getContentPaperTypePrice(paperSize) {
+    // 출력 유형 (양면/단면)
+    let contentPrintingTypeElement = document.getElementById("content-printing-type");
+    let contentPrintingType = contentPrintingTypeElement.options[contentPrintingTypeElement.selectedIndex].value;
+    // 출력 색상 유형 (흑백/컬러)
+    let contentPrintingColorTypeElement = document.getElementById("content-printing-color-type");
+    let contentPrintingColorType = contentPrintingColorTypeElement.options[contentPrintingColorTypeElement.selectedIndex].value;
+    // 종이 유형
+    let contentPaperTypeElement = document.getElementById("content-paper-type");
+    let contentPaperType = contentPaperTypeElement.options[contentPrintingTypeElement.selectedIndex].value;
+    let resultOfSearchingPaper = paperPriceTable
+        .filter(option => option.category === 'content')
+        .filter(option => option.name === contentPaperType)
+        .filter(option => option.printingColor === contentPrintingColorType)
+        .filter(option => option.size === paperSize);
+
+    let paperPrice = null;
+    if (resultOfSearchingPaper.length > 0) {
+        paperPrice = resultOfSearchingPaper[0]
+        enableOrderButton();
+    }
+    if (resultOfSearchingPaper.length === 0) {
+        // 종이 가격이 등록되지 않아서 발생
+        alert('해당 옵션을 선택하여 주문할 수 없습니다.\n다른 옵션을 선택해주세요.')
+        disableOrderButton();
+        return;
+    }
+
+    let contentPaperSingleSidePrice = paperPrice.singleSidePrice;
+    let contentPaperDoubleSidePrice = paperPrice.doubleSidePrice;
+    let contentPageCount = document.getElementById("content-page-count").value;
+
+    if (contentPrintingType === '단면') {
+        return contentPageCount * contentPaperSingleSidePrice;
+    }
+    if (contentPaperType === '양면') {
+        // 양면 출력은 1장 출력을 말하는 것이다
+        // 2페이지가 1장이므로 총 페이지 수를 반으로 나누고 반올림하여 총 몇장인지 구한다
+        let contentPage = Math.round(contentPageCount / 2);
+        return contentPage * contentPaperDoubleSidePrice;
+    }
+
+    alert('본문 종이 금액이 정상적으로 처리되지 않았습니다.\n관리자에게 문의하세요.');
+}
+
+function getFlyleafPaperPrice() {
+    let checkedFlyleafElement = document.querySelector("input[name=flyleaf]:checked");
+    let hasFlyleaf = checkedFlyleafElement.value;
+    if (hasFlyleaf === 'true') {
+        let flyleafPriceElement = document.getElementById("flyleaf-color-type");
+        let flyleafPricePer2Page =  flyleafPriceElement.options[flyleafPriceElement.selectedIndex].dataset.price // 간지 1장당 가격
+        let flyleafCount = document.getElementById("flyleaf-count-per-book").value;
+        return flyleafCount * flyleafPricePer2Page;
+    }
+    return 0;
+}
+
+function getFlyleafContentPrice() {
+    let checkedFlyleafElement = document.querySelector("input[name=flyleaf-content-printing]:checked");
+    let hasFlyleafContent = checkedFlyleafElement.value;
+    if (hasFlyleafContent === 'true') {
+        return checkedFlyleafElement.dataset.flyleafContentPrice;
+    }
+    return 0;
 }
