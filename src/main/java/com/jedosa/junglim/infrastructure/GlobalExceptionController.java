@@ -57,4 +57,9 @@ public class GlobalExceptionController {
     public void alreayOrderedException(HttpServletResponse response, AlreadyOrderedException ex) throws IOException {
         response.sendError(HttpStatus.BAD_REQUEST.value(), ex.getMessage());
     }
+
+    @ExceptionHandler(NoFlyleafContentPriceException.class)
+    public void noFlyleafContentPriceException(HttpServletResponse response, NoFlyleafContentPriceException ex) throws IOException {
+        response.sendError(HttpStatus.BAD_REQUEST.value(), ex.getMessage());
+    }
 }

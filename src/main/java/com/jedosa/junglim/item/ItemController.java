@@ -29,6 +29,7 @@ public class ItemController {
         model.addAttribute("flyleafColorTypes", itemOptionService.getAllFlyleafColorTypes());
         model.addAttribute("paperTypes", itemOptionService.getAllPaperTypes());
         model.addAttribute("paperSizeTypes", itemOptionService.getAllPaperSizeTypes());
+        model.addAttribute("flyleafContentPrice", itemOptionService.getFlyleafContentPrice());
         return "item/normal-printing-and-binding";
     }
 

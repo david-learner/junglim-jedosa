@@ -406,7 +406,7 @@
                     </div>
                 </div>
                 <div name="flyleaf">
-                    <h3>종이 옵션 가격표</h3>
+                    <h3>간지 옵션 가격표</h3>
                     <div class="container mt-3">
                         <div name="flyleaf-color-type"
                              class="mb-3"
@@ -451,6 +451,41 @@
                             <!-- 테이블 행 추가 컨트롤러 -->
                             <div class="controller d-flex justify-content-center mt-3">
                                 <button class="btn btn-primary" onclick="addNewItemOptionForm(this)">간지 색상 유형 추가</button>
+                            </div>
+                        </div>
+                        <div name="flyleaf-content"
+                             class="mb-3"
+                             data-item-option-category-name="flyleaf"
+                             data-item-option-sub-category-name="flyleaf-content">
+                            <h4>간지 문구 출력</h4>
+                            <div></div>
+                            <!-- 테이블 헤더 -->
+                            <div class="row border-bottom border-2 border-black p-2">
+                                <div class="col">간지 문구 출력 비용</div>
+                                <div class="col"></div>
+                            </div>
+                            <!-- 테이블 바디 -->
+                            <div class="row border-bottom border-gray p-2" name="flyleaf-type-price-table-item"
+                                 th:data-item-option-id="${flyleafContentPrice.getId()}">
+                                <div class="col">
+                                    <input type="number" name="item-option-price" class="form-control" readonly
+                                           th:data-item-option-price="${flyleafContentPrice.getPrice().toBigInteger()}"
+                                           th:value="${flyleafContentPrice.getPrice().toBigInteger()}">
+                                </div>
+                                <div class="col">
+                                    <div name="controllerForSaved">
+                                        <div name="updateController" style="display: none">
+                                            <button class="btn btn-primary" onclick="updateItemOption(this)">저장</button>&nbsp;
+                                            <button class="btn btn-danger" onclick="revealDeleteController(this)">취소
+                                            </button>
+                                        </div>
+                                        <div name="deleteController">
+                                            <button class="btn btn-success" onclick="revealUpdateController(this)">수정
+                                            </button>&nbsp;
+                                            <button class="btn btn-danger" onclick="alert('해당 옵션은 삭제할 수 없습니다');">삭제</button>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>

@@ -73,9 +73,18 @@ function revealDeleteController(clickedElement) {
     toggleInputReadOnly(row);
 
     function restoreOriginalValue(row) {
+
         let fullCategoryName = getFullCategoryName(row.parentElement);
 
+        if (fullCategoryName === 'flyleaf/flyleaf-content') {
+
+            let itemOptionPriceElement = row.querySelector("input[name='item-option-price']");
+            let originalItemOptionPrice = itemOptionPriceElement.dataset.itemOptionPrice;
+            row.querySelector("input[name='item-option-price']").value = originalItemOptionPrice;
+        }
+
         if (fullCategoryName === 'paper/paper-types' || fullCategoryName === 'paper/paper-size-types') {
+
             let itemOptionNameElement = row.querySelector("input[name='item-option-name']");
             let originalItemOptionName = itemOptionNameElement.dataset.itemOptionName;
             row.querySelector("input[name='item-option-name']").value = originalItemOptionName;
@@ -150,10 +159,10 @@ function revealDeleteController(clickedElement) {
             row.querySelector("input[name='item-option-double-side-price']").value = originalItemOptionDoubleSidePrice;
         }
 
-        if (fullCategoryName !== 'paper/paper-types' &&
-            fullCategoryName !== 'paper/paper-size-types' &&
-            fullCategoryName !== 'cover/paper-types' &&
-            fullCategoryName !== 'content/paper-types') {
+        if (fullCategoryName === 'binding/binding-types' ||
+            fullCategoryName === 'cover/coating-types' ||
+            fullCategoryName === 'cover/design-types' ||
+            fullCategoryName === 'flyleaf/flyleaf-color-types') {
 
             let itemOptionNameElement = row.querySelector("input[name='item-option-name']");
             let originalItemOptionName = itemOptionNameElement.dataset.itemOptionName;
@@ -179,7 +188,20 @@ function getFullCategoryName(table) {
 function toggleInputReadOnly(row) {
     let fullCategoryName = getFullCategoryName(row.parentElement);
 
+    if (fullCategoryName === 'flyleaf/flyleaf-content') {
+
+        let itemOptionPrice = "item-option-price";
+        let isPriceReadOnly = row.querySelector("input[name='" + itemOptionPrice + "']").getAttribute("readonly");
+
+        if (isPriceReadOnly === null) {
+            row.querySelector("input[name='" + itemOptionPrice + "']").setAttribute("readonly", "")
+        } else {
+            row.querySelector("input[name='" + itemOptionPrice + "']").removeAttribute("readonly")
+        }
+    }
+
     if(fullCategoryName === 'paper/paper-types' || fullCategoryName === 'paper/paper-size-types') {
+
         let itemOptionName = "item-option-name";
         let isNameReadOnly = row.querySelector("input[name='" + itemOptionName + "']").getAttribute("readonly");
 
@@ -191,6 +213,7 @@ function toggleInputReadOnly(row) {
     }
 
     if(fullCategoryName === 'cover/paper-types' || fullCategoryName === 'content/paper-types') {
+
         let itemOptionName = "item-option-name";
         let isNameReadOnly = row.querySelector("select[name='" + itemOptionName + "']").getAttribute("disabled");
         let itemOptionSize = "item-option-size";
@@ -221,10 +244,10 @@ function toggleInputReadOnly(row) {
         }
     }
 
-    if (fullCategoryName !== 'paper/paper-types' &&
-        fullCategoryName !== 'paper/paper-size-types' &&
-        fullCategoryName !== 'cover/paper-types' &&
-        fullCategoryName !== 'content/paper-types') {
+    if (fullCategoryName === 'binding/binding-types' ||
+        fullCategoryName === 'cover/coating-types' ||
+        fullCategoryName === 'cover/design-types' ||
+        fullCategoryName === 'flyleaf/flyleaf-color-types') {
 
         let itemOptionName = "item-option-name";
         let isNameReadOnly = row.querySelector("input[name='" + itemOptionName + "']").getAttribute("readonly");
@@ -261,7 +284,26 @@ function updateItemOptionData(row, data) {
     let itemOptionDoubleSidePriceElement = null;
     let fullCategoryName = getFullCategoryName(row.parentElement)
 
-    if (fullCategoryName === 'cover/paper-types' || fullCategoryName === 'content/paper-types') {
+    if (fullCategoryName === 'flyleaf/flyleaf-content') {
+
+        price = data.price;
+        itemOptionPriceElement = row.querySelector("input[name='item-option-price']");
+        itemOptionPriceElement.value = singleSidePrice;
+        itemOptionPriceElement.dataset.itemOptionPrice = price;
+    }
+
+    if (fullCategoryName === 'paper/paper-types' ||
+        fullCategoryName === 'paper/paper-size-types') {
+
+        itemOptionNameElement = row.querySelector("input[name='item-option-name']");
+        itemOptionNameElement.value = name; // update text value
+        row.dataset.itemOptionId = id; // update dataset
+        itemOptionNameElement.dataset.itemOptionName = name;
+    }
+
+    if (fullCategoryName === 'cover/paper-types' ||
+        fullCategoryName === 'content/paper-types') {
+
         itemOptionNameElement = row.querySelector("select[name='item-option-name']");
         itemOptionNameElement.value = name; // update text value
         row.dataset.itemOptionId = id; // update dataset
@@ -288,19 +330,10 @@ function updateItemOptionData(row, data) {
         itemOptionDoubleSidePriceElement.dataset.itemOptionDoubleSidePrice = doubleSidePrice;
     }
 
-    if (fullCategoryName === 'paper/paper-types' &&
-        fullCategoryName === 'paper/paper-size-types') {
-
-        itemOptionNameElement = row.querySelector("input[name='item-option-name']");
-        itemOptionNameElement.value = name; // update text value
-        row.dataset.itemOptionId = id; // update dataset
-        itemOptionNameElement.dataset.itemOptionName = name;
-    }
-
-    if (fullCategoryName !== 'paper/paper-types' &&
-        fullCategoryName !== 'paper/paper-size-types' &&
-        fullCategoryName !== 'cover/paper-types' &&
-        fullCategoryName !== 'content/paper-types') {
+    if (fullCategoryName === 'binding/binding-types' ||
+        fullCategoryName === 'cover/coating-types' ||
+        fullCategoryName === 'cover/design-types' ||
+        fullCategoryName === 'flyleaf/flyleaf-color-types') {
 
         itemOptionNameElement = row.querySelector("input[name='item-option-name']");
         itemOptionNameElement.value = name; // update text value
@@ -332,6 +365,7 @@ function saveItemOption(clickedElement) {
     let itemOptionDoubleSidePrice = 0;
 
     if (fullCategoryName === 'paper/paper-types' || fullCategoryName === 'paper/paper-size-types') {
+
         itemOptionName = row.querySelector("input[name='item-option-name']").value;
 
         itemOptionData = {
@@ -341,6 +375,7 @@ function saveItemOption(clickedElement) {
     }
 
     if (fullCategoryName === 'cover/paper-types' || fullCategoryName === 'content/paper-types') {
+
         itemOptionName = row.querySelector("select[name='item-option-name']").value;
         itemOptionSize = row.querySelector("select[name='item-option-size']").value;
         itemOptionPrintingColor = row.querySelector("select[name='item-option-printing-color']").value;
@@ -362,10 +397,10 @@ function saveItemOption(clickedElement) {
         };
     }
 
-    if (fullCategoryName !== 'paper/paper-types' &&
-        fullCategoryName !== 'paper/paper-size-types' &&
-        fullCategoryName !== 'cover/paper-types' &&
-        fullCategoryName !== 'content/paper-types') {
+    if (fullCategoryName === 'binding/binding-types' ||
+        fullCategoryName === 'cover/coating-types' ||
+        fullCategoryName === 'cover/design-types' ||
+        fullCategoryName === 'flyleaf/flyleaf-color-types') {
         itemOptionName = row.querySelector("input[name='item-option-name']").value;
         itemOptionPrice = row.querySelector("input[name='item-option-price']").value;
         itemOptionData = {
@@ -433,7 +468,23 @@ function updateItemOption(clickedElement) {
     let itemOptionDoubleSidePrice = null;
     let itemOptionData = null;
 
+    if (fullCategoryName === 'flyleaf/flyleaf-content') {
+
+        itemOptionPrice = row.querySelector("input[name='item-option-price']").value;
+
+        if (!isNumber(itemOptionPrice)) {
+            return;
+        }
+
+        itemOptionData = {
+            "itemId" : itemId,
+            "id" : itemOptionId,
+            "price" : itemOptionPrice
+        }
+    }
+
     if (fullCategoryName === 'paper/paper-types' || fullCategoryName === 'paper/paper-size-types') {
+
         itemOptionName = row.querySelector("input[name='item-option-name']").value;
 
         itemOptionData = {
@@ -470,10 +521,10 @@ function updateItemOption(clickedElement) {
         };
     }
 
-    if (fullCategoryName !== 'paper/paper-types' &&
-        fullCategoryName !== 'paper/paper-size-types' &&
-        fullCategoryName !== 'cover/paper-types' &&
-        fullCategoryName !== 'content/paper-types') {
+    if (fullCategoryName === 'binding/binding-types' ||
+        fullCategoryName === 'cover/coating-types' ||
+        fullCategoryName === 'cover/design-types' ||
+        fullCategoryName === 'flyleaf/flyleaf-color-types') {
         itemOptionName = row.querySelector("input[name='item-option-name']").value;
         itemOptionPrice = row.querySelector("input[name='item-option-price']").value;
 

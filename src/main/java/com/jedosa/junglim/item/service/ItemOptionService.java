@@ -1,5 +1,6 @@
 package com.jedosa.junglim.item.service;
 
+import com.jedosa.junglim.exception.NoFlyleafContentPriceException;
 import com.jedosa.junglim.item.domain.option.*;
 import com.jedosa.junglim.item.domain.repository.*;
 import com.jedosa.junglim.item.dto.*;
@@ -18,6 +19,7 @@ public class ItemOptionService {
     private final PaperTypeRepository paperTypeRepository;
     private final PaperSizeTypeRepository paperSizeTypeRepository;
     private final PaperPrintingTypeRepository paperPrintingTypeRepository;
+    private final FlyleafContentPriceRepository flyleafContentPriceRepository;
 
     public ItemOptionService(BindingTypeRepository bindingTypeRepository,
                              CoatingTypeRepository coatingTypeRepository,
@@ -25,7 +27,8 @@ public class ItemOptionService {
                              FlyleafColorTypeRepository flyleafColorTypeRepository,
                              PaperTypeRepository paperTypeRepository,
                              PaperSizeTypeRepository paperSizeTypeRepository,
-                             PaperPrintingTypeRepository paperPrintingTypeRepository) {
+                             PaperPrintingTypeRepository paperPrintingTypeRepository,
+                             FlyleafContentPriceRepository flyleafContentPriceRepository) {
         this.bindingTypeRepository = bindingTypeRepository;
         this.coatingTypeRepository = coatingTypeRepository;
         this.designTypeRepository = designTypeRepository;
@@ -33,6 +36,7 @@ public class ItemOptionService {
         this.paperTypeRepository = paperTypeRepository;
         this.paperSizeTypeRepository = paperSizeTypeRepository;
         this.paperPrintingTypeRepository = paperPrintingTypeRepository;
+        this.flyleafContentPriceRepository = flyleafContentPriceRepository;
     }
 
     public BindingType saveBindingType(BindingType type) {
@@ -121,5 +125,17 @@ public class ItemOptionService {
 
     public List<PaperPrintingTypeDto> getAllContentPaperPrintingTypes() {
         return paperPrintingTypeRepository.findAll().stream().filter(type -> type.getCategory().equals("content")).map(PaperPrintingTypeDto::new).collect(Collectors.toList());
+    }
+
+    public List<PaperPrintingTypeDto> getAllPaperPrintingTypes() {
+        return paperPrintingTypeRepository.findAll().stream().map(PaperPrintingTypeDto::new).collect(Collectors.toList());
+    }
+
+    public FlyleafContentPriceDto saveFlyleafContentPrice(FlyleafContentPrice type) {
+        return new FlyleafContentPriceDto(flyleafContentPriceRepository.save(type));
+    }
+
+    public FlyleafContentPriceDto getFlyleafContentPrice() {
+        return new FlyleafContentPriceDto(flyleafContentPriceRepository.findById(1L).orElseThrow(NoFlyleafContentPriceException::new));
     }
 }
