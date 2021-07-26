@@ -9,6 +9,30 @@ body, table, div, p {font-family: 'Noto Sans KR', sans-serif;}
     padding-left: 60px;
 }
 
+a:link.link-junglim {
+    color: #0093c0;
+    background-color: transparent;
+    text-decoration: none;
+}
+
+a:visited.link-junglim {
+    color: #0093c0;
+    background-color: transparent;
+    text-decoration: none;
+}
+
+a:hover.link-junglim {
+    color: #0093c0;
+    background-color: transparent;
+    text-decoration: underline;
+}
+
+a:active.link-junglim {
+    color: #0093c0;
+    background-color: transparent;
+    text-decoration: underline;
+}
+
 /* body footer */
 #body-footer-info {
     background-color: #f4f4f5;
@@ -36,7 +60,7 @@ body, table, div, p {font-family: 'Noto Sans KR', sans-serif;}
     width: 280px;
     height: 60px;
     border: 1px solid #e0e0e1;
-    background: url("/images/common/kb.png") no-repeat center;
+    background: url("/images/common/nh.png") no-repeat center;
     background-size: 200px;
 }
 
