@@ -292,8 +292,7 @@ function generateEditor(targetElementSelector) {
                     contentType: false,
                     cache: false
                 }).done(function (data, textStatus, jqXHR) {
-                    console.log('\\' + data.path);
-                    $(targetElementSelector).summernote('insertImage', '\\' + data.path, 'image');
+                    $(targetElementSelector).summernote('insertImage', data.path, 'image');
                 });
             }
         }
