@@ -5,13 +5,14 @@ import com.jedosa.junglim.account.domain.Address;
 import com.jedosa.junglim.account.domain.Grade;
 import com.jedosa.junglim.account.domain.SessionAccountDto;
 import com.jedosa.junglim.support.DummyAccount;
-import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.mockito.Mock;
+import org.springframework.beans.factory.ObjectProvider;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.context.annotation.AnnotationConfigApplicationContext;
+import org.springframework.context.annotation.Scope;
 import org.springframework.http.MediaType;
 import org.springframework.mock.web.MockHttpServletResponse;
 import org.springframework.mock.web.MockHttpSession;
@@ -46,7 +47,7 @@ class AccountControllerTest {
 
     @Test
     @DisplayName("회원 가입하기")
-    /* 비어있는 테스트 만들기 */
+        /* 비어있는 테스트 만들기 */
     void signUp() throws Exception {
         mockMvc.perform(post("/sign-up")
                 .contentType(MediaType.APPLICATION_FORM_URLENCODED)
@@ -124,8 +125,8 @@ class AccountControllerTest {
         // when
         MockHttpServletResponse response =
                 mockMvc.perform(get("/index").session(session))
-                .andExpect(status().isOk())
-                .andReturn().getResponse();
+                        .andExpect(status().isOk())
+                        .andReturn().getResponse();
 
         // then
         assertTrue(response.getContentAsString().contains("로그아웃"));
@@ -133,7 +134,7 @@ class AccountControllerTest {
 
     @Test
     @DisplayName("로그아웃 하기")
-    void logout () throws Exception {
+    void logout() throws Exception {
         // given
         mockMvc.perform(post("/sign-up")
                 .contentType(MediaType.APPLICATION_FORM_URLENCODED)
@@ -149,9 +150,9 @@ class AccountControllerTest {
 
         MockHttpSession session = new MockHttpSession();
         mockMvc.perform(post("/login")
-            .param("email", DummyAccount.normalFirst.getEmail())
-            .param("password", DummyAccount.normalFirst.getPassword())
-            .session(session)
+                .param("email", DummyAccount.normalFirst.getEmail())
+                .param("password", DummyAccount.normalFirst.getPassword())
+                .session(session)
         ).andExpect(status().isOk());
 
         Optional<SessionAccountDto> sessionAccountDto =
