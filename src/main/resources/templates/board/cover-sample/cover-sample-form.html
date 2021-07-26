@@ -69,8 +69,7 @@
                     contentType: false,
                     cache: false
                 }).done(function (data, textStatus, jqXHR) {
-                    // 정상적으로 업로드된 이미지를 에디터 본문에 추가
-                    $('#article-body').summernote('insertImage', '\\' + data.path, 'image');
+                    $('#article-body').summernote('insertImage', convertToRelativePath(data.path), 'image');
                 });
             }
         }

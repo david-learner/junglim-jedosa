@@ -52,6 +52,21 @@ public class CoverSampleController {
     }
 
     /**
+     * 표지샘플 글 미리보기 목록
+     */
+    @GetMapping("board/cover-sample-preview")
+    public String coverSamplePreviewList(
+            @RequestParam(required = false, defaultValue = "0", name = "page") Integer currentPage, Model model) {
+
+        ArticleSearchCondition condition = new ArticleSearchCondition(Board.COVER_SAMPLE.getId(), Boolean.FALSE, Boolean.FALSE, currentPage, 0);
+        ArticlesDto articlesDto = articleService.getArticlesOfBlockWithPagination(condition);
+        model.addAttribute("articles", articlesDto.getArticleDtos());
+        model.addAttribute("pagination", articlesDto.getPagination());
+
+        return "board/cover-sample/cover-sample-preview-list";
+    }
+
+    /**
      * 표지샘플 글 등록 폼
      */
     @GetMapping("board/cover-sample/articles")
