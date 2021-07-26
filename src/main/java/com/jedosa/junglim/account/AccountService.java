@@ -2,9 +2,7 @@ package com.jedosa.junglim.account;
 
 import com.jedosa.junglim.account.domain.*;
 import com.jedosa.junglim.admin.AccountSearchCondition;
-import com.jedosa.junglim.article.domain.Article;
 import com.jedosa.junglim.article.domain.Pagination;
-import com.jedosa.junglim.article.dto.ArticleDto;
 import com.jedosa.junglim.exception.NoAccountException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -14,9 +12,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 import static java.util.stream.Collectors.toList;
 
@@ -24,7 +20,7 @@ import static java.util.stream.Collectors.toList;
 @Transactional(readOnly = true)
 public class AccountService {
 
-    private static final Logger log =  LoggerFactory.getLogger(AccountService.class);
+    private static final Logger log = LoggerFactory.getLogger(AccountService.class);
     private AccountRepository accountRepository;
 
     public AccountService(AccountRepository accountRepository) {
@@ -33,7 +29,7 @@ public class AccountService {
 
     @Transactional
     public void signUp(Account account) throws IllegalArgumentException {
-        if(isDuplicated(account.getEmail())) {
+        if (isDuplicated(account.getEmail())) {
             throw new IllegalArgumentException("이미 가입된 이메일입니다");
         }
         accountRepository.save(account);
@@ -48,7 +44,7 @@ public class AccountService {
             throw new IllegalArgumentException("가입되지 않은 이메일입니다");
         });
 
-        if(!account.getPassword().equals(loginDto.getPassword())) {
+        if (!account.getPassword().equals(loginDto.getPassword())) {
             throw new IllegalArgumentException("비밀번호가 일치하지 않습니다");
         }
 
