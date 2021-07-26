@@ -1,13 +1,13 @@
 file:
   upload:
-    path: \data\uploaded-files
+    path: uploaded-files
 
 spring:
   datasource:
-    url: jdbc:h2:mem:test
-    username: sa
-    password:
-    driver-class-name: org.h2.Driver
+    url: jdbc:mariadb://localhost:10001/junglim?characterEncoding=UTF-8&serverTimezsone=UTC
+    username: junglim
+    password: junglim9229
+    driver-class-name: org.mariadb.jdbc.Driver
 
   jpa:
     hibernate:
