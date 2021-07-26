@@ -28,6 +28,6 @@ public class AccountManagementController {
         model.addAttribute("accounts", accounts.getAccountDtos());
         model.addAttribute("pagination", accounts.getPagination());
 
-        return "admin/account-management";
+        return "admin/account/account-management";
     }
 }
