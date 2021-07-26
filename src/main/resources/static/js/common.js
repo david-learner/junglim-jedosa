@@ -91,3 +91,10 @@ function popup(selectedElement, windowName) {
     window.open(url, windowName, 'width=1100,height=700,scrollbars=yes');
     return false;
 }
+
+function convertToRelativePath(path) {
+    if (path.startsWith("/")) {
+        return path.substring(1);
+    }
+    return path;
+}

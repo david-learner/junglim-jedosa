@@ -16,6 +16,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
+import java.util.Objects;
 
 @Service
 public class FileSystemStorageService implements StorageService {
@@ -31,11 +32,11 @@ public class FileSystemStorageService implements StorageService {
 
     @Override
     public String store(MultipartFile file) {
-        // create directory
-        createDirectory();
 
-        String filename = StringUtils.cleanPath(file.getOriginalFilename());
-        Path fullPath = null;
+        createDirectory();
+        String filename = StringUtils.cleanPath(Objects.requireNonNull(file.getOriginalFilename()));
+        log.debug("Uploaded filename: {}", filename);
+        Path storedFilePath = null;
         try {
             if (file.isEmpty()) {
                 throw new IllegalStateException("Failed to store empty file " + filename);
@@ -49,17 +50,17 @@ public class FileSystemStorageService implements StorageService {
             }
             try (InputStream inputStream = file.getInputStream()) {
                 // rootLocatoin뒤에 filename을 붙여준다
-                fullPath = this.rootLocation.resolve(filename);
-                log.debug("File full path: {}", fullPath.toString());
-                Files.copy(inputStream, fullPath, StandardCopyOption.REPLACE_EXISTING);
+                storedFilePath = this.rootLocation.resolve(filename);
+                Files.copy(inputStream, storedFilePath, StandardCopyOption.REPLACE_EXISTING);
+                log.debug("Stored file path: {}", storedFilePath);
             }
         } catch (IOException e) {
             e.printStackTrace();
         }
-        if (fullPath == null) {
+        if (storedFilePath == null) {
             throw new NullPointerException("File path is null");
         }
-        return fullPath.toString();
+        return storedFilePath.toString();
     }
 
     @Override
@@ -67,7 +68,7 @@ public class FileSystemStorageService implements StorageService {
         try {
             // 경로 따라서 다수 디렉토리 생성이 안 됨
             Path directories = Files.createDirectories(rootLocation);
-            log.debug("Directory: {}", directories.toString());
+            log.debug("Created directory path: {}", directories.toString());
         } catch (IOException e) {
             throw new IllegalStateException("Could not create directories");
         }
@@ -80,6 +81,7 @@ public class FileSystemStorageService implements StorageService {
 
     @Override
     public Resource loadAsResource(String fileUri) {
+        log.debug("File path for loading: '{}'", fileUri);
         // Path를 Uri로 뽑을 때 어떤 형태로 뽑히는지 확인
         try {
             Resource resource = new UrlResource(Paths.get(fileUri).toUri());

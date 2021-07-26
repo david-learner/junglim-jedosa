@@ -10,7 +10,6 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.nio.file.Path;
-import java.nio.file.Paths;
 
 @Controller
 public class FileController {
@@ -25,16 +24,17 @@ public class FileController {
     @PostMapping("files/upload")
     @ResponseBody
     public FilePathDto upload(@RequestParam("file") MultipartFile files) {
-        String store = storageService.store(files);
-        return new FilePathDto(store);
+        String pathRemovedPrefix = FileStoragePathConverter.getExternalFilePath(storageService.store(files));
+        log.debug("File uploaded in '{}'", pathRemovedPrefix);
+        return new FilePathDto(pathRemovedPrefix);
     }
 
-    // uploaded-files(디렉토리명) 숨기고 외부에 노출되는 주소는 files/date/random/filename 으로
-    @GetMapping("/uploaded-files/{date}/{random}/{filename:.+}")
+    // 외부에 노출되는 파일 경로는 application.properties에 명시된 파일 저장 경로 접두사를 지우고 files로 변경
+    @GetMapping("files/{date}/{random}/{filename:.+}")
     public ResponseEntity serveImageFile(@PathVariable String date, @PathVariable String random, @PathVariable String filename) {
-        Path filePath = Paths.get("uploaded-files", date, random, filename);
-        // filePath가 개판임
-        Resource file = storageService.loadAsResource(filePath.toString());
+        String servedFilePath = FileStoragePathConverter.getInternalFilePath(Path.of(date, random, filename).toString());
+        log.debug("Served file path: {}", servedFilePath);
+        Resource file = storageService.loadAsResource(servedFilePath);
         return ResponseEntity.ok().header(HttpHeaders.CONTENT_DISPOSITION,
                 "attachment; filename=\"" + file.getFilename() + "\"").body(file);
     }

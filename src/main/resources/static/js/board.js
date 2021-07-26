@@ -317,8 +317,8 @@ function updateThumbnail(event) {
         contentType: false,
         cache: false
     }).done(function (data, textStatus, jqXHR) {
-        console.log('\\' + data.path);
-        let absolutePath = '\\' + data.path;
+        console.log(data.path);
+        let absolutePath = data.path;
         preview.setAttribute("src", absolutePath);
     }).fail(function (jqXHR, textStatus, errorThrown) {
         alert(jqXHR.responseText);

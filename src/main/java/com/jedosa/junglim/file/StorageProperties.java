@@ -36,7 +36,7 @@ public class StorageProperties {
         // application.yml에서 가져온 경로는 / 로 시작된다. 즉
         // 절대경로 시작되는 것이다. 반대로 /를 제거하면 상대경로가 되며 해당 프로젝트 폴더를 루트로 잡는다
         this.location = Paths.get(fileUploadPathPrefix, randomNumberFilePath).toString();
-        log.debug("file location: " + location);
+        log.debug("Generated path for storing file: " + location);
     }
 
     public String getLocation() {

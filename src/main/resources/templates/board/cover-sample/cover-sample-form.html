@@ -16,7 +16,8 @@
             <input type="hidden" id="board-name" name="board-name" value="cover-sample">
             <input type="hidden" id="board-id" name="board-id" th:value="${boardId}">
             <input type="hidden" id="member-id" name="member-id" th:value="${session.loginUser.getId()}">
-
+            <!-- article options -->
+            <input type="hidden" id="is-notice" name="is-notice" value="false">
             <!-- summernote content -->
             <input type="text" id="title" class="form-control mb-3" placeholder="제목">
             <div id="thumbnail-area">
@@ -34,7 +35,7 @@
                         <img src="#" alt="" id="thumbnail-preview" class="col-xl-3">
                     </div>
                     <div id="thumbnail-controller">
-                        <button type="button" onclick="deleteThumbnail()"></button>
+                        <button type="button" onclick="deleteThumbnail()">썸네일 삭제</button>
                     </div>
                 </div>
             </div>
@@ -69,7 +70,9 @@
                     contentType: false,
                     cache: false
                 }).done(function (data, textStatus, jqXHR) {
-                    $('#article-body').summernote('insertImage', convertToRelativePath(data.path), 'image');
+                    console.log("Upload Complete")
+                    console.log("Stored in " + data.path);
+                    $('#article-body').summernote('insertImage', data.path, 'image');
                 });
             }
         }
