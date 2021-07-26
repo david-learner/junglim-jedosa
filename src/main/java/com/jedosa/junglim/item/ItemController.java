@@ -1,12 +1,9 @@
 package com.jedosa.junglim.item;
 
-import com.jedosa.junglim.item.domain.option.BindingType;
 import com.jedosa.junglim.item.service.ItemOptionService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-
-import java.util.List;
 
 @Controller
 public class ItemController {
