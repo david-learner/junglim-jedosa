@@ -39,7 +39,7 @@ function removeReceiverData() {
     document.getElementById("filling-delivery-info").checked = false;
     document.getElementById("receiver-name").value = "";
     document.getElementById("receiver-phone").value = "";
-    document.getElementById("receiver-email").value = "";
+    // document.getElementById("receiver-email").value = "";
     document.getElementById("receiver-address-zipcode").value = "";
     document.getElementById("receiver-address").value = "";
     document.getElementById("receiver-detailed-address").value = "";
@@ -62,7 +62,7 @@ function toggleDeliveryInfo() {
     // 수령자 정보
     let receiverName = document.getElementById("receiver-name");
     let receiverPhone = document.getElementById("receiver-phone");
-    let receiverEmail = document.getElementById("receiver-email");
+    // let receiverEmail = document.getElementById("receiver-email");
     let receiverZipcode = document.getElementById("receiver-address-zipcode")
     let receiverAddress = document.getElementById("receiver-address")
     let receiverDetailedAddress = document.getElementById("receiver-detailed-address")
@@ -71,7 +71,7 @@ function toggleDeliveryInfo() {
     if (fillingDeliveryInfo.checked) {
         receiverName.value = ordererName.textContent;
         receiverPhone.value = ordererPhone.textContent;
-        receiverEmail.value = ordererEmail.textContent;
+        // receiverEmail.value = ordererEmail.textContent;
         // 수령 방법이 택배라면 수령지 주소도 채워넣기
         if (deliveryType === "PARCEL") {
             receiverZipcode.value = ordererZipcode.textContent;
@@ -81,7 +81,7 @@ function toggleDeliveryInfo() {
     } else {
         receiverName.value = "";
         receiverPhone.value = "";
-        receiverEmail.value = "";
+        // receiverEmail.value = "";
         receiverZipcode.value = "";
         receiverAddress.value = "";
         receiverDetailedAddress.value = "";

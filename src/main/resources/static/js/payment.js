@@ -30,7 +30,7 @@ function pay() {
 
     // DeliveryInfo
     let receiverName = document.getElementById("receiver-name").value;
-    let receiverEmail = document.getElementById("receiver-email").value;
+    //let receiverEmail = document.getElementById("receiver-email").value;
     let receiverPhone = document.getElementById("receiver-phone").value;
     let receiverAddressZipcode = document.getElementById("receiver-address-zipcode").value;
     let receiverAddress = document.getElementById("receiver-address").value;
@@ -76,7 +76,7 @@ function pay() {
         // DeliveryInfo
         "receiverName" : receiverName,
         "receiverPhone" : receiverPhone,
-        "receiverEmail" : receiverEmail,
+        // "receiverEmail" : receiverEmail,
         "receiverAddress" : {
             "zipcode": receiverAddressZipcode,
             "address": receiverAddress,
