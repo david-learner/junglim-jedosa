@@ -1,6 +1,6 @@
 file:
   upload:
-    path: uploaded-files
+    path: \data\uploaded-files
 
 spring:
   datasource:
