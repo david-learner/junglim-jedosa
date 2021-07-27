@@ -8,9 +8,9 @@ create table delivery_property (
 insert into delivery_property (fee) values (2500);
 
 /* 메인 상품 샘플 슬라이드 이미지 */
-insert into product_sample_image (path, sequence) values ('\\images\\dummy\\product-sample-image01.jpg', 1);
-insert into product_sample_image (path, sequence) values ('\\images\\dummy\\product-sample-image02.jpg', 2);
-insert into product_sample_image (path, sequence) values ('\\images\\dummy\\product-sample-image03.jpg', 3);
+insert into product_sample_image (path, sequence) values ('\images\dummy\product-sample-image01.jpg', 1);
+insert into product_sample_image (path, sequence) values ('\images\dummy\product-sample-image02.jpg', 2);
+insert into product_sample_image (path, sequence) values ('\images\dummy\product-sample-image03.jpg', 3);
 
 /* 간지 문구 출력 비용 */
 insert into flyleaf_content_price (item_id, name, price) values (1, '간지출력비용', 500);
@@ -65,6 +65,18 @@ values ('부산 강서구 명지국제12로 43-4', '', '46773', now(), 'admin@ju
 insert into account (address, detailed_address, zipcode, created_date_time, email, name, password, personal_info_agreement, phone, site_usage_agreement, grade)
 values ('부산 강서구 명지국제12로 43-4', '', '46773', now(), 'normal@junglim.com', '김일반', '11111111', TRUE, '0519714704', TRUE, 'NORMAL');
 
+insert into one_page_menu (title, content) values ('주문방법', '<h1 style="text-align: center; ">정림제도사 주문 방법 안내</h1>
+<p style="text-align: center;"><br></p>
+<h3 style="text-align: center;">1. 주문할 상품 메뉴를 선택합니다.</h3>
+<p style="text-align: center;"></p>
+<p style="text-align: center;"><img src="\files\20210727\8503815156879606079\주문방법1.jpg" style="width: 1088px;" data-filename="image"><br></p>
+<p style="text-align: center;"><br></p>
+<h3 style="text-align: center;">2. 제작하길 원하시는 옵션을 선택합니다.</h3>
+<p style="text-align: center;"><img src="\files\20210727\8503815156879606079\주문방법2.jpg" style="width: 1088px;" data-filename="image"></p>
+<p style="text-align: center;"><img src="\files\20210727\8503815156879606079\주문방법3.jpg" style="width: 585px;" data-filename="image"></p>
+<p style="text-align: center;"><br></p><p style="text-align: center;"><br></p>
+<h3 style="text-align: center;">3. 출력 옵션별 종이 가격은 가격표 메뉴를 통해 보실 수 있습니다.</h3>
+<p style="text-align: center;"><img src="\files\20210727\8503815156879606079\가격표.jpg" style="width: 1088px;" data-filename="image"><br></p>');
 insert into one_page_menu (title, content) values ('주문방법', '<h1>주문방법</h1>');
 insert into one_page_menu (title, content) values ('가격표', '<h1 style="text-align: center; ">출력 가격표</h1><p style="text-align: right;">※ 대량 주문시 별도 문의 051.971.4704</p>
 <table class="table table-bordered" border="1">
@@ -596,26 +608,26 @@ insert into article (board_id, account_id, title, content, created_date_time, re
 insert into article (board_id, account_id, title, content, created_date_time, reply_status, deleted) values (1, 2, '주문문의 게시글 24', '<h1>주문문의 게시글01 본문</h1>', now(), 'DONE', false);
 insert into article (board_id, account_id, title, content, created_date_time, reply_status, deleted) values (1, 2, '주문문의 게시글 25', '<h1>주문문의 게시글01 본문</h1>', now(), 'YET', true);
 
-insert into comment (article_id, account_id, content) values (124, 1, '<h1>comment</h1>');
+insert into comment (article_id, account_id, content) values (93, 1, '<h1>comment</h1>');
 
 /* Cover Sample Articles */
-insert into article (board_id, account_id, thumbnail, title, content, created_date_time, deleted) values (2, 1, '\\images\\common\\no.image.jpg', '커버 샘플 01', '<h1>표지샘플 게시글01 본문</h1>', now(), false);
-insert into article (board_id, account_id, thumbnail, title, content, created_date_time, deleted) values (2, 1, '\\images\\common\\no.image.jpg', '커버 샘플 02', '<h1>표지샘플 게시글02 본문</h1>', now(), false);
-insert into article (board_id, account_id, thumbnail, title, content, created_date_time, deleted) values (2, 1, '\\images\\common\\no.image.jpg', '커버 샘플 03', '<h1>표지샘플 게시글03 본문</h1>', now(), false);
-insert into article (board_id, account_id, thumbnail, title, content, created_date_time, deleted) values (2, 1, '\\images\\common\\no.image.jpg', '커버 샘플 04', '<h1>표지샘플 게시글04 본문</h1>', now(), false);
-insert into article (board_id, account_id, thumbnail, title, content, created_date_time, deleted) values (2, 1, '\\images\\common\\no.image.jpg', '커버 샘플 05', '<h1>표지샘플 게시글05 본문</h1>', now(), false);
-insert into article (board_id, account_id, thumbnail, title, content, created_date_time, deleted) values (2, 1, '\\images\\common\\no.image.jpg', '커버 샘플 06', '<h1>표지샘플 게시글06 본문</h1>', now(), false);
-insert into article (board_id, account_id, thumbnail, title, content, created_date_time, deleted) values (2, 1, '\\images\\common\\no.image.jpg', '커버 샘플 07', '<h1>표지샘플 게시글07 본문</h1>', now(), false);
-insert into article (board_id, account_id, thumbnail, title, content, created_date_time, deleted) values (2, 1, '\\images\\common\\no.image.jpg', '커버 샘플 08', '<h1>표지샘플 게시글08 본문</h1>', now(), false);
-insert into article (board_id, account_id, thumbnail, title, content, created_date_time, deleted) values (2, 1, '\\images\\common\\no.image.jpg', '커버 샘플 09', '<h1>표지샘플 게시글09 본문</h1>', now(), false);
-insert into article (board_id, account_id, thumbnail, title, content, created_date_time, deleted) values (2, 1, '\\images\\common\\no.image.jpg', '커버 샘플 10', '<h1>표지샘플 게시글10 본문</h1>', now(), false);
-insert into article (board_id, account_id, thumbnail, title, content, created_date_time, deleted) values (2, 1, '\\images\\common\\no.image.jpg', '커버 샘플 11', '<h1>표지샘플 게시글11 본문</h1>', now(), false);
-insert into article (board_id, account_id, thumbnail, title, content, created_date_time, deleted) values (2, 1, '\\images\\common\\no.image.jpg', '커버 샘플 12', '<h1>표지샘플 게시글12 본문</h1>', now(), false);
-insert into article (board_id, account_id, thumbnail, title, content, created_date_time, deleted) values (2, 1, '\\images\\common\\no.image.jpg', '커버 샘플 13', '<h1>표지샘플 게시글13 본문</h1>', now(), false);
-insert into article (board_id, account_id, thumbnail, title, content, created_date_time, deleted) values (2, 1, '\\images\\common\\no.image.jpg', '커버 샘플 14', '<h1>표지샘플 게시글14 본문</h1>', now(), false);
-insert into article (board_id, account_id, thumbnail, title, content, created_date_time, deleted) values (2, 1, '\\files\\20201220\\7992595612793311861\\cover-sample-thumbnail2.jpg', '커버 샘플 15', '<h1 style="text-align: center; ">표지샘플 게시글15 본문</h1><p style="text-align: center;"><br></p><p style="text-align: center;"><img src="\\files\\20201220\\7992595612793311861\\cover-sample-thumbnail2.jpg" style="width: 198px;" data-filename="image"><br></p>', now(), false);
-insert into article (board_id, account_id, thumbnail, title, content, created_date_time, deleted) values (2, 1, '\\files\\20201220\\7992595612793311861\\cover-sample-thumbnail.jpg', '커버 샘플 16', '<h1 style="text-align: center; ">표지샘플 게시글16 본문</h1><p style="text-align: center;"><br></p><p style="text-align: center;"><img src="\\files\\20201220\\7992595612793311861\\cover-sample-thumbnail.jpg" style="width: 198px;" data-filename="image"><br></p>', now(), false);
-insert into article (board_id, account_id, thumbnail, title, content, created_date_time, deleted) values (2, 1, '\\files\\20201220\\7992595612793311861\\cover-sample-thumbnail2.jpg', '커버 샘플 17', '<h1 style="text-align: center; ">표지샘플 게시글17 본문</h1><p style="text-align: center;"><br></p><p style="text-align: center;"><img src="\\files\\20201220\\7992595612793311861\\cover-sample-thumbnail2.jpg" style="width: 198px;" data-filename="image"><br></p>', now(), false);
-insert into article (board_id, account_id, thumbnail, title, content, created_date_time, deleted) values (2, 1, '\\files\\20201220\\7992595612793311861\\cover-sample-thumbnail.jpg', '커버 샘플 18', '<h1 style="text-align: center; ">표지샘플 게시글18 본문</h1><p style="text-align: center;"><br></p><p style="text-align: center;"><img src="\\files\\20201220\\7992595612793311861\\cover-sample-thumbnail.jpg" style="width: 198px;" data-filename="image"><br></p>', now(), false);
+insert into article (board_id, account_id, thumbnail, title, content, created_date_time, deleted) values (2, 1, '\images\common\no.image.jpg', '커버 샘플 01', '<h1>표지샘플 게시글01 본문</h1>', now(), false);
+insert into article (board_id, account_id, thumbnail, title, content, created_date_time, deleted) values (2, 1, '\images\common\no.image.jpg', '커버 샘플 02', '<h1>표지샘플 게시글02 본문</h1>', now(), false);
+insert into article (board_id, account_id, thumbnail, title, content, created_date_time, deleted) values (2, 1, '\images\common\no.image.jpg', '커버 샘플 03', '<h1>표지샘플 게시글03 본문</h1>', now(), false);
+insert into article (board_id, account_id, thumbnail, title, content, created_date_time, deleted) values (2, 1, '\images\common\no.image.jpg', '커버 샘플 04', '<h1>표지샘플 게시글04 본문</h1>', now(), false);
+insert into article (board_id, account_id, thumbnail, title, content, created_date_time, deleted) values (2, 1, '\images\common\no.image.jpg', '커버 샘플 05', '<h1>표지샘플 게시글05 본문</h1>', now(), false);
+insert into article (board_id, account_id, thumbnail, title, content, created_date_time, deleted) values (2, 1, '\images\common\no.image.jpg', '커버 샘플 06', '<h1>표지샘플 게시글06 본문</h1>', now(), false);
+insert into article (board_id, account_id, thumbnail, title, content, created_date_time, deleted) values (2, 1, '\images\common\no.image.jpg', '커버 샘플 07', '<h1>표지샘플 게시글07 본문</h1>', now(), false);
+insert into article (board_id, account_id, thumbnail, title, content, created_date_time, deleted) values (2, 1, '\images\common\no.image.jpg', '커버 샘플 08', '<h1>표지샘플 게시글08 본문</h1>', now(), false);
+insert into article (board_id, account_id, thumbnail, title, content, created_date_time, deleted) values (2, 1, '\images\common\no.image.jpg', '커버 샘플 09', '<h1>표지샘플 게시글09 본문</h1>', now(), false);
+insert into article (board_id, account_id, thumbnail, title, content, created_date_time, deleted) values (2, 1, '\images\common\no.image.jpg', '커버 샘플 10', '<h1>표지샘플 게시글10 본문</h1>', now(), false);
+insert into article (board_id, account_id, thumbnail, title, content, created_date_time, deleted) values (2, 1, '\images\common\no.image.jpg', '커버 샘플 11', '<h1>표지샘플 게시글11 본문</h1>', now(), false);
+insert into article (board_id, account_id, thumbnail, title, content, created_date_time, deleted) values (2, 1, '\images\common\no.image.jpg', '커버 샘플 12', '<h1>표지샘플 게시글12 본문</h1>', now(), false);
+insert into article (board_id, account_id, thumbnail, title, content, created_date_time, deleted) values (2, 1, '\images\common\no.image.jpg', '커버 샘플 13', '<h1>표지샘플 게시글13 본문</h1>', now(), false);
+insert into article (board_id, account_id, thumbnail, title, content, created_date_time, deleted) values (2, 1, '\images\common\no.image.jpg', '커버 샘플 14', '<h1>표지샘플 게시글14 본문</h1>', now(), false);
+insert into article (board_id, account_id, thumbnail, title, content, created_date_time, deleted) values (2, 1, '\files\20201220\7992595612793311861\cover-sample-thumbnail2.jpg', '커버 샘플 15', '<h1 style="text-align: center; ">표지샘플 게시글15 본문</h1><p style="text-align: center;"><br></p><p style="text-align: center;"><img src="\files\20201220\7992595612793311861\cover-sample-thumbnail2.jpg" style="width: 198px;" data-filename="image"><br></p>', now(), false);
+insert into article (board_id, account_id, thumbnail, title, content, created_date_time, deleted) values (2, 1, '\files\20201220\7992595612793311861\cover-sample-thumbnail.jpg', '커버 샘플 16', '<h1 style="text-align: center; ">표지샘플 게시글16 본문</h1><p style="text-align: center;"><br></p><p style="text-align: center;"><img src="\files\20201220\7992595612793311861\cover-sample-thumbnail.jpg" style="width: 198px;" data-filename="image"><br></p>', now(), false);
+insert into article (board_id, account_id, thumbnail, title, content, created_date_time, deleted) values (2, 1, '\files\20201220\7992595612793311861\cover-sample-thumbnail2.jpg', '커버 샘플 17', '<h1 style="text-align: center; ">표지샘플 게시글17 본문</h1><p style="text-align: center;"><br></p><p style="text-align: center;"><img src="\files\20201220\7992595612793311861\cover-sample-thumbnail2.jpg" style="width: 198px;" data-filename="image"><br></p>', now(), false);
+insert into article (board_id, account_id, thumbnail, title, content, created_date_time, deleted) values (2, 1, '\files\20201220\7992595612793311861\cover-sample-thumbnail.jpg', '커버 샘플 18', '<h1 style="text-align: center; ">표지샘플 게시글18 본문</h1><p style="text-align: center;"><br></p><p style="text-align: center;"><img src="\files\20201220\7992595612793311861\cover-sample-thumbnail.jpg" style="width: 198px;" data-filename="image"><br></p>', now(), false);
 
 /* 테스트를 위한 더미 데이터 끝 */
