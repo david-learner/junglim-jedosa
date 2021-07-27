@@ -18,10 +18,8 @@ function openMenuPageEditForm() {
                     contentType: false,
                     cache: false
                 }).done(function (data, textStatus, jqXHR) {
-                    console.log('\\' + data.path);
-                    $('#article-body').summernote('insertImage', '\\' + data.path, 'image777');
+                    $('#article-body').summernote('insertImage', data.path, 'image');
                 });
-                // $summernote.summernote('insertNode', imgNode);
             }
         }
     });
