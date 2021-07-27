@@ -1,3 +1,4 @@
+# '/' is file separator for windows
 file:
   upload:
     path: \data\uploaded-files
