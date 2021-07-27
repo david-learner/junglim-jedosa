@@ -1,4 +1,4 @@
-package com.jedosa.junglim.article.repository;
+package com.jedosa.junglim.article;
 
 import com.jedosa.junglim.account.domain.SessionAccountDto;
 import com.jedosa.junglim.article.ArticleController;
@@ -7,6 +7,7 @@ import com.jedosa.junglim.article.domain.Article;
 import com.jedosa.junglim.article.domain.Board;
 import com.jedosa.junglim.article.dto.ArticleDto;
 import com.jedosa.junglim.article.dto.ArticlesDto;
+import com.jedosa.junglim.article.repository.ArticleSearchCondition;
 import com.jedosa.junglim.infrastructure.annotation.Admin;
 import com.jedosa.junglim.infrastructure.annotation.Login;
 import com.jedosa.junglim.infrastructure.annotation.PossibleLogin;
