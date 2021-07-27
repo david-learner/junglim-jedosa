@@ -17,7 +17,6 @@ public class StorageProperties {
 
     private static final Logger log =  LoggerFactory.getLogger(StorageProperties.class);
 
-    private static final String SLASH = "/";
     @Value("${file.upload.path}")
     private String fileUploadPathPrefix;
     private String location;

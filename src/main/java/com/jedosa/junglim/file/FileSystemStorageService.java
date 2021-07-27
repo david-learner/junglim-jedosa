@@ -67,6 +67,7 @@ public class FileSystemStorageService implements StorageService {
     public void createDirectory() {
         try {
             // 경로 따라서 다수 디렉토리 생성이 안 됨
+            log.debug("Root Location: '{}'", rootLocation);
             Path directories = Files.createDirectories(rootLocation);
             log.debug("Created directory path: {}", directories.toString());
         } catch (IOException e) {
