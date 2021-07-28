@@ -123,6 +123,10 @@ public class Article {
         return account.isAdmin();
     }
 
+    public boolean isNotice() {
+        return getIsNotice();
+    }
+
     public void delete() {
         this.deleted = true;
     }

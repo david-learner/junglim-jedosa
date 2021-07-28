@@ -108,7 +108,7 @@ public class ArticleService {
     public ArticleDto getOwnArticle(Long id, SessionAccountDto sessionAccountDto) {
         Article article = articleRepository.findById(id).orElseThrow(NoArticleException::new);
         Account account = accountRepository.findById(sessionAccountDto.getId()).orElseThrow(NoLoginException::new);
-        if (!article.isOwn(account)) {
+        if (!article.isNotice() && !article.isOwn(account)) {
             throw new NotOwnException();
         }
         return new ArticleDto(article, account);
