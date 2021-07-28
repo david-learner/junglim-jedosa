@@ -2,10 +2,11 @@ select * from account;
 
 /* 미리 생성 되어야 하는 테이블 및 데이터 시작 */
 /* 배송정보 - 배송비 */
-create table delivery_property (
-        fee decimal not null
+CREATE TABLE property (
+                          property_name VARCHAR(255) NOT NULL,
+                          property_value VARCHAR(255) NOT NULL
 );
-insert into delivery_property (fee) values (2500);
+INSERT INTO property (property_name, property_value) VALUES ('delivery_fee', '2500');
 
 /* 메인 상품 샘플 슬라이드 이미지 */
 insert into product_sample_image (path, sequence) values ('\images\dummy\product-sample-image01.jpg', 1);
