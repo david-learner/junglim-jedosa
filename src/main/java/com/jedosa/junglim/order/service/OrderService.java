@@ -70,7 +70,8 @@ public class OrderService {
     }
 
     public BigDecimal getDeliveryFee() {
-        return jdbcTemplate.queryForObject("SELECT TOP 1 FEE FROM DELIVERY_PROPERTY", BigDecimal.class);
+        String deliveryFee = jdbcTemplate.queryForObject("SELECT property_value FROM property WHERE property_name = 'delivery_fee'", String.class);
+        return BigDecimal.valueOf(Long.parseLong(deliveryFee));
     }
 
     public Order generateOrder(OrderItemIdsDto orderItemIds, Long ordererId) {
