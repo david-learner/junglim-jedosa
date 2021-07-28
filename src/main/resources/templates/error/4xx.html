@@ -13,8 +13,9 @@
         </div>
         <div>
             <div class="row justify-content-center">
-                <a th:if="${message} == '로그인이 필요한 서비스입니다'" href="/login" class="btn btn-primary">로그인</a>
+                <a th:if="${message} == 'NEED LOGIN'" href="/login" class="btn btn-primary">로그인</a>
             </div>
+            <div th:text="${message}"></div>
             <div class="row justify-content-center">
                 <a href="javascript:window.history.back();" class="btn btn-success mt-2">돌아가기</a>
             </div>
